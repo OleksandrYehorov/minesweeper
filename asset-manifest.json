@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.js": "/minesweeper/static/js/main.5d192ee3.chunk.js",
+    "main.js.map": "/minesweeper/static/js/main.5d192ee3.chunk.js.map",
+    "runtime-main.js": "/minesweeper/static/js/runtime-main.9c76a611.js",
+    "runtime-main.js.map": "/minesweeper/static/js/runtime-main.9c76a611.js.map",
+    "static/js/2.13537296.chunk.js": "/minesweeper/static/js/2.13537296.chunk.js",
+    "static/js/2.13537296.chunk.js.map": "/minesweeper/static/js/2.13537296.chunk.js.map",
+    "index.html": "/minesweeper/index.html",
+    "precache-manifest.12fc4223ad078eb4714f4eea2aa15bef.js": "/minesweeper/precache-manifest.12fc4223ad078eb4714f4eea2aa15bef.js",
+    "service-worker.js": "/minesweeper/service-worker.js",
+    "static/js/2.13537296.chunk.js.LICENSE.txt": "/minesweeper/static/js/2.13537296.chunk.js.LICENSE.txt",
+    "static/media/DSEG7Classic-Bold.woff2": "/minesweeper/static/media/DSEG7Classic-Bold.4ecf993f.woff2",
+    "static/media/DSEG7Classic-Bold.ttf": "/minesweeper/static/media/DSEG7Classic-Bold.e700831d.ttf",
+    "static/media/DSEG7Classic-Bold.woff": "/minesweeper/static/media/DSEG7Classic-Bold.f4621db9.woff",
+    "static/media/crossedMine.svg": "/minesweeper/static/media/crossedMine.1fc76a19.svg",
+    "static/media/flag.svg": "/minesweeper/static/media/flag.9750a8d1.svg",
+    "static/media/mine.svg": "/minesweeper/static/media/mine.b0c0cb28.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9c76a611.js",
+    "static/js/2.13537296.chunk.js",
+    "static/js/main.5d192ee3.chunk.js"
+  ]
+}
