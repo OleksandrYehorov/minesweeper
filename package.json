@@ -1,14 +1,23 @@
 {
   "name": "minesweeper",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "author": "Oleksandr Yehorov",
+  "license": "MIT",
+  "homepage": "https://OleksandrYehorov.github.io/minesweeper",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OleksandrYehorov/minesweeper"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write src/**/*.ts{,x}",
-    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}"
+    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
@@ -40,6 +49,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-react-hooks": "^4.1.2",
+    "gh-pages": "^3.1.0",
     "prettier": "^2.1.2"
   },
   "browserslist": {
