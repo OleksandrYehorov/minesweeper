@@ -14,8 +14,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write src/**/*.ts{,x}",
-    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
+    "lint": "tsc --noEmit && eslint . --ext .ts,.tsx",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
