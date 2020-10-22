@@ -1,9 +1,6 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components/macro';
-import { clickCell, flagCell } from '../redux/gameSlice';
 import { invertedShadow } from '../styles/shadow';
-import { Coords } from '../utils/constants';
 import { useTypedSelector } from '../utils/useTypedSelector';
 import { Cell, OpenCell } from './Cell';
 
@@ -30,25 +27,14 @@ const Row = styled.div`
 `;
 
 export const Board: React.FC = () => {
-  const dispatch = useDispatch();
   const board = useTypedSelector((state) => state.game.board);
-
-  const handleClick = (coords: Coords) => dispatch(clickCell(coords));
-
-  const handleRightClick = (coords: Coords) => dispatch(flagCell(coords));
 
   return (
     <Container>
       {board.map((row, y) => (
         <Row key={row[0].id}>
           {row.map((cell, x) => (
-            <Cell
-              key={cell.id}
-              data={cell}
-              coords={{ x, y }}
-              onClick={handleClick}
-              onRightClick={handleRightClick}
-            />
+            <Cell key={cell.id} data={cell} coords={{ x, y }} />
           ))}
         </Row>
       ))}

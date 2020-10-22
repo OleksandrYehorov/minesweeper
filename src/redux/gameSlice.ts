@@ -6,6 +6,7 @@ import {
   GameBoard,
   openCell,
   checkWin,
+  openAdjacentCells,
 } from '../utils/board';
 import { Coords, Difficulty } from '../utils/constants';
 
@@ -51,27 +52,38 @@ const { actions, reducer } = createSlice({
         state.status = 'playing';
       }
 
-      if (state.board[y][x].isMine) {
+      const success = openCell(state.board, { x, y });
+
+      if (!success) {
         state.status = 'lose';
       }
-
-      openCell(state.board, { x, y });
 
       if (checkWin(state.board, state.difficulty)) {
         state.status = 'win';
       }
     },
-    flagCell(state, action: PayloadAction<Coords>) {
+    clickNumberCell(state, action: PayloadAction<Coords>) {
       const { payload } = action;
       const { x, y } = payload;
 
+      const success = openAdjacentCells(state.board, { x, y });
+
+      if (!success) {
+        state.status = 'lose';
+      }
+    },
+    flagCell(state, action: PayloadAction<Coords>) {
+      const { payload } = action;
+      const { x, y } = payload;
+      const clickedCell = state.board[y][x];
+
       if (state.status === 'playing') {
-        state.board[y][x].isFlagged = !state.board[y][x].isFlagged;
+        clickedCell.isFlagged = !clickedCell.isFlagged;
       }
     },
   },
 });
 
-export const { clickCell, flagCell, initGame } = actions;
+export const { clickCell, clickNumberCell, flagCell, initGame } = actions;
 
 export const gameReducer = reducer;
