@@ -2,7 +2,7 @@ import { Difficulty, boardSizes, Coords } from './constants';
 import { range } from './range';
 
 interface BaseCell {
-  id: number;
+  readonly id: number;
 
   isOpen: boolean;
   isFlagged: boolean;
@@ -65,7 +65,7 @@ export const generateMines = (
   }
 };
 
-export const getAdjacentCoordinates = (
+export const getAdjacentCoords = (
   board: GameBoard,
   { x, y }: Coords
 ): Coords[] => {
@@ -84,7 +84,7 @@ export const getAdjacentCells = (
   board: GameBoard,
   coords: Coords
 ): GameCell[] => {
-  const adjacentCellsCoordinates = getAdjacentCoordinates(board, coords);
+  const adjacentCellsCoordinates = getAdjacentCoords(board, coords);
 
   return adjacentCellsCoordinates.map(({ x, y }) => board[y][x]);
 };
@@ -107,21 +107,23 @@ export const openCell = (
   board: GameBoard,
   { x, y }: Coords,
   memo: boolean[][] = []
-): void => {
+): boolean => {
   const cell = board[y][x];
   cell.isOpen = true;
 
   if (memo[y] == null) memo[y] = [];
-  if (memo[y][x]) return;
+  if (memo[y][x]) return true;
   memo[y][x] = true;
 
-  if (cell.isMine) return;
+  if (cell.isMine) return false;
 
   if (cell.adjacentMines === 0) {
-    const adjacentCoords = getAdjacentCoordinates(board, { x, y });
+    const adjacentCoords = getAdjacentCoords(board, { x, y });
 
     adjacentCoords.forEach((coords) => openCell(board, coords, memo));
   }
+
+  return true;
 };
 
 export const checkWin = (board: GameBoard, difficulty: Difficulty): boolean => {
@@ -132,4 +134,37 @@ export const checkWin = (board: GameBoard, difficulty: Difficulty): boolean => {
   return (
     closedCells.length === mines && closedCells.every(({ isMine }) => isMine)
   );
+};
+
+export const openAdjacentCells = (
+  board: GameBoard,
+  { x, y }: Coords
+): boolean => {
+  const cell = board[y][x];
+
+  if (cell.isOpen && !cell.isMine && cell.adjacentMines > 0) {
+    const adjacentCells = getAdjacentCells(board, { x, y });
+    const adjacentFlaggedCellsCount = adjacentCells.filter(
+      ({ isFlagged }) => isFlagged
+    ).length;
+
+    if (adjacentFlaggedCellsCount === cell.adjacentMines) {
+      const adjacentCellsCoords = getAdjacentCoords(board, { x, y });
+
+      const cellsToOpen = adjacentCellsCoords
+        .map<[GameCell, Coords]>((coords) => [
+          board[coords.y][coords.x],
+          coords,
+        ])
+        .filter(([{ isFlagged, isOpen }]) => !isOpen && !isFlagged);
+
+      const success = cellsToOpen
+        .map(([, coords]) => openCell(board, { x: coords.x, y: coords.y }))
+        .every((status) => status);
+
+      return success;
+    }
+  }
+
+  return true;
 };

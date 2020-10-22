@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components/macro';
+import { useDispatch } from 'react-redux';
 import { shadow } from '../styles/shadow';
 import { Coords } from '../utils/constants';
 import { MinesNumber } from './MinesNumber';
@@ -8,6 +9,7 @@ import crossedMineImage from '../images/crossedMine.svg';
 import flagImage from '../images/flag.svg';
 import { GameCell } from '../utils/board';
 import { useTypedSelector } from '../utils/useTypedSelector';
+import { clickCell, clickNumberCell, flagCell } from '../redux/gameSlice';
 
 const openCellStyle = css`
   border-color: grey;
@@ -49,25 +51,24 @@ export const ClosedCell = styled(StyledCell)`
 interface Props {
   data: GameCell;
   coords: Coords;
-  onClick(coords: Coords): void;
-  onRightClick(coordinates: Coords): void;
 }
 
 const CellIcon = styled.img`
   width: 80%;
 `;
 
-export const Cell: React.FC<Props> = ({
-  coords,
-  data,
-  onClick,
-  onRightClick,
-}) => {
+export const Cell: React.FC<Props> = ({ coords, data }) => {
   const status = useTypedSelector((state) => state.game.status);
+  const dispatch = useDispatch();
 
   if (data.isOpen) {
     return (
-      <OpenCell exploded={data.isMine}>
+      <OpenCell
+        onClick={() => {
+          dispatch(clickNumberCell(coords));
+        }}
+        exploded={data.isMine}
+      >
         {data.isMine ? (
           <CellIcon src={mineImage} alt="Mine" />
         ) : (
@@ -85,6 +86,7 @@ export const Cell: React.FC<Props> = ({
         </OpenCell>
       );
     }
+
     if (!data.isMine && data.isFlagged) {
       return (
         <OpenCell>
@@ -98,11 +100,12 @@ export const Cell: React.FC<Props> = ({
     <ClosedCell
       disabled={data.isFlagged}
       onClick={() => {
-        onClick(coords);
+        dispatch(clickCell(coords));
       }}
       onContextMenu={(event) => {
         event.preventDefault();
-        onRightClick(coords);
+
+        dispatch(flagCell(coords));
       }}
     >
       {(data.isFlagged || status === 'win') && (
