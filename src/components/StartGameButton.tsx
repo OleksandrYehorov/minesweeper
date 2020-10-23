@@ -4,10 +4,14 @@ import styled from 'styled-components';
 import { GameStatus, initGame } from '../redux/gameSlice';
 import { invertedShadow, shadow } from '../styles/shadow';
 import { useTypedSelector } from '../utils/useTypedSelector';
+import smilingFace from '../images/smiling-face.png';
+import smilingFaceWithSunglasses from '../images/smiling-face-with-sunglasses.png';
+import dizzyFace from '../images/dizzy-face.png';
 
 const Button = styled.button`
   ${shadow}
   padding: 0;
+  margin: 0;
   box-sizing: border-box;
   width: 2.6rem;
   height: 2.6rem;
@@ -22,29 +26,24 @@ const Button = styled.button`
   }
 `;
 
-const Emoji = styled.div`
-  font-size: 1.4rem;
-  margin-top: -0.2rem;
+const Emoji = styled.img`
+  width: 80%;
 `;
 
-const emojis: Record<GameStatus, string> = {
-  starting: '🙂',
-  playing: '🙂',
-  win: '😎',
-  lose: '😵',
+const emojis: Record<GameStatus, React.ReactNode> = {
+  starting: <Emoji src={smilingFace} alt="smiling face" />,
+  playing: <Emoji src={smilingFace} alt="smiling face" />,
+  win: (
+    <Emoji src={smilingFaceWithSunglasses} alt="smiling face with sunglasses" />
+  ),
+  lose: <Emoji src={dizzyFace} alt="dizzy face" />,
 };
 
 export const StartGameButton: React.FC = () => {
   const dispatch = useDispatch();
   const status = useTypedSelector((state) => state.game.status);
 
-  const handleClick = () => {
-    dispatch(initGame());
-  };
+  const handleClick = () => dispatch(initGame());
 
-  return (
-    <Button onClick={handleClick}>
-      <Emoji>{emojis[status]}</Emoji>
-    </Button>
-  );
+  return <Button onClick={handleClick}>{emojis[status]}</Button>;
 };

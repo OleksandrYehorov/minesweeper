@@ -19,6 +19,7 @@ const Select = styled.div`
 const Button = styled.button<ButtonProps>`
   ${shadow}
   opacity: ${({ active }) => (active ? 1 : 0.6)};
+  margin: 0;
   padding: 0.2rem;
   outline: none;
   cursor: pointer;
