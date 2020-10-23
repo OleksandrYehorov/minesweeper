@@ -70,6 +70,8 @@ const { actions, reducer } = createSlice({
 
       if (!success) {
         state.status = 'lose';
+      } else if (checkWin(state.board, state.difficulty)) {
+        state.status = 'win';
       }
     },
     flagCell(state, action: PayloadAction<Coords>) {
