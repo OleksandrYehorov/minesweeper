@@ -1,3 +1,5 @@
+![test coverage](https://img.shields.io/codecov/c/github/OleksandrYehorov/minesweeper/master?style=flat-square)
+
 ## Minesweeper
 
 Minesweeper game written with React
