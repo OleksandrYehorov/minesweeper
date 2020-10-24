@@ -64,6 +64,7 @@ export const Cell: React.FC<Props> = ({ coords, data }) => {
   if (data.isOpen) {
     return (
       <OpenCell
+        data-testid={`cell${data.id}`}
         onClick={() => {
           dispatch(clickNumberCell(coords));
         }}
@@ -81,7 +82,7 @@ export const Cell: React.FC<Props> = ({ coords, data }) => {
   if (status === 'lose') {
     if (data.isMine && !data.isFlagged) {
       return (
-        <OpenCell>
+        <OpenCell data-testid={`cell${data.id}`}>
           <CellIcon src={mineImage} alt="Mine" />
         </OpenCell>
       );
@@ -89,7 +90,7 @@ export const Cell: React.FC<Props> = ({ coords, data }) => {
 
     if (!data.isMine && data.isFlagged) {
       return (
-        <OpenCell>
+        <OpenCell data-testid={`cell${data.id}`}>
           <CellIcon src={crossedMineImage} alt="Crossed mine" />
         </OpenCell>
       );
@@ -98,6 +99,7 @@ export const Cell: React.FC<Props> = ({ coords, data }) => {
 
   return (
     <ClosedCell
+      data-testid={`cell${data.id}`}
       disabled={data.isFlagged}
       onClick={() => {
         dispatch(clickCell(coords));

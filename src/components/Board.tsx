@@ -30,9 +30,9 @@ export const Board: React.FC = () => {
   const board = useTypedSelector((state) => state.game.board);
 
   return (
-    <Container>
+    <Container data-testid="board">
       {board.map((row, y) => (
-        <Row key={row[0].id}>
+        <Row key={row[0].id} data-testid="row">
           {row.map((cell, x) => (
             <Cell key={cell.id} data={cell} coords={{ x, y }} />
           ))}
