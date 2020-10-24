@@ -12,8 +12,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --passWithNoTests",
-    "test:coverage": "react-scripts test --coverage --watchAll --passWithNoTests",
+    "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "lint": "tsc --noEmit && eslint . --ext .ts,.tsx",
     "predeploy": "npm run build",
