@@ -1,9 +1,9 @@
-name: Lint
+name: Test
 
 on: [push]
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -22,5 +22,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run linter
-        run: npm run lint
+      - name: Run tests
+        run: npm run test

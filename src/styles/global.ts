@@ -4,7 +4,6 @@ import dsegWoff from 'dseg/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff';
 import dsegTtf from 'dseg/fonts/DSEG7-Classic/DSEG7Classic-Bold.ttf';
 
 export const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@900&display=swap');
   @font-face {
     font-family: 'DSEG7-Classic';
     src: url(${dsegWoff2}) format('woff2'),
@@ -15,10 +14,10 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   html, body, #root {
-    height: 100%; 
+    height: 100%;
   }
 
-  body { 
+  body {
     margin: 0;
     background-color: #008080;
     background-repeat: no-repeat;

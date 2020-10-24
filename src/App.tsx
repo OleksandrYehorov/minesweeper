@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
+import { Provider } from 'react-redux';
 import styled from 'styled-components/macro';
 import { Game } from './components/Game';
+import { store } from './redux/store';
+import { GlobalStyle } from './styles/global';
 
 const AppContainer = styled.main`
   height: 100%;
@@ -11,7 +14,12 @@ const AppContainer = styled.main`
 `;
 
 export const App: React.FC = () => (
-  <AppContainer>
-    <Game />
-  </AppContainer>
+  <StrictMode>
+    <Provider store={store}>
+      <GlobalStyle />
+      <AppContainer>
+        <Game />
+      </AppContainer>
+    </Provider>
+  </StrictMode>
 );

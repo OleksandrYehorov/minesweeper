@@ -23,21 +23,19 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.9.1",
+    "dseg": "^0.46.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-redux": "^7.2.1",
+    "styled-components": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.15",
     "@types/node": "^12.12.68",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
-    "@types/styled-components": "^5.1.4",
-    "dseg": "^0.46.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "react-redux": "^7.2.1",
-    "react-scripts": "3.4.3",
-    "styled-components": "^5.2.0",
-    "typescript": "^3.7.5"
-  },
-  "devDependencies": {
     "@types/react-redux": "^7.1.9",
+    "@types/styled-components": "^5.1.4",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
     "eslint-config-airbnb-typescript": "^6.3.2",
@@ -49,7 +47,9 @@
     "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-react-hooks": "^4.1.2",
     "gh-pages": "^3.1.0",
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "react-scripts": "4.0.0",
+    "typescript": "^4.0.3"
   },
   "browserslist": {
     "production": [
