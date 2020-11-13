@@ -10,6 +10,7 @@ import flagImage from '../images/flag.svg';
 import { GameCell } from '../utils/board';
 import { useTypedSelector } from '../utils/useTypedSelector';
 import { clickCell, clickNumberCell, flagCell } from '../redux/gameSlice';
+import { preventDefault } from '../utils/preventDefault';
 
 const openCellStyle = css`
   border-color: grey;
@@ -104,11 +105,7 @@ export const Cell: React.FC<Props> = ({ coords, data }) => {
       onClick={() => {
         dispatch(clickCell(coords));
       }}
-      onContextMenu={(event) => {
-        event.preventDefault();
-
-        dispatch(flagCell(coords));
-      }}
+      onContextMenu={preventDefault(() => dispatch(flagCell(coords)))}
     >
       {(data.isFlagged || status === 'win') && (
         <CellIcon src={flagImage} alt="Flag" />

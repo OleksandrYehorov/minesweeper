@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { invertedShadow } from '../styles/shadow';
+import { preventDefault } from '../utils/preventDefault';
 import { useTypedSelector } from '../utils/useTypedSelector';
 import { Cell, OpenCell } from './Cell';
 
@@ -26,11 +27,13 @@ const Row = styled.div`
   }
 `;
 
+const handleContextMenu = preventDefault();
+
 export const Board: React.FC = () => {
   const board = useTypedSelector((state) => state.game.board);
 
   return (
-    <Container data-testid="board">
+    <Container data-testid="board" onContextMenu={handleContextMenu}>
       {board.map((row, y) => (
         <Row key={row[0].id} data-testid="row">
           {row.map((cell, x) => (

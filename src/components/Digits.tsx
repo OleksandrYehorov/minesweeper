@@ -37,10 +37,12 @@ interface Props {
 }
 
 export const Digits: React.FC<Props> = ({ value }) => {
+  const displayValue = Math.min(value, 999);
+
   return (
     <Container>
       <GhostNumbers>888</GhostNumbers>
-      <Numbers>{value}</Numbers>
+      <Numbers>{displayValue}</Numbers>
     </Container>
   );
 };
