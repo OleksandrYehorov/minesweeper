@@ -22,8 +22,8 @@ const openCellStyle = css`
 
 export const StyledCell = styled.button`
   box-sizing: border-box;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 28px;
+  height: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
