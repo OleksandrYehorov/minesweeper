@@ -28,7 +28,8 @@
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-redux": "^7.2.1",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.2.0",
+    "use-long-press": "^1.0.4"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",

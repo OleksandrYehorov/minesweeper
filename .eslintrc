@@ -37,6 +37,7 @@
     "react/prop-types": "off",
     "no-param-reassign": "off",
     "consistent-return": "off",
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "import/no-unresolved": ["error", { "ignore": ["use-long-press"] }]
   }
 }
