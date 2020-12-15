@@ -3,9 +3,9 @@ interface EventWithPreventDefault {
 }
 
 export const preventDefault = <T extends EventWithPreventDefault>(
-  fn?: (event: T) => void
-) => (event: T): void => {
-  event.preventDefault?.();
+  fn?: (event?: T) => void
+) => (event?: T): void => {
+  event?.preventDefault?.();
 
   return fn?.(event);
 };

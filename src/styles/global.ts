@@ -19,6 +19,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     margin: 0;
+    min-width: 250px;
     background-color: #008080;
     background-repeat: no-repeat;
     background-position: center;

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components/macro';
 import { useDispatch } from 'react-redux';
+import { useLongPress, LongPressDetectEvents } from 'use-long-press';
 import { shadow } from '../styles/shadow';
 import { Coords } from '../utils/constants';
 import { MinesNumber } from './MinesNumber';
@@ -22,8 +23,8 @@ const openCellStyle = css`
 
 export const StyledCell = styled.button`
   box-sizing: border-box;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 28px;
+  height: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,6 +62,14 @@ const CellIcon = styled.img`
 export const Cell: React.FC<Props> = ({ coords, data }) => {
   const status = useTypedSelector((state) => state.game.status);
   const dispatch = useDispatch();
+
+  const handleClickCell = () => dispatch(clickCell(coords));
+
+  const handleFlagCell = () => dispatch(flagCell(coords));
+
+  const longTouchProps = useLongPress(handleFlagCell, {
+    detect: LongPressDetectEvents.TOUCH,
+  });
 
   if (data.isOpen) {
     return (
@@ -102,10 +111,10 @@ export const Cell: React.FC<Props> = ({ coords, data }) => {
     <ClosedCell
       data-testid={`cell${data.id}`}
       disabled={data.isFlagged}
-      onClick={() => {
-        dispatch(clickCell(coords));
-      }}
-      onContextMenu={preventDefault(() => dispatch(flagCell(coords)))}
+      onClick={handleClickCell}
+      onContextMenu={preventDefault(handleFlagCell)}
+      onTouchStart={longTouchProps.onTouchStart}
+      onTouchEnd={longTouchProps.onTouchEnd}
     >
       {(data.isFlagged || status === 'win') && (
         <CellIcon src={flagImage} alt="Flag" />
