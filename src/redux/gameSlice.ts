@@ -38,7 +38,6 @@ const { actions, reducer } = createSlice({
       state.difficulty = difficulty;
     },
     clickCell(state, action: PayloadAction<Coords>) {
-      console.log('clickCell');
       const { payload } = action;
       const { x, y } = payload;
 
@@ -76,8 +75,6 @@ const { actions, reducer } = createSlice({
       }
     },
     flagCell(state, action: PayloadAction<Coords>) {
-      console.log('flagCell');
-
       const { payload } = action;
       const { x, y } = payload;
       const clickedCell = state.board[y][x];
