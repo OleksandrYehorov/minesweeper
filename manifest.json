@@ -13,8 +13,25 @@
       "type": "image/png"
     }
   ],
-  "start_url": ".",
+  "start_url": "/minesweeper",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "shortcuts": [
+    {
+      "name": "Beginner",
+      "description": "Play beginner level",
+      "url": "/minesweeper?difficulty=beginner"
+    },
+    {
+      "name": "Intermediate",
+      "description": "Play intermediate level",
+      "url": "/minesweeper?difficulty=intermediate"
+    },
+    {
+      "name": "Expert",
+      "description": "Play expert level",
+      "url": "/minesweeper?difficulty=expert"
+    }
+  ]
 }
