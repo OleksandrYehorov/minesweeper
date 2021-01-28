@@ -1,7 +1,7 @@
-import React from 'react';
 import styled, { css } from 'styled-components/macro';
 import { useDispatch } from 'react-redux';
 import { useLongPress, LongPressDetectEvents } from 'use-long-press';
+import { FC } from 'react';
 import { shadow } from '../styles/shadow';
 import { Coords } from '../utils/constants';
 import { MinesNumber } from './MinesNumber';
@@ -59,7 +59,7 @@ const CellIcon = styled.img`
   width: 80%;
 `;
 
-export const Cell: React.FC<Props> = ({ coords, data }) => {
+export const Cell: FC<Props> = ({ coords, data }) => {
   const status = useTypedSelector((state) => state.game.status);
   const dispatch = useDispatch();
 

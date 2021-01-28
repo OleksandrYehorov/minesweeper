@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import styled from 'styled-components/macro';
 import { invisibleScrollbar } from '../styles/invisibleScrollbar';
 import { invertedShadow } from '../styles/shadow';
@@ -31,7 +31,7 @@ const Row = styled.div`
 
 const handleContextMenu = preventDefault();
 
-export const Board: React.FC = () => {
+export const Board: FC = () => {
   const board = useTypedSelector((state) => state.game.board);
 
   return (

@@ -1,9 +1,9 @@
-import React from 'react';
+import { FC } from 'react';
 import { boardSizes } from '../utils/constants';
 import { useTypedSelector } from '../utils/useTypedSelector';
 import { Digits } from './Digits';
 
-export const MinesCounter: React.FC = () => {
+export const MinesCounter: FC = () => {
   const difficulty = useTypedSelector((state) => state.game.difficulty);
   const board = useTypedSelector((state) => state.game.board);
   const { mines } = boardSizes[difficulty];

@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
 import { shadow } from '../styles/shadow';
 import { Board } from './Board';
@@ -17,7 +17,7 @@ const Container = styled.div`
   max-height: 100%;
 `;
 
-export const Game: React.FC = () => {
+export const Game: FC = () => {
   return (
     <Container>
       <Header />

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import { useDispatch } from 'react-redux';
 import { invertedShadow, shadow } from '../styles/shadow';
@@ -28,7 +28,7 @@ const Button = styled.button<ButtonProps>`
   flex-grow: 1;
 `;
 
-export const DifficultySelect: React.FC = () => {
+export const DifficultySelect: FC = () => {
   const dispatch = useDispatch();
   const difficultyState = useTypedSelector((state) => state.game.difficulty);
   const [difficultyQuery, setDifficultyQuery] = useQueryString(
