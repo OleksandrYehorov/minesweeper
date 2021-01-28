@@ -3,7 +3,6 @@ import { range } from './range';
 
 interface BaseCell {
   readonly id: number;
-
   isOpen: boolean;
   isFlagged: boolean;
 }

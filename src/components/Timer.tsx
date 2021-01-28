@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTypedSelector } from '../utils/useTypedSelector';
 import { Digits } from './Digits';
 
-export const Timer: React.FC = () => {
+export const Timer: FC = () => {
   const [value, setValue] = useState(0);
   const status = useTypedSelector((state) => state.game.status);
 
@@ -10,17 +10,17 @@ export const Timer: React.FC = () => {
     let interval: number | undefined;
 
     if (status === 'playing') {
-      interval = setInterval(() => {
+      interval = window.setInterval(() => {
         setValue((stateValue) => stateValue + 1);
       }, 1000);
 
       return () => {
-        clearInterval(interval);
+        window.clearInterval(interval);
       };
     }
 
     if (status === 'lose' || status === 'win') {
-      clearInterval(interval);
+      window.clearInterval(interval);
     }
 
     if (status === 'starting') {

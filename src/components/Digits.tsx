@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import styled, { css } from 'styled-components/macro';
 import { invertedShadow } from '../styles/shadow';
 
@@ -36,7 +36,7 @@ interface Props {
   value: number;
 }
 
-export const Digits: React.FC<Props> = ({ value }) => {
+export const Digits: FC<Props> = ({ value }) => {
   const displayValue = Math.min(value, 999);
 
   return (

@@ -1,4 +1,4 @@
-import React, { StrictMode } from 'react';
+import { FC, StrictMode } from 'react';
 import { Provider } from 'react-redux';
 import styled from 'styled-components/macro';
 import { Game } from './components/Game';
@@ -13,7 +13,7 @@ const AppContainer = styled.main`
   align-items: center;
 `;
 
-export const App: React.FC = () => (
+export const App: FC = () => (
   <StrictMode>
     <Provider store={store}>
       <GlobalStyle />

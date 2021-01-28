@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import styled from 'styled-components/macro';
 import { invertedShadow } from '../styles/shadow';
 import { MinesCounter } from './MinesCounter';
@@ -30,7 +30,7 @@ const Right = styled.div`
   flex: 1;
 `;
 
-export const Header: React.FC = () => {
+export const Header: FC = () => {
   return (
     <Container>
       <Left>
