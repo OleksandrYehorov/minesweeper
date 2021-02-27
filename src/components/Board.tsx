@@ -35,7 +35,11 @@ export const Board: FC = () => {
   const board = useTypedSelector((state) => state.game.board);
 
   return (
-    <Container data-testid="board" onContextMenu={handleContextMenu}>
+    <Container
+      data-testid="board"
+      onContextMenu={handleContextMenu}
+      role="none"
+    >
       {board.map((row, y) => (
         <Row key={row[0].id} data-testid="row">
           {row.map((cell, x) => (

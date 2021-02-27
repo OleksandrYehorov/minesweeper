@@ -7,9 +7,10 @@
     "prettier",
     "prettier/react",
     "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:styled-components-a11y/strict"
   ],
-  "plugins": ["react", "@typescript-eslint", "jest"],
+  "plugins": ["react", "@typescript-eslint", "jest", "styled-components-a11y"],
   "env": {
     "browser": true,
     "es6": true,
@@ -31,7 +32,8 @@
     "linebreak-style": "off",
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "import/prefer-default-export": "off",
-    "jsx-a11y/accessible-emoji": "off",
+    "jsx-a11y/control-has-associated-label": "error",
+    "styled-components-a11y/control-has-associated-label": "error",
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "react/prop-types": "off",

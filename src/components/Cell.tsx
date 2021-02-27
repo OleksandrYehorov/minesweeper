@@ -71,10 +71,13 @@ export const Cell: FC<Props> = ({ coords, data }) => {
     detect: LongPressDetectEvents.TOUCH,
   });
 
+  const ariaLabel = `Cell ${coords.x + 1} on row ${coords.y + 1}`;
+
   if (data.isOpen) {
     return (
       <OpenCell
         data-testid={`cell${data.id}`}
+        aria-label={ariaLabel}
         onClick={() => {
           dispatch(clickNumberCell(coords));
         }}
@@ -92,7 +95,7 @@ export const Cell: FC<Props> = ({ coords, data }) => {
   if (status === 'lose') {
     if (data.isMine && !data.isFlagged) {
       return (
-        <OpenCell data-testid={`cell${data.id}`}>
+        <OpenCell data-testid={`cell${data.id}`} aria-label={ariaLabel}>
           <CellIcon src={mineImage} alt="Mine" />
         </OpenCell>
       );
@@ -100,7 +103,7 @@ export const Cell: FC<Props> = ({ coords, data }) => {
 
     if (!data.isMine && data.isFlagged) {
       return (
-        <OpenCell data-testid={`cell${data.id}`}>
+        <OpenCell data-testid={`cell${data.id}`} aria-label={ariaLabel}>
           <CellIcon src={crossedMineImage} alt="Crossed mine" />
         </OpenCell>
       );
@@ -110,6 +113,7 @@ export const Cell: FC<Props> = ({ coords, data }) => {
   return (
     <ClosedCell
       data-testid={`cell${data.id}`}
+      aria-label={ariaLabel}
       disabled={data.isFlagged}
       onClick={handleClickCell}
       onContextMenu={preventDefault(handleFlagCell)}
