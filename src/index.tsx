@@ -1,9 +1,8 @@
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { App } from './App';
-import { reportWebVitals } from './reportWebVitals';
-import { register } from './serviceWorkerRegistration';
+import { register as registerServiceWorker } from './serviceWorkerRegistration';
+import './firebase';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+render(<App />, document.getElementById('root'));
 
-register();
-reportWebVitals();
+registerServiceWorker();

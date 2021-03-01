@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Analytics } from '../analytics';
 import {
   createBoard,
   generateMines,
@@ -9,6 +10,7 @@ import {
   openAdjacentCells,
 } from '../utils/board';
 import { Coords, Difficulty } from '../utils/constants';
+import { now } from '../utils/now';
 
 export type GameStatus = 'starting' | 'playing' | 'win' | 'lose';
 
@@ -16,6 +18,7 @@ export interface GameBoardState {
   status: GameStatus;
   difficulty: Difficulty;
   board: GameBoard;
+  startedAt: number;
 }
 
 const initialDifficultyLevel: Difficulty = 'beginner';
@@ -24,6 +27,7 @@ const initialState: GameBoardState = {
   status: 'starting',
   difficulty: initialDifficultyLevel,
   board: createBoard(initialDifficultyLevel),
+  startedAt: now(),
 };
 
 const { actions, reducer } = createSlice({
@@ -50,16 +54,31 @@ const { actions, reducer } = createSlice({
         countAdjacentMines(state.board);
 
         state.status = 'playing';
+        state.startedAt = now();
+
+        Analytics.logStartGame({
+          difficulty: state.difficulty,
+        });
       }
 
       const success = openCell(state.board, { x, y });
 
       if (!success) {
         state.status = 'lose';
+
+        Analytics.logLoseGame({
+          difficulty: state.difficulty,
+          startedAt: state.startedAt,
+        });
       }
 
       if (checkWin(state.board, state.difficulty)) {
         state.status = 'win';
+
+        Analytics.logWinGame({
+          difficulty: state.difficulty,
+          startedAt: state.startedAt,
+        });
       }
     },
     clickNumberCell(state, action: PayloadAction<Coords>) {
