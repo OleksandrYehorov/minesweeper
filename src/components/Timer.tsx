@@ -5,12 +5,12 @@ import { Digits } from './Digits';
 
 export const Timer: FC = () => {
   const [value, setValue] = useState(0);
-  const status = useTypedSelector((state) => state.game.status);
+  const gameStatus = useTypedSelector((state) => state.game.status);
 
   useEffect(() => {
     let interval: number | undefined;
 
-    return match(status)
+    return match(gameStatus)
       .with(
         'playing',
         (): ReturnType<EffectCallback> => {
@@ -30,7 +30,7 @@ export const Timer: FC = () => {
         setValue(0);
       })
       .run();
-  }, [status]);
+  }, [gameStatus]);
 
   return <Digits value={value} />;
 };

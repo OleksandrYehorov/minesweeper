@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { match, __ } from 'ts-pattern';
 import styled, { css } from 'styled-components/macro';
@@ -9,7 +9,6 @@ import { MinesNumber } from './MinesNumber';
 import mineImage from '../images/mine.svg';
 import crossedMineImage from '../images/crossedMine.svg';
 import flagImage from '../images/flag.svg';
-import { GameCell } from '../utils/board';
 import { useTypedSelector } from '../utils/useTypedSelector';
 import { clickCell, clickNumberCell, flagCell } from '../redux/gameSlice';
 import { preventDefault } from '../utils/preventDefault';
@@ -55,32 +54,28 @@ export const ClosedCell = styled(StyledCell)`
   }
 `;
 
-interface Props {
-  data: GameCell;
-  coords: Coords;
-}
+type Props = Coords;
 
 const CellIcon = styled.img`
   width: 80%;
 `;
 
-export const Cell: FC<Props> = ({ coords, data }) => {
-  const status = useTypedSelector((state) => state.game.status);
+export const Cell: FC<Props> = memo(({ x, y }) => {
+  const gameStatus = useTypedSelector((state) => state.game.status);
+  const cellData = useTypedSelector((state) => state.game.board[y][x]);
   const dispatch = useDispatch();
 
-  const handleClickCell = () => dispatch(clickCell(coords));
-
-  const handleClickNumberCell = () => dispatch(clickNumberCell(coords));
-
-  const handleFlagCell = () => dispatch(flagCell(coords));
+  const handleClickCell = () => dispatch(clickCell({ x, y }));
+  const handleClickNumberCell = () => dispatch(clickNumberCell({ x, y }));
+  const handleFlagCell = () => dispatch(flagCell({ x, y }));
 
   const longTouchProps = useLongPress(handleFlagCell, {
     detect: LongPressDetectEvents.TOUCH,
   });
 
-  const ariaLabel = `Cell ${coords.x + 1} on row ${coords.y + 1}`;
+  const ariaLabel = `Cell ${x + 1} on row ${y + 1}`;
 
-  return match([data, status] as const)
+  return match([cellData, gameStatus] as const)
     .with([{ isOpen: true, isMine: true }, __], ([matchedData]) => (
       <OpenCell
         data-testid={`cell${matchedData.id}`}
@@ -125,13 +120,13 @@ export const Cell: FC<Props> = ({ coords, data }) => {
     ))
     .otherwise(() => (
       <ClosedCell
-        data-testid={`cell${data.id}`}
+        data-testid={`cell${cellData.id}`}
         aria-label={ariaLabel}
-        disabled={data.isFlagged}
+        disabled={cellData.isFlagged}
         onClick={handleClickCell}
         onContextMenu={preventDefault(handleFlagCell)}
         onTouchStart={longTouchProps.onTouchStart}
         onTouchEnd={longTouchProps.onTouchEnd}
       />
     ));
-};
+});

@@ -46,9 +46,9 @@ const emojisPattern = (status: GameStatus) =>
 
 export const StartGameButton: FC = () => {
   const dispatch = useDispatch();
-  const status = useTypedSelector((state) => state.game.status);
+  const gameStatus = useTypedSelector((state) => state.game.status);
 
   const handleClick = () => dispatch(initGame());
 
-  return <Button onClick={handleClick}>{emojisPattern(status)}</Button>;
+  return <Button onClick={handleClick}>{emojisPattern(gameStatus)}</Button>;
 };

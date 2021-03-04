@@ -43,7 +43,7 @@ export const Board: FC = () => {
       {board.map((row, y) => (
         <Row key={row[0].id} data-testid="row">
           {row.map((cell, x) => (
-            <Cell key={cell.id} data={cell} coords={{ x, y }} />
+            <Cell key={cell.id} x={x} y={y} />
           ))}
         </Row>
       ))}
