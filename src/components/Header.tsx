@@ -16,6 +16,7 @@ const Left = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex: 1;
+  overflow: hidden;
 `;
 
 const Center = styled.div`
@@ -28,6 +29,7 @@ const Right = styled.div`
   align-items: center;
   justify-content: flex-end;
   flex: 1;
+  overflow: hidden;
 `;
 
 export const Header: FC = () => {

@@ -1,7 +1,21 @@
-import { createGlobalStyle } from 'styled-components/macro';
+import { createGlobalStyle, css } from 'styled-components/macro';
 import dsegWoff2 from 'dseg/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff2';
 import dsegWoff from 'dseg/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff';
 import dsegTtf from 'dseg/fonts/DSEG7-Classic/DSEG7Classic-Bold.ttf';
+
+const scrollOverflowSafariHack = css`
+  html,
+  body {
+    position: fixed;
+    overflow: hidden;
+  }
+
+  #root {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+  }
+`;
 
 export const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -19,7 +33,6 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     margin: 0;
-    min-width: 250px;
     background-color: #008080;
     background-repeat: no-repeat;
     background-position: center;
@@ -31,4 +44,6 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  ${scrollOverflowSafariHack}
 `;
