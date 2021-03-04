@@ -31,9 +31,9 @@ const Button = styled.button<ButtonProps>`
 export const DifficultySelect: FC = () => {
   const dispatch = useDispatch();
   const difficultyState = useTypedSelector((state) => state.game.difficulty);
-  const [difficultyQuery, setDifficultyQuery] = useQueryString(
+  const [difficultyQuery, setDifficultyQuery] = useQueryString<Difficulty>(
     'difficulty',
-    'beginner' as Difficulty
+    'beginner'
   );
 
   const handleClick = useCallback(

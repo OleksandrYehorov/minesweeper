@@ -1,7 +1,8 @@
-import styled, { css } from 'styled-components/macro';
-import { useDispatch } from 'react-redux';
-import { useLongPress, LongPressDetectEvents } from 'use-long-press';
 import { FC } from 'react';
+import { useDispatch } from 'react-redux';
+import { match, __ } from 'ts-pattern';
+import styled, { css } from 'styled-components/macro';
+import { useLongPress, LongPressDetectEvents } from 'use-long-press';
 import { shadow } from '../styles/shadow';
 import { Coords } from '../utils/constants';
 import { MinesNumber } from './MinesNumber';
@@ -35,7 +36,11 @@ export const StyledCell = styled.button`
 
 export const OpenCell = styled(StyledCell)<{ exploded?: boolean }>`
   ${openCellStyle}
-  ${({ exploded }) => exploded && 'background-color: red;'}
+  ${({ exploded }) =>
+    exploded &&
+    css`
+      background-color: red;
+    `}
 
   & > * {
     margin: -1px 0 0 -1px;
@@ -65,6 +70,8 @@ export const Cell: FC<Props> = ({ coords, data }) => {
 
   const handleClickCell = () => dispatch(clickCell(coords));
 
+  const handleClickNumberCell = () => dispatch(clickNumberCell(coords));
+
   const handleFlagCell = () => dispatch(flagCell(coords));
 
   const longTouchProps = useLongPress(handleFlagCell, {
@@ -73,56 +80,58 @@ export const Cell: FC<Props> = ({ coords, data }) => {
 
   const ariaLabel = `Cell ${coords.x + 1} on row ${coords.y + 1}`;
 
-  if (data.isOpen) {
-    return (
+  return match([data, status] as const)
+    .with([{ isOpen: true, isMine: true }, __], ([matchedData]) => (
       <OpenCell
+        data-testid={`cell${matchedData.id}`}
+        aria-label={ariaLabel}
+        exploded={matchedData.isMine}
+      >
+        <CellIcon src={mineImage} alt="Mine" />
+      </OpenCell>
+    ))
+    .with([{ isOpen: true, isMine: false }, __], ([matchedData]) => (
+      <OpenCell
+        data-testid={`cell${matchedData.id}`}
+        aria-label={ariaLabel}
+        onClick={handleClickNumberCell}
+        exploded={matchedData.isMine}
+      >
+        <MinesNumber value={matchedData.adjacentMines} />
+      </OpenCell>
+    ))
+    .with([{ isMine: true, isFlagged: false }, 'lose'], ([matchedData]) => (
+      <OpenCell data-testid={`cell${matchedData.id}`} aria-label={ariaLabel}>
+        <CellIcon src={mineImage} alt="Mine" />
+      </OpenCell>
+    ))
+    .with([{ isMine: false, isFlagged: true }, 'lose'], ([matchedData]) => (
+      <OpenCell data-testid={`cell${matchedData.id}`} aria-label={ariaLabel}>
+        <CellIcon src={crossedMineImage} alt="Crossed mine" />
+      </OpenCell>
+    ))
+    .with([{ isFlagged: true }, __], ([matchedData]) => (
+      <ClosedCell
+        data-testid={`cell${matchedData.id}`}
+        aria-label={ariaLabel}
+        disabled={matchedData.isFlagged}
+        onClick={handleClickCell}
+        onContextMenu={preventDefault(handleFlagCell)}
+        onTouchStart={longTouchProps.onTouchStart}
+        onTouchEnd={longTouchProps.onTouchEnd}
+      >
+        <CellIcon src={flagImage} alt="Flag" />
+      </ClosedCell>
+    ))
+    .otherwise(() => (
+      <ClosedCell
         data-testid={`cell${data.id}`}
         aria-label={ariaLabel}
-        onClick={() => {
-          dispatch(clickNumberCell(coords));
-        }}
-        exploded={data.isMine}
-      >
-        {data.isMine ? (
-          <CellIcon src={mineImage} alt="Mine" />
-        ) : (
-          <MinesNumber value={data.adjacentMines} />
-        )}
-      </OpenCell>
-    );
-  }
-
-  if (status === 'lose') {
-    if (data.isMine && !data.isFlagged) {
-      return (
-        <OpenCell data-testid={`cell${data.id}`} aria-label={ariaLabel}>
-          <CellIcon src={mineImage} alt="Mine" />
-        </OpenCell>
-      );
-    }
-
-    if (!data.isMine && data.isFlagged) {
-      return (
-        <OpenCell data-testid={`cell${data.id}`} aria-label={ariaLabel}>
-          <CellIcon src={crossedMineImage} alt="Crossed mine" />
-        </OpenCell>
-      );
-    }
-  }
-
-  return (
-    <ClosedCell
-      data-testid={`cell${data.id}`}
-      aria-label={ariaLabel}
-      disabled={data.isFlagged}
-      onClick={handleClickCell}
-      onContextMenu={preventDefault(handleFlagCell)}
-      onTouchStart={longTouchProps.onTouchStart}
-      onTouchEnd={longTouchProps.onTouchEnd}
-    >
-      {(data.isFlagged || status === 'win') && (
-        <CellIcon src={flagImage} alt="Flag" />
-      )}
-    </ClosedCell>
-  );
+        disabled={data.isFlagged}
+        onClick={handleClickCell}
+        onContextMenu={preventDefault(handleFlagCell)}
+        onTouchStart={longTouchProps.onTouchStart}
+        onTouchEnd={longTouchProps.onTouchEnd}
+      />
+    ));
 };

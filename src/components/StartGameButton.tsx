@@ -1,6 +1,7 @@
-import { FC, ReactNode } from 'react';
+import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { match } from 'ts-pattern';
 import { GameStatus, initGame } from '../redux/gameSlice';
 import { invertedShadow, shadow } from '../styles/shadow';
 import { useTypedSelector } from '../utils/useTypedSelector';
@@ -30,14 +31,18 @@ const Emoji = styled.img`
   width: 80%;
 `;
 
-const emojis: Record<GameStatus, ReactNode> = {
-  starting: <Emoji src={smilingFace} alt="smiling face" />,
-  playing: <Emoji src={smilingFace} alt="smiling face" />,
-  win: (
-    <Emoji src={smilingFaceWithSunglasses} alt="smiling face with sunglasses" />
-  ),
-  lose: <Emoji src={dizzyFace} alt="dizzy face" />,
-};
+const emojisPattern = (status: GameStatus) =>
+  match(status)
+    .with('starting', () => <Emoji src={smilingFace} alt="smiling face" />)
+    .with('playing', () => <Emoji src={smilingFace} alt="smiling face" />)
+    .with('win', () => (
+      <Emoji
+        src={smilingFaceWithSunglasses}
+        alt="smiling face with sunglasses"
+      />
+    ))
+    .with('lose', () => <Emoji src={dizzyFace} alt="dizzy face" />)
+    .run();
 
 export const StartGameButton: FC = () => {
   const dispatch = useDispatch();
@@ -45,5 +50,5 @@ export const StartGameButton: FC = () => {
 
   const handleClick = () => dispatch(initGame());
 
-  return <Button onClick={handleClick}>{emojis[status]}</Button>;
+  return <Button onClick={handleClick}>{emojisPattern(status)}</Button>;
 };
