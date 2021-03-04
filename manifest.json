@@ -19,8 +19,8 @@
       "purpose": "any maskable"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#008080",
+  "background_color": "#008080",
   "display": "standalone",
   "shortcuts": [
     {
