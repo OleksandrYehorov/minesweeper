@@ -24,6 +24,7 @@ export const GlobalStyle = createGlobalStyle`
     background-repeat: no-repeat;
     background-position: center;
     background-size: 30%;
+    overscroll-behavior: none;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
       sans-serif;
