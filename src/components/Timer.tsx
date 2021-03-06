@@ -1,32 +1,36 @@
-import { FC, useEffect, useState } from 'react';
-import { useTypedSelector } from '../utils/useTypedSelector';
+import { EffectCallback, FC, useEffect, useState } from 'react';
+import { match } from 'ts-pattern';
+import { useGameStore } from '../store/store';
 import { Digits } from './Digits';
 
 export const Timer: FC = () => {
   const [value, setValue] = useState(0);
-  const status = useTypedSelector((state) => state.game.status);
+  const gameStatus = useGameStore((state) => state.status);
 
   useEffect(() => {
     let interval: number | undefined;
 
-    if (status === 'playing') {
-      interval = window.setInterval(() => {
-        setValue((stateValue) => stateValue + 1);
-      }, 1000);
+    return match(gameStatus)
+      .with(
+        'playing',
+        (): ReturnType<EffectCallback> => {
+          interval = window.setInterval(() => {
+            setValue((stateValue) => stateValue + 1);
+          }, 1000);
 
-      return () => {
+          return () => {
+            window.clearInterval(interval);
+          };
+        }
+      )
+      .with('lose', 'win', () => {
         window.clearInterval(interval);
-      };
-    }
-
-    if (status === 'lose' || status === 'win') {
-      window.clearInterval(interval);
-    }
-
-    if (status === 'starting') {
-      setValue(0);
-    }
-  }, [status]);
+      })
+      .with('starting', () => {
+        setValue(0);
+      })
+      .run();
+  }, [gameStatus]);
 
   return <Digits value={value} />;
 };

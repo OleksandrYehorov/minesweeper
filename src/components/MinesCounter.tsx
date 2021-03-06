@@ -1,11 +1,11 @@
 import { FC } from 'react';
+import { useGameStore } from '../store/store';
 import { boardSizes } from '../utils/constants';
-import { useTypedSelector } from '../utils/useTypedSelector';
 import { Digits } from './Digits';
 
 export const MinesCounter: FC = () => {
-  const difficulty = useTypedSelector((state) => state.game.difficulty);
-  const board = useTypedSelector((state) => state.game.board);
+  const difficulty = useGameStore((store) => store.difficulty);
+  const board = useGameStore((store) => store.board);
   const { mines } = boardSizes[difficulty];
   const flaggedCellsCount = board.reduce(
     (res, row) =>

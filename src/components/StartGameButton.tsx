@@ -1,12 +1,11 @@
-import { FC, ReactNode } from 'react';
-import { useDispatch } from 'react-redux';
+import { FC } from 'react';
 import styled from 'styled-components';
-import { GameStatus, initGame } from '../redux/gameSlice';
+import { match } from 'ts-pattern';
 import { invertedShadow, shadow } from '../styles/shadow';
-import { useTypedSelector } from '../utils/useTypedSelector';
 import dizzyFace from '../images/dizzy-face.png';
 import smilingFace from '../images/smiling-face.png';
 import smilingFaceWithSunglasses from '../images/smiling-face-with-sunglasses.png';
+import { GameStatus, useGameStore } from '../store/store';
 
 const Button = styled.button`
   ${shadow}
@@ -30,20 +29,25 @@ const Emoji = styled.img`
   width: 80%;
 `;
 
-const emojis: Record<GameStatus, ReactNode> = {
-  starting: <Emoji src={smilingFace} alt="smiling face" />,
-  playing: <Emoji src={smilingFace} alt="smiling face" />,
-  win: (
-    <Emoji src={smilingFaceWithSunglasses} alt="smiling face with sunglasses" />
-  ),
-  lose: <Emoji src={dizzyFace} alt="dizzy face" />,
-};
+const emojisPattern = (status: GameStatus) =>
+  match(status)
+    .with('starting', () => <Emoji src={smilingFace} alt="smiling face" />)
+    .with('playing', () => <Emoji src={smilingFace} alt="smiling face" />)
+    .with('win', () => (
+      <Emoji
+        src={smilingFaceWithSunglasses}
+        alt="smiling face with sunglasses"
+      />
+    ))
+    .with('lose', () => <Emoji src={dizzyFace} alt="dizzy face" />)
+    .run();
 
 export const StartGameButton: FC = () => {
-  const dispatch = useDispatch();
-  const status = useTypedSelector((state) => state.game.status);
+  const gameStatus = useGameStore((state) => state.status);
+  const initGame = useGameStore((state) => state.initGame);
+  const emoji = emojisPattern(gameStatus);
 
-  const handleClick = () => dispatch(initGame());
+  const handleClick = () => initGame();
 
-  return <Button onClick={handleClick}>{emojis[status]}</Button>;
+  return <Button onClick={handleClick}>{emoji}</Button>;
 };

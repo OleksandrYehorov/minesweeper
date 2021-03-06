@@ -79,6 +79,7 @@ export const getAdjacentCoords = (
     { x: x + 1, y: y + 1 }, // bottom right
   ].filter((coords) => board[coords.y]?.[coords.x] != null);
 };
+
 export const getAdjacentCells = (
   board: GameBoard,
   coords: Coords

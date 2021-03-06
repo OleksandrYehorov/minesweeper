@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import styled from 'styled-components/macro';
+import { useGameStore } from '../store/store';
 import { invisibleScrollbar } from '../styles/invisibleScrollbar';
 import { invertedShadow } from '../styles/shadow';
 import { preventDefault } from '../utils/preventDefault';
-import { useTypedSelector } from '../utils/useTypedSelector';
 import { Cell, OpenCell } from './Cell';
 
 const Container = styled.div`
@@ -32,7 +32,7 @@ const Row = styled.div`
 const handleContextMenu = preventDefault();
 
 export const Board: FC = () => {
-  const board = useTypedSelector((state) => state.game.board);
+  const board = useGameStore((state) => state.board);
 
   return (
     <Container
@@ -43,7 +43,7 @@ export const Board: FC = () => {
       {board.map((row, y) => (
         <Row key={row[0].id} data-testid="row">
           {row.map((cell, x) => (
-            <Cell key={cell.id} data={cell} coords={{ x, y }} />
+            <Cell key={cell.id} x={x} y={y} />
           ))}
         </Row>
       ))}
