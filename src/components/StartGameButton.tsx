@@ -1,13 +1,11 @@
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { match } from 'ts-pattern';
-import { GameStatus, initGame } from '../redux/gameSlice';
 import { invertedShadow, shadow } from '../styles/shadow';
-import { useTypedSelector } from '../utils/useTypedSelector';
 import dizzyFace from '../images/dizzy-face.png';
 import smilingFace from '../images/smiling-face.png';
 import smilingFaceWithSunglasses from '../images/smiling-face-with-sunglasses.png';
+import { GameStatus, useGameStore } from '../store/store';
 
 const Button = styled.button`
   ${shadow}
@@ -45,10 +43,11 @@ const emojisPattern = (status: GameStatus) =>
     .run();
 
 export const StartGameButton: FC = () => {
-  const dispatch = useDispatch();
-  const gameStatus = useTypedSelector((state) => state.game.status);
+  const gameStatus = useGameStore((state) => state.status);
+  const initGame = useGameStore((state) => state.initGame);
+  const emoji = emojisPattern(gameStatus);
 
-  const handleClick = () => dispatch(initGame());
+  const handleClick = () => initGame();
 
-  return <Button onClick={handleClick}>{emojisPattern(gameStatus)}</Button>;
+  return <Button onClick={handleClick}>{emoji}</Button>;
 };

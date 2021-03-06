@@ -1,5 +1,4 @@
 import { FC, memo } from 'react';
-import { useDispatch } from 'react-redux';
 import { match, __ } from 'ts-pattern';
 import styled, { css } from 'styled-components/macro';
 import { useLongPress, LongPressDetectEvents } from 'use-long-press';
@@ -9,9 +8,8 @@ import { MinesNumber } from './MinesNumber';
 import mineImage from '../images/mine.svg';
 import crossedMineImage from '../images/crossedMine.svg';
 import flagImage from '../images/flag.svg';
-import { useTypedSelector } from '../utils/useTypedSelector';
-import { clickCell, clickNumberCell, flagCell } from '../redux/gameSlice';
 import { preventDefault } from '../utils/preventDefault';
+import { useGameStore } from '../store/store';
 
 const openCellStyle = css`
   border-color: grey;
@@ -61,13 +59,15 @@ const CellIcon = styled.img`
 `;
 
 export const Cell: FC<Props> = memo(({ x, y }) => {
-  const gameStatus = useTypedSelector((state) => state.game.status);
-  const cellData = useTypedSelector((state) => state.game.board[y][x]);
-  const dispatch = useDispatch();
+  const gameStatus = useGameStore((state) => state.status);
+  const cellData = useGameStore((state) => state.board[y][x]);
+  const clickCell = useGameStore((state) => state.clickCell);
+  const clickNumberCell = useGameStore((state) => state.clickNumberCell);
+  const flagCell = useGameStore((state) => state.flagCell);
 
-  const handleClickCell = () => dispatch(clickCell({ x, y }));
-  const handleClickNumberCell = () => dispatch(clickNumberCell({ x, y }));
-  const handleFlagCell = () => dispatch(flagCell({ x, y }));
+  const handleClickCell = () => clickCell({ x, y });
+  const handleClickNumberCell = () => clickNumberCell({ x, y });
+  const handleFlagCell = () => flagCell({ x, y });
 
   const longTouchProps = useLongPress(handleFlagCell, {
     detect: LongPressDetectEvents.TOUCH,

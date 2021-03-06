@@ -1,11 +1,9 @@
 import { FC, useCallback, useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { useDispatch } from 'react-redux';
 import { invertedShadow, shadow } from '../styles/shadow';
 import { Difficulty, difficultyLevels } from '../utils/constants';
-import { initGame } from '../redux/gameSlice';
-import { useTypedSelector } from '../utils/useTypedSelector';
 import { useQueryString } from '../utils/useQueryString';
+import { useGameStore } from '../store/store';
 
 interface ButtonProps {
   active?: boolean;
@@ -29,8 +27,8 @@ const Button = styled.button<ButtonProps>`
 `;
 
 export const DifficultySelect: FC = () => {
-  const dispatch = useDispatch();
-  const difficultyState = useTypedSelector((state) => state.game.difficulty);
+  const difficultyState = useGameStore((state) => state.difficulty);
+  const initGame = useGameStore((state) => state.initGame);
   const [difficultyQuery, setDifficultyQuery] = useQueryString<Difficulty>(
     'difficulty',
     'beginner'
@@ -38,10 +36,10 @@ export const DifficultySelect: FC = () => {
 
   const handleClick = useCallback(
     (difficulty: Difficulty) => {
-      dispatch(initGame(difficulty));
+      initGame(difficulty);
       setDifficultyQuery(difficulty);
     },
-    [dispatch, setDifficultyQuery]
+    [initGame, setDifficultyQuery]
   );
 
   useEffect(() => {

@@ -1,11 +1,11 @@
 import { EffectCallback, FC, useEffect, useState } from 'react';
 import { match } from 'ts-pattern';
-import { useTypedSelector } from '../utils/useTypedSelector';
+import { useGameStore } from '../store/store';
 import { Digits } from './Digits';
 
 export const Timer: FC = () => {
   const [value, setValue] = useState(0);
-  const gameStatus = useTypedSelector((state) => state.game.status);
+  const gameStatus = useGameStore((state) => state.status);
 
   useEffect(() => {
     let interval: number | undefined;

@@ -44,9 +44,12 @@
     "eslint-plugin-react-hooks": "^4.1.2",
     "eslint-plugin-styled-components-a11y": "^0.0.32",
     "firebase": "^8.2.9",
+    "fp-ts": "^2.9.5",
     "gh-pages": "^3.1.0",
+    "immer": "^8.0.1",
     "prettier": "^2.1.2",
     "query-string": "^6.13.8",
+    "ramda": "^0.27.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.1",
@@ -67,7 +70,8 @@
     "workbox-range-requests": "^5.1.4",
     "workbox-routing": "^5.1.4",
     "workbox-strategies": "^5.1.4",
-    "workbox-streams": "^5.1.4"
+    "workbox-streams": "^5.1.4",
+    "zustand": "^3.3.3"
   },
   "browserslist": {
     "production": [
@@ -88,5 +92,8 @@
       "!src/serviceWorker.ts",
       "!src/react-app-env.d.ts"
     ]
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.27.38"
   }
 }
