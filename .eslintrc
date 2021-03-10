@@ -35,7 +35,7 @@
     "jsx-a11y/control-has-associated-label": "error",
     "styled-components-a11y/control-has-associated-label": "error",
     "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": ["error"],
+    "@typescript-eslint/no-use-before-define": "off",
     "react/prop-types": "off",
     "no-param-reassign": "off",
     "consistent-return": "off",

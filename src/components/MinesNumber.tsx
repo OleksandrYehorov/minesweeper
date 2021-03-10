@@ -22,5 +22,5 @@ const Number = styled.span<{ color: typeof numbersColors[number] }>`
 export const MinesNumber: FC<{ value: number }> = ({ value }) => {
   const color = numbersColors[value - 1];
 
-  return <Number color={color}>{value === 0 ? null : value}</Number>;
+  return value === 0 ? null : <Number color={color}>{value}</Number>;
 };

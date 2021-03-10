@@ -1,9 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { findAll } from 'styled-components/test-utils';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { App } from '../App';
-import { ClosedCell } from '../components/Cell';
 import { boardSizes, difficultyLevels } from '../utils/constants';
 
 beforeEach(() => render(<App />));
@@ -19,7 +15,8 @@ describe('difficulty level select', () => {
 
       const rows = screen.getAllByTestId('row');
       const height = rows.length;
-      const width = findAll(rows[0], ClosedCell).length;
+      const width = within(rows[0]).getAllByRole('button', { name: /cell/i })
+        .length;
       const boardSize = boardSizes[difficulty];
 
       expect(height).toBe(boardSize.height);

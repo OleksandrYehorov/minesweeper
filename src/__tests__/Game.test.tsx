@@ -1,24 +1,20 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { findAll } from 'styled-components/test-utils';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { App } from '../App';
-import { OpenCell } from '../components/Cell';
+import { getCellByCoords } from '../test-utils/getCell';
+import { minesMockData } from '../test-utils/minesMockData';
 
 beforeEach(() => render(<App />));
 
 describe('game', () => {
-  test('starts upon clicking cell', async () => {
-    const board = screen.getByTestId('board');
-    const cell = within(board).getAllByTestId(/cell11/i)[0];
-    const openCells = findAll(board, OpenCell);
+  test('starts upon clicking cell', () => {
+    let openCells = screen.queryAllByRole('button', { name: /open/i });
 
     expect(openCells.length).toBe(0);
 
-    fireEvent.click(cell);
+    fireEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
 
-    const openCells2 = findAll(board, OpenCell);
+    openCells = screen.queryAllByRole('button', { name: /open/i });
 
-    expect(openCells2.length).toBeGreaterThan(0);
+    expect(openCells.length).toBeGreaterThan(0);
   });
 });
