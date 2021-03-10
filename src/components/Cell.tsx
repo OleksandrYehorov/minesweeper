@@ -52,13 +52,13 @@ export const ClosedCell = styled(StyledCell)`
   }
 `;
 
-type Props = Coords;
+type CellProps = Coords;
 
 const CellIcon = styled.img`
   width: 80%;
 `;
 
-export const Cell: FC<Props> = memo(({ x, y }) => {
+export const Cell: FC<CellProps> = memo(({ x, y }) => {
   const gameStatus = useGameStore((state) => state.status);
   const cellData = useGameStore((state) => state.board[y][x]);
   const clickCell = useGameStore((state) => state.clickCell);
@@ -73,13 +73,10 @@ export const Cell: FC<Props> = memo(({ x, y }) => {
     detect: LongPressDetectEvents.TOUCH,
   });
 
-  const ariaLabel = `Cell ${x + 1} on row ${y + 1}`;
-
   return match([cellData, gameStatus] as const)
     .with([{ isOpen: true, isMine: true }, __], ([matchedData]) => (
       <OpenCell
-        data-testid={`cell${matchedData.id}`}
-        aria-label={ariaLabel}
+        aria-label={`open mine cell x${x} y${y}`}
         exploded={matchedData.isMine}
       >
         <CellIcon src={mineImage} alt="Mine" />
@@ -87,28 +84,26 @@ export const Cell: FC<Props> = memo(({ x, y }) => {
     ))
     .with([{ isOpen: true, isMine: false }, __], ([matchedData]) => (
       <OpenCell
-        data-testid={`cell${matchedData.id}`}
-        aria-label={ariaLabel}
+        aria-label={`open number cell x${x} y${y}`}
         onClick={handleClickNumberCell}
         exploded={matchedData.isMine}
       >
         <MinesNumber value={matchedData.adjacentMines} />
       </OpenCell>
     ))
-    .with([{ isMine: true, isFlagged: false }, 'lose'], ([matchedData]) => (
-      <OpenCell data-testid={`cell${matchedData.id}`} aria-label={ariaLabel}>
+    .with([{ isMine: true, isFlagged: false }, 'lose'], () => (
+      <OpenCell aria-label={`open mine cell x${x} y${y}`}>
         <CellIcon src={mineImage} alt="Mine" />
       </OpenCell>
     ))
-    .with([{ isMine: false, isFlagged: true }, 'lose'], ([matchedData]) => (
-      <OpenCell data-testid={`cell${matchedData.id}`} aria-label={ariaLabel}>
+    .with([{ isMine: false, isFlagged: true }, 'lose'], () => (
+      <OpenCell aria-label={`open crossed mine cell x${x} y${y}`}>
         <CellIcon src={crossedMineImage} alt="Crossed mine" />
       </OpenCell>
     ))
     .with([{ isFlagged: true }, __], ([matchedData]) => (
       <ClosedCell
-        data-testid={`cell${matchedData.id}`}
-        aria-label={ariaLabel}
+        aria-label={`closed flagged cell x${x} y${y}`}
         disabled={matchedData.isFlagged}
         onClick={handleClickCell}
         onContextMenu={preventDefault(handleFlagCell)}
@@ -120,8 +115,7 @@ export const Cell: FC<Props> = memo(({ x, y }) => {
     ))
     .otherwise(() => (
       <ClosedCell
-        data-testid={`cell${cellData.id}`}
-        aria-label={ariaLabel}
+        aria-label={`closed cell x${x} y${y}`}
         disabled={cellData.isFlagged}
         onClick={handleClickCell}
         onContextMenu={preventDefault(handleFlagCell)}

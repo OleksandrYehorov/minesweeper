@@ -21,9 +21,11 @@ const Container = styled.div`
 
 const Row = styled.div`
   display: flex;
+
   &:first-child ${OpenCell} {
     border-top-width: 0;
   }
+
   ${OpenCell}:first-child {
     border-left-width: 0;
   }
@@ -50,3 +52,22 @@ export const Board: FC = () => {
     </Container>
   );
 };
+
+// export const Board: FC = () => {
+//   const difficulty = useGameStore((state) => state.difficulty);
+//   const { width, height } = boardSizes[difficulty];
+
+//   return (
+//     <Container
+//       data-testid="board"
+//       onContextMenu={handleContextMenu}
+//       role="none"
+//     >
+//       {[...range({ to: height })].map((...[, y]) => {
+//         return [...range({ to: width })].map((...[, x]) => (
+//           <Cell key={`x${x}y${y} ${difficulty}`} x={x} y={y} />
+//         ));
+//       })}
+//     </Container>
+//   );
+// };

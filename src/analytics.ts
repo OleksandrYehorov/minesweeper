@@ -25,7 +25,7 @@ const logEvent = <T extends AnalyticsEventName>(
   eventName: T,
   eventParams: AnalyticsEvents[T]
 ): void => {
-  firebaseAnalytics.logEvent<AnalyticsEventName>(eventName, eventParams);
+  firebaseAnalytics?.logEvent<AnalyticsEventName>(eventName, eventParams);
 };
 
 export type LogEndGameParams = {

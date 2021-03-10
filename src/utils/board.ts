@@ -1,8 +1,9 @@
+import { minesMockData } from '../test-utils/minesMockData';
 import { Difficulty, boardSizes, Coords } from './constants';
 import { range } from './range';
 
 interface BaseCell {
-  readonly id: number;
+  readonly id: string;
   isOpen: boolean;
   isFlagged: boolean;
 }
@@ -22,11 +23,10 @@ export type GameBoard = GameCell[][];
 
 export const createBoard = (difficulty: Difficulty): GameBoard => {
   const { width, height } = boardSizes[difficulty];
-  let id = 0;
 
-  return [...range({ to: height })].map(() => {
-    return [...range({ to: width })].map<GameCell>(() => ({
-      id: id++,
+  return [...range({ to: height })].map((...[, y]) => {
+    return [...range({ to: width })].map<GameCell>((...[, x]) => ({
+      id: `cell x${x} y${y}`,
       isOpen: false,
       isFlagged: false,
       isMine: false,
@@ -36,10 +36,10 @@ export const createBoard = (difficulty: Difficulty): GameBoard => {
 };
 
 const getRandomInteger = ({ min = 0, max = Number.MAX_SAFE_INTEGER }) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
+  const minInteger = Math.ceil(min);
+  const maxInteger = Math.floor(max);
 
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.floor(Math.random() * (maxInteger - minInteger + 1)) + minInteger;
 };
 
 export const generateMines = (
@@ -51,8 +51,15 @@ export const generateMines = (
   let i = 0;
 
   while (i < mines) {
-    const x = getRandomInteger({ max: width - 1 });
-    const y = getRandomInteger({ max: height - 1 });
+    const x =
+      process.env.NODE_ENV === 'test'
+        ? minesMockData[difficulty].mines[i].x
+        : getRandomInteger({ max: width - 1 });
+    const y =
+      process.env.NODE_ENV === 'test'
+        ? minesMockData[difficulty].mines[i].y
+        : getRandomInteger({ max: height - 1 });
+
     const cell = board[y][x];
     const isStartCell = x === startCoords.x && y === startCoords.y;
     const skipCell = cell.isMine || isStartCell;

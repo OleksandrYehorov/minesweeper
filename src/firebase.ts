@@ -24,4 +24,5 @@ const firebaseConfig =
 
 firebase.initializeApp(firebaseConfig);
 
-export const firebaseAnalytics = firebase.analytics();
+export const firebaseAnalytics =
+  process.env.NODE_ENV === 'production' ? firebase.analytics() : null;
