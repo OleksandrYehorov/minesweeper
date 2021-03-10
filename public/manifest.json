@@ -1,6 +1,8 @@
 {
   "short_name": "Minesweeper",
   "name": "Minesweeper Game",
+  "scope": "/minesweeper",
+  "start_url": "/minesweeper?difficulty=beginner",
   "icons": [
     {
       "src": "./android-chrome-512x512.png",
