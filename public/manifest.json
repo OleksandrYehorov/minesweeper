@@ -28,17 +28,17 @@
     {
       "name": "Beginner",
       "description": "Play beginner level",
-      "url": "/minesweeper?difficulty=beginner"
+      "url": "/minesweeper/?difficulty=beginner"
     },
     {
       "name": "Intermediate",
       "description": "Play intermediate level",
-      "url": "/minesweeper?difficulty=intermediate"
+      "url": "/minesweeper/?difficulty=intermediate"
     },
     {
       "name": "Expert",
       "description": "Play expert level",
-      "url": "/minesweeper?difficulty=expert"
+      "url": "/minesweeper/?difficulty=expert"
     }
   ]
 }

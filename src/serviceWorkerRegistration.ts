@@ -22,7 +22,7 @@ const isLocalhost = Boolean(
 
 function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
-    .register(swUrl)
+    .register(swUrl, { scope: '/minesweeper/' })
     .then((registration) => {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
