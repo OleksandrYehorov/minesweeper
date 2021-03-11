@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { Analytics } from '../analytics';
+import { Analytics } from '../services/analytics';
 import {
   checkWin,
   countAdjacentMines,

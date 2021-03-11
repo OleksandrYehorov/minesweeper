@@ -1,7 +1,10 @@
 import { intervalToDuration, formatDuration } from 'date-fns';
-import { firebaseAnalytics } from './firebase';
-import { Difficulty } from './utils/constants';
-import { now } from './utils/now';
+import firebase from 'firebase';
+import { Difficulty } from '../utils/constants';
+import { now } from '../utils/now';
+
+const firebaseAnalytics =
+  process.env.NODE_ENV === 'production' ? firebase.analytics() : null;
 
 export type AnalyticsEvents = {
   start_game: {
