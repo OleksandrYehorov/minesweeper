@@ -1,9 +1,19 @@
 import { FC } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { shadow } from '../styles/shadow';
 import { Board } from './Board';
 import { DifficultySelect } from './DifficultySelect';
 import { Header } from './Header';
+
+export const Game: FC = () => {
+  return (
+    <Container>
+      <Header />
+      <Board />
+      <DifficultySelect />
+    </Container>
+  );
+};
 
 const Container = styled.div`
   ${shadow}
@@ -16,13 +26,3 @@ const Container = styled.div`
   max-width: 100%;
   max-height: 100%;
 `;
-
-export const Game: FC = () => {
-  return (
-    <Container>
-      <Header />
-      <Board />
-      <DifficultySelect />
-    </Container>
-  );
-};

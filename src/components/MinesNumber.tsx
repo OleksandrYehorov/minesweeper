@@ -12,15 +12,15 @@ const numbersColors = [
   '#808080',
 ] as const;
 
+export const MinesNumber: FC<{ value: number }> = ({ value }) => {
+  const color = numbersColors[value - 1];
+
+  return value === 0 ? null : <Number color={color}>{value}</Number>;
+};
+
 const Number = styled.span<{ color: typeof numbersColors[number] }>`
   color: ${({ color }) => color};
   font-family: 'Lato', sans-serif;
   font-weight: 900;
   font-size: 1.2rem;
 `;
-
-export const MinesNumber: FC<{ value: number }> = ({ value }) => {
-  const color = numbersColors[value - 1];
-
-  return value === 0 ? null : <Number color={color}>{value}</Number>;
-};

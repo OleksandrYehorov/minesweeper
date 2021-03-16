@@ -2,6 +2,22 @@ import { FC } from 'react';
 import styled, { css } from 'styled-components/macro';
 import { invertedShadow } from '../styles/shadow';
 
+type Props = {
+  value: number;
+  'aria-label'?: string;
+};
+
+export const Digits: FC<Props> = ({ value, 'aria-label': ariaLabel }) => {
+  const displayValue = Math.min(value, 999);
+
+  return (
+    <Container>
+      <GhostNumbers>888</GhostNumbers>
+      <Numbers aria-label={ariaLabel}>{displayValue}</Numbers>
+    </Container>
+  );
+};
+
 const Container = styled.div`
   ${invertedShadow}
   position: relative;
@@ -31,18 +47,3 @@ const GhostNumbers = styled.div`
   ${numbersStyles}
   opacity: 0.3;
 `;
-
-interface Props {
-  value: number;
-}
-
-export const Digits: FC<Props> = ({ value }) => {
-  const displayValue = Math.min(value, 999);
-
-  return (
-    <Container>
-      <GhostNumbers>888</GhostNumbers>
-      <Numbers>{displayValue}</Numbers>
-    </Container>
-  );
-};

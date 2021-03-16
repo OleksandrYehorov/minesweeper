@@ -15,5 +15,5 @@ export const MinesCounter: FC = () => {
   );
   const minesLeft = mines - flaggedCellsCount;
 
-  return <Digits value={minesLeft} />;
+  return <Digits value={minesLeft} aria-label="mines count" />;
 };

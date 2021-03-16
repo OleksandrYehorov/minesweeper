@@ -6,6 +6,24 @@ import { invertedShadow } from '../styles/shadow';
 import { preventDefault } from '../utils/preventDefault';
 import { Cell, OpenCell } from './Cell';
 
+const handleContextMenu = preventDefault();
+
+export const Board: FC = () => {
+  const board = useGameStore((state) => state.board);
+
+  return (
+    <Container onContextMenu={handleContextMenu} role="none">
+      {board.map((row, y) => (
+        <Row key={row[0].id} data-testid="row">
+          {row.map((cell, x) => (
+            <Cell key={cell.id} x={x} y={y} />
+          ))}
+        </Row>
+      ))}
+    </Container>
+  );
+};
+
 const Container = styled.div`
   ${invertedShadow}
   ${invisibleScrollbar}
@@ -30,28 +48,6 @@ const Row = styled.div`
     border-left-width: 0;
   }
 `;
-
-const handleContextMenu = preventDefault();
-
-export const Board: FC = () => {
-  const board = useGameStore((state) => state.board);
-
-  return (
-    <Container
-      data-testid="board"
-      onContextMenu={handleContextMenu}
-      role="none"
-    >
-      {board.map((row, y) => (
-        <Row key={row[0].id} data-testid="row">
-          {row.map((cell, x) => (
-            <Cell key={cell.id} x={x} y={y} />
-          ))}
-        </Row>
-      ))}
-    </Container>
-  );
-};
 
 // export const Board: FC = () => {
 //   const difficulty = useGameStore((state) => state.difficulty);

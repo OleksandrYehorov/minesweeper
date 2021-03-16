@@ -7,7 +7,7 @@ import {
   generateMines,
   openAdjacentCells,
   openCell,
-} from '../utils/board';
+} from '../services/board';
 import { Coords, Difficulty } from '../utils/constants';
 import { now } from '../utils/now';
 import { combineImmer } from './middlewares/combineImmer';
@@ -94,3 +94,5 @@ export const useGameStore = create(
     })
   )
 );
+
+export type GameState = ReturnType<typeof useGameStore.getState>;

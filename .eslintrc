@@ -40,7 +40,14 @@
     "no-param-reassign": "off",
     "consistent-return": "off",
     "no-plusplus": "off",
-    "import/no-unresolved": ["error", { "ignore": ["use-long-press"] }],
-    "react/react-in-jsx-scope": "off"
+    "no-restricted-imports": [
+      "error",
+      {
+        "name": "styled-components",
+        "message": "Please use 'styled-components/macro' instead."
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }
