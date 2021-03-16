@@ -32,5 +32,5 @@ export const Timer: FC = () => {
       .run();
   }, [gameStatus]);
 
-  return <Digits value={value} />;
+  return <Digits value={value} aria-label="timer" />;
 };

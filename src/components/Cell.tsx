@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 import { match, __ } from 'ts-pattern';
 import styled, { css } from 'styled-components/macro';
-import { useLongPress, LongPressDetectEvents } from 'use-long-press';
+import { useLongPress } from 'react-use';
 import { shadow } from '../styles/shadow';
 import { Coords } from '../utils/constants';
 import { MinesNumber } from './MinesNumber';
@@ -10,6 +10,71 @@ import crossedMineImage from '../images/crossedMine.svg';
 import flagImage from '../images/flag.svg';
 import { preventDefault } from '../utils/preventDefault';
 import { useGameStore } from '../store/store';
+
+type CellProps = Coords;
+
+export const Cell: FC<CellProps> = memo(({ x, y }) => {
+  const gameStatus = useGameStore((state) => state.status);
+  const cellData = useGameStore((state) => state.board[y][x]);
+  const clickCell = useGameStore((state) => state.clickCell);
+  const clickNumberCell = useGameStore((state) => state.clickNumberCell);
+  const flagCell = useGameStore((state) => state.flagCell);
+
+  const handleClickCell = () => clickCell({ x, y });
+  const handleClickNumberCell = () => clickNumberCell({ x, y });
+  const handleFlagCell = () => flagCell({ x, y });
+
+  const longPressProps = useLongPress(handleFlagCell);
+
+  return match([cellData, gameStatus] as const)
+    .with([{ isOpen: true, isMine: true }, __], ([matchedData]) => (
+      <OpenCell
+        aria-label={`open mine cell x${x} y${y}`}
+        exploded={matchedData.isMine}
+      >
+        <MineIcon />
+      </OpenCell>
+    ))
+    .with([{ isOpen: true, isMine: false }, __], ([matchedData]) => (
+      <OpenCell
+        aria-label={`open number cell x${x} y${y}`}
+        onClick={handleClickNumberCell}
+        exploded={matchedData.isMine}
+      >
+        <MinesNumber value={matchedData.adjacentMines} />
+      </OpenCell>
+    ))
+    .with([{ isMine: true, isFlagged: false }, 'lose'], () => (
+      <OpenCell aria-label={`open mine cell x${x} y${y}`}>
+        <MineIcon />
+      </OpenCell>
+    ))
+    .with([{ isMine: false, isFlagged: true }, 'lose'], () => (
+      <OpenCell aria-label={`open flagged cell x${x} y${y}`}>
+        <CrossedMineIcon />
+      </OpenCell>
+    ))
+    .with([{ isFlagged: true }, __], () => (
+      <ClosedCell
+        aria-label={`closed flagged cell x${x} y${y}`}
+        onContextMenu={preventDefault(handleFlagCell)}
+        isFlagged
+        {...longPressProps}
+      >
+        <FlagIcon />
+      </ClosedCell>
+    ))
+    .otherwise(() => (
+      <ClosedCell
+        aria-label={`closed cell x${x} y${y}`}
+        disabled={cellData.isFlagged}
+        isFlagged={false}
+        onClick={handleClickCell}
+        onContextMenu={preventDefault(handleFlagCell)}
+        {...longPressProps}
+      />
+    ));
+});
 
 const openCellStyle = css`
   border-color: grey;
@@ -44,83 +109,32 @@ export const OpenCell = styled(StyledCell)<{ exploded?: boolean }>`
   }
 `;
 
-export const ClosedCell = styled(StyledCell)`
-  ${shadow}
-
+const notFlaggedCellStyle = css`
   &:active:not(:disabled) {
     ${openCellStyle}
   }
 `;
 
-type CellProps = Coords;
+export const ClosedCell = styled(StyledCell)<{ isFlagged: boolean }>`
+  ${shadow}
 
-const CellIcon = styled.img`
-  width: 80%;
+  ${(props) => (props.isFlagged ? null : notFlaggedCellStyle)}
 `;
 
-export const Cell: FC<CellProps> = memo(({ x, y }) => {
-  const gameStatus = useGameStore((state) => state.status);
-  const cellData = useGameStore((state) => state.board[y][x]);
-  const clickCell = useGameStore((state) => state.clickCell);
-  const clickNumberCell = useGameStore((state) => state.clickNumberCell);
-  const flagCell = useGameStore((state) => state.flagCell);
+const FlagIcon = styled.img.attrs({ src: flagImage, alt: 'flag' })`
+  width: 18px;
+  height: 18px;
+`;
 
-  const handleClickCell = () => clickCell({ x, y });
-  const handleClickNumberCell = () => clickNumberCell({ x, y });
-  const handleFlagCell = () => flagCell({ x, y });
+const MineIcon = styled.img.attrs({ src: mineImage, alt: 'mine' })`
+  width: 21px;
+  height: 21px;
+`;
 
-  const longTouchProps = useLongPress(handleFlagCell, {
-    detect: LongPressDetectEvents.TOUCH,
-  });
-
-  return match([cellData, gameStatus] as const)
-    .with([{ isOpen: true, isMine: true }, __], ([matchedData]) => (
-      <OpenCell
-        aria-label={`open mine cell x${x} y${y}`}
-        exploded={matchedData.isMine}
-      >
-        <CellIcon src={mineImage} alt="Mine" />
-      </OpenCell>
-    ))
-    .with([{ isOpen: true, isMine: false }, __], ([matchedData]) => (
-      <OpenCell
-        aria-label={`open number cell x${x} y${y}`}
-        onClick={handleClickNumberCell}
-        exploded={matchedData.isMine}
-      >
-        <MinesNumber value={matchedData.adjacentMines} />
-      </OpenCell>
-    ))
-    .with([{ isMine: true, isFlagged: false }, 'lose'], () => (
-      <OpenCell aria-label={`open mine cell x${x} y${y}`}>
-        <CellIcon src={mineImage} alt="Mine" />
-      </OpenCell>
-    ))
-    .with([{ isMine: false, isFlagged: true }, 'lose'], () => (
-      <OpenCell aria-label={`open crossed mine cell x${x} y${y}`}>
-        <CellIcon src={crossedMineImage} alt="Crossed mine" />
-      </OpenCell>
-    ))
-    .with([{ isFlagged: true }, __], ([matchedData]) => (
-      <ClosedCell
-        aria-label={`closed flagged cell x${x} y${y}`}
-        disabled={matchedData.isFlagged}
-        onClick={handleClickCell}
-        onContextMenu={preventDefault(handleFlagCell)}
-        onTouchStart={longTouchProps.onTouchStart}
-        onTouchEnd={longTouchProps.onTouchEnd}
-      >
-        <CellIcon src={flagImage} alt="Flag" />
-      </ClosedCell>
-    ))
-    .otherwise(() => (
-      <ClosedCell
-        aria-label={`closed cell x${x} y${y}`}
-        disabled={cellData.isFlagged}
-        onClick={handleClickCell}
-        onContextMenu={preventDefault(handleFlagCell)}
-        onTouchStart={longTouchProps.onTouchStart}
-        onTouchEnd={longTouchProps.onTouchEnd}
-      />
-    ));
-});
+const CrossedMineIcon = styled.img.attrs({
+  src: crossedMineImage,
+  alt: 'crossed mine',
+})`
+  width: 21px;
+  height: 21px;
+`;

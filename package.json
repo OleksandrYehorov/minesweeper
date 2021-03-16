@@ -23,6 +23,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
+    "@testing-library/user-event": "^12.8.3",
     "@types/jest": "^26.0.20",
     "@types/node": "^12.19.15",
     "@types/react": "^16.14.2",
@@ -50,11 +51,11 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
+    "react-use": "^17.2.1",
     "source-map-explorer": "^2.5.2",
     "styled-components": "^5.2.0",
     "ts-pattern": "^2.2.2",
     "typescript": "^4.1.3",
-    "use-long-press": "^1.0.4",
     "web-vitals": "^0.2.4",
     "workbox-background-sync": "^5.1.4",
     "workbox-broadcast-update": "^5.1.4",
@@ -89,7 +90,9 @@
       "!src/serviceWorkerRegistration.ts",
       "!src/service-worker.ts",
       "!src/react-app-env.d.ts",
-      "!src/reportWebVitals.ts"
+      "!src/reportWebVitals.ts",
+      "!src/services/firebase.ts",
+      "!src/utils/getRandomInteger.ts"
     ]
   }
 }

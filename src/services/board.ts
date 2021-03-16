@@ -1,6 +1,7 @@
 import { minesMockData } from '../test-utils/minesMockData';
-import { Difficulty, boardSizes, Coords } from './constants';
-import { range } from './range';
+import { Difficulty, boardSizes, Coords } from '../utils/constants';
+import { getRandomInteger } from '../utils/getRandomInteger';
+import { range } from '../utils/range';
 
 interface BaseCell {
   readonly id: string;
@@ -35,13 +36,6 @@ export const createBoard = (difficulty: Difficulty): GameBoard => {
   });
 };
 
-const getRandomInteger = ({ min = 0, max = Number.MAX_SAFE_INTEGER }) => {
-  const minInteger = Math.ceil(min);
-  const maxInteger = Math.floor(max);
-
-  return Math.floor(Math.random() * (maxInteger - minInteger + 1)) + minInteger;
-};
-
 export const generateMines = (
   board: GameBoard,
   difficulty: Difficulty,
@@ -52,11 +46,11 @@ export const generateMines = (
 
   while (i < mines) {
     const x =
-      process.env.NODE_ENV === 'test'
+      process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development'
         ? minesMockData[difficulty].mines[i].x
         : getRandomInteger({ max: width - 1 });
     const y =
-      process.env.NODE_ENV === 'test'
+      process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development'
         ? minesMockData[difficulty].mines[i].y
         : getRandomInteger({ max: height - 1 });
 

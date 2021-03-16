@@ -5,6 +5,22 @@ import { MinesCounter } from './MinesCounter';
 import { StartGameButton } from './StartGameButton';
 import { Timer } from './Timer';
 
+export const Header: FC = () => {
+  return (
+    <Container>
+      <Left>
+        <MinesCounter />
+      </Left>
+      <Center>
+        <StartGameButton />
+      </Center>
+      <Right>
+        <Timer />
+      </Right>
+    </Container>
+  );
+};
+
 const Container = styled.header`
   ${invertedShadow}
   padding: 0.2rem;
@@ -31,19 +47,3 @@ const Right = styled.div`
   flex: 1;
   overflow: hidden;
 `;
-
-export const Header: FC = () => {
-  return (
-    <Container>
-      <Left>
-        <MinesCounter />
-      </Left>
-      <Center>
-        <StartGameButton />
-      </Center>
-      <Right>
-        <Timer />
-      </Right>
-    </Container>
-  );
-};

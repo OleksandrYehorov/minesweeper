@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { App } from '../App';
 import { boardSizes, difficultyLevels } from '../utils/constants';
 
@@ -6,12 +7,12 @@ beforeEach(() => render(<App />));
 
 describe('difficulty level select', () => {
   difficultyLevels.forEach((difficulty) => {
-    test(`${difficulty}`, async () => {
+    test(`${difficulty}`, () => {
       const button = screen.getByRole('button', {
         name: RegExp(`${difficulty}`, 'i'),
       });
 
-      fireEvent.click(button);
+      userEvent.click(button);
 
       const rows = screen.getAllByTestId('row');
       const height = rows.length;

@@ -9,23 +9,6 @@ interface ButtonProps {
   active?: boolean;
 }
 
-const Select = styled.div`
-  ${invertedShadow}
-  display: flex;
-  flex-direction: column;
-`;
-
-const Button = styled.button<ButtonProps>`
-  ${shadow}
-  opacity: ${({ active }) => (active ? 1 : 0.6)};
-  margin: 0;
-  padding: 0.2rem;
-  outline: none;
-  cursor: pointer;
-  text-transform: capitalize;
-  flex-grow: 1;
-`;
-
 export const DifficultySelect: FC = () => {
   const difficultyState = useGameStore((state) => state.difficulty);
   const initGame = useGameStore((state) => state.initGame);
@@ -60,3 +43,20 @@ export const DifficultySelect: FC = () => {
     </Select>
   );
 };
+
+const Select = styled.div`
+  ${invertedShadow}
+  display: flex;
+  flex-direction: column;
+`;
+
+const Button = styled.button<ButtonProps>`
+  ${shadow}
+  opacity: ${({ active }) => (active ? 1 : 0.6)};
+  margin: 0;
+  padding: 0.2rem;
+  outline: none;
+  cursor: pointer;
+  text-transform: capitalize;
+  flex-grow: 1;
+`;
