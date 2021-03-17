@@ -1,5 +1,6 @@
 import { intervalToDuration, formatDuration } from 'date-fns';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/analytics';
 import { Difficulty } from '../utils/constants';
 import { now } from '../utils/now';
 
