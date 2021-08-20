@@ -18,7 +18,8 @@
     "lint": "tsc --noEmit && eslint . --ext .ts,.tsx",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'"
+    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
+    "browserslist-update": "npx browserslist@latest --update-db"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
