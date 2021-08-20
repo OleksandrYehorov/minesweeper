@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../App';
 import { getCell, queryCell } from '../test-utils/cellQueries';
@@ -8,7 +8,7 @@ beforeEach(() => render(<App />));
 
 beforeEach(() => {
   userEvent.click(getCell(minesMockData.beginner.firstClick));
-  fireEvent.contextMenu(getCell({ x: 6, y: 2 }));
+  userEvent.click(getCell({ x: 6, y: 2 }), { button: 2 });
 });
 
 test('right click flags cell', () => {
@@ -16,7 +16,7 @@ test('right click flags cell', () => {
 });
 
 test('right click on flagged cell removes flag', () => {
-  fireEvent.contextMenu(getCell({ x: 6, y: 2 }));
+  userEvent.click(getCell({ x: 6, y: 2 }), { button: 2 });
 
   expect(queryCell({ x: 6, y: 2, isFlagged: true })).not.toBeInTheDocument();
 });

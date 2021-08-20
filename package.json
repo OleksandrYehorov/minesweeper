@@ -18,12 +18,13 @@
     "lint": "tsc --noEmit && eslint . --ext .ts,.tsx",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'"
+    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
+    "browserslist-update": "npx browserslist@latest --update-db"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
-    "@testing-library/user-event": "^12.8.3",
+    "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^26.0.20",
     "@types/node": "^12.19.15",
     "@types/react": "^16.14.2",
@@ -43,6 +44,7 @@
     "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-react-hooks": "^4.1.2",
     "eslint-plugin-styled-components-a11y": "^0.0.32",
+    "eslint-plugin-testing-library": "^3.10.1",
     "firebase": "^8.2.9",
     "gh-pages": "^3.1.0",
     "immer": "^8.0.1",
@@ -51,7 +53,6 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
-    "react-use": "^17.2.1",
     "source-map-explorer": "^2.5.2",
     "styled-components": "^5.2.0",
     "ts-pattern": "^2.2.2",
