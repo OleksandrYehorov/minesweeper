@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../App';
 import { getAllCells, getCell, queryCell } from '../test-utils/cellQueries';
@@ -11,11 +11,11 @@ beforeEach(() => {
 
   // flag all mines
   minesMockData.beginner.mines.forEach((coords) => {
-    fireEvent.contextMenu(getCell(coords));
+    userEvent.click(getCell(coords), { button: 2 });
   });
 
   // click all cells
-  getAllCells().forEach(fireEvent.click);
+  getAllCells().forEach((cell) => userEvent.click(cell));
 });
 
 test('game is won by opening all non mine cells', () => {
@@ -26,7 +26,7 @@ test('game is won by opening all non mine cells', () => {
 
 test('cells can not be unflagged after win', () => {
   const flaggedCellCoords = minesMockData.beginner.mines[0];
-  fireEvent.contextMenu(getCell(flaggedCellCoords));
+  userEvent.click(getCell(flaggedCellCoords), { button: 2 });
 
   expect(
     queryCell({ ...flaggedCellCoords, isFlagged: true })

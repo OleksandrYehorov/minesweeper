@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../App';
 import { getCell } from '../test-utils/cellQueries';
@@ -15,8 +15,8 @@ describe('mines counter', () => {
   test('shows remaining mines', () => {
     expect(screen.getByLabelText(/mines count/i)).toHaveTextContent('10');
 
-    fireEvent.contextMenu(getCell({ x: 0, y: 0 }));
-    fireEvent.contextMenu(getCell({ x: 1, y: 0 }));
+    userEvent.click(getCell({ x: 0, y: 0 }), { button: 2 });
+    userEvent.click(getCell({ x: 1, y: 0 }), { button: 2 });
 
     expect(screen.getByLabelText(/mines count/i)).toHaveTextContent('8');
   });
@@ -40,7 +40,7 @@ describe('mines counter', () => {
     ];
 
     coords.forEach(({ x, y }) => {
-      fireEvent.contextMenu(getCell({ x, y }));
+      userEvent.click(getCell({ x, y }), { button: 2 });
     });
 
     expect(screen.getByLabelText(/mines count/i)).toHaveTextContent('-2');

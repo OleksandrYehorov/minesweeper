@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../App';
 import { getCell, queryAllCells, queryCell } from '../test-utils/cellQueries';
@@ -17,7 +17,7 @@ test('game is lost by opening a mine cell', () => {
 });
 
 test('upon lose flagged cells without mines are marked as crossed mines', () => {
-  fireEvent.contextMenu(getCell({ x: 0, y: 0 }));
+  userEvent.click(getCell({ x: 0, y: 0 }), { button: 2 });
   userEvent.click(getCell(minesMockData.beginner.mines[0]));
 
   expect(
@@ -26,8 +26,8 @@ test('upon lose flagged cells without mines are marked as crossed mines', () => 
 });
 
 test('upon lose all not flagged mines are revealed', () => {
-  fireEvent.contextMenu(getCell(minesMockData.beginner.mines[0]));
-  fireEvent.contextMenu(getCell(minesMockData.beginner.mines[1]));
+  userEvent.click(getCell(minesMockData.beginner.mines[0]), { button: 2 });
+  userEvent.click(getCell(minesMockData.beginner.mines[1]), { button: 2 });
   userEvent.click(getCell(minesMockData.beginner.mines[2]));
 
   expect(queryAllCells({ isFlagged: true }).length).toEqual(2);
@@ -37,14 +37,14 @@ test('upon lose all not flagged mines are revealed', () => {
 });
 
 test('upon lose cells can not be clicked, flagged and unflagged', () => {
-  fireEvent.contextMenu(getCell({ x: 0, y: 0 }));
+  userEvent.click(getCell({ x: 0, y: 0 }), { button: 2 });
   userEvent.click(getCell(minesMockData.beginner.mines[0]));
 
   // try to unflag flagged cell
-  fireEvent.contextMenu(getCell({ x: 0, y: 0 }));
+  userEvent.click(getCell({ x: 0, y: 0 }), { button: 2 });
 
   // try to flag cell
-  fireEvent.contextMenu(getCell({ x: 1, y: 0 }));
+  userEvent.click(getCell({ x: 1, y: 0 }), { button: 2 });
 
   // try to open cell
   userEvent.click(getCell({ x: 2, y: 0 }));
