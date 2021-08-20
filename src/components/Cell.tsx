@@ -1,7 +1,6 @@
 import { FC, memo } from 'react';
 import { match, __ } from 'ts-pattern';
 import styled, { css } from 'styled-components/macro';
-import { useLongPress } from 'react-use';
 import { shadow } from '../styles/shadow';
 import { Coords } from '../utils/constants';
 import { MinesNumber } from './MinesNumber';
@@ -10,6 +9,7 @@ import crossedMineImage from '../images/crossedMine.svg';
 import flagImage from '../images/flag.svg';
 import { preventDefault } from '../utils/preventDefault';
 import { useGameStore } from '../store/store';
+import { useLongPress } from '../utils/useLongPress';
 
 type CellProps = Coords;
 
@@ -24,7 +24,13 @@ export const Cell: FC<CellProps> = memo(({ x, y }) => {
   const handleClickNumberCell = () => clickNumberCell({ x, y });
   const handleFlagCell = () => flagCell({ x, y });
 
-  const longPressProps = useLongPress(handleFlagCell);
+  const flaggedCellLongPressProps = useLongPress({
+    onLongPress: handleFlagCell,
+  });
+  const closedCellLongPressProps = useLongPress({
+    onLongPress: handleFlagCell,
+    onClick: handleClickCell,
+  });
 
   return match([cellData, gameStatus] as const)
     .with([{ isOpen: true, isMine: true }, __], ([matchedData]) => (
@@ -59,7 +65,7 @@ export const Cell: FC<CellProps> = memo(({ x, y }) => {
         aria-label={`closed flagged cell x${x} y${y}`}
         onContextMenu={preventDefault(handleFlagCell)}
         isFlagged
-        {...longPressProps}
+        {...flaggedCellLongPressProps}
       >
         <FlagIcon />
       </ClosedCell>
@@ -69,9 +75,8 @@ export const Cell: FC<CellProps> = memo(({ x, y }) => {
         aria-label={`closed cell x${x} y${y}`}
         disabled={cellData.isFlagged}
         isFlagged={false}
-        onClick={handleClickCell}
         onContextMenu={preventDefault(handleFlagCell)}
-        {...longPressProps}
+        {...closedCellLongPressProps}
       />
     ));
 });
