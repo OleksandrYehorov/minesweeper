@@ -10,13 +10,14 @@ const handleContextMenu = preventDefault();
 
 export const Board: FC = () => {
   const board = useGameStore((state) => state.board);
+  const gameStatus = useGameStore((state) => state.status);
 
   return (
     <Container onContextMenu={handleContextMenu} role="none">
       {board.map((row, y) => (
         <Row key={row[0].id} data-testid="row">
           {row.map((cell, x) => (
-            <Cell key={cell.id} x={x} y={y} />
+            <Cell key={cell.id} x={x} y={y} gameStatus={gameStatus} />
           ))}
         </Row>
       ))}

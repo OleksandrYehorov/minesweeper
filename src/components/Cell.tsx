@@ -8,13 +8,14 @@ import mineImage from '../images/mine.svg';
 import crossedMineImage from '../images/crossedMine.svg';
 import flagImage from '../images/flag.svg';
 import { preventDefault } from '../utils/preventDefault';
-import { useGameStore } from '../store/store';
+import { GameStatus, useGameStore } from '../store/store';
 import { useLongPress } from '../utils/useLongPress';
 
-type CellProps = Coords;
+type CellProps = Coords & {
+  gameStatus: GameStatus;
+};
 
-export const Cell: FC<CellProps> = memo(({ x, y }) => {
-  const gameStatus = useGameStore((state) => state.status);
+export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
   const cellData = useGameStore((state) => state.board[y][x]);
   const clickCell = useGameStore((state) => state.clickCell);
   const clickNumberCell = useGameStore((state) => state.clickNumberCell);
