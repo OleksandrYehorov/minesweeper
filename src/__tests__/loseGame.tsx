@@ -21,7 +21,7 @@ test('upon lose flagged cells without mines are marked as crossed mines', () => 
   userEvent.click(getCell(minesMockData.beginner.mines[0]));
 
   expect(
-    queryCell({ x: 0, y: 0, isOpen: true, isFlagged: true })
+    queryCell({ x: 0, y: 0, isOpen: true, isFlagged: true }),
   ).toBeInTheDocument();
 });
 
@@ -32,7 +32,7 @@ test('upon lose all not flagged mines are revealed', () => {
 
   expect(queryAllCells({ isFlagged: true }).length).toEqual(2);
   expect(
-    queryAllCells({ isMine: true, isOpen: true, isFlagged: false }).length
+    queryAllCells({ isMine: true, isOpen: true, isFlagged: false }).length,
   ).toEqual(8);
 });
 

@@ -20,7 +20,7 @@ beforeEach(() => {
 
 test('game is won by opening all non mine cells', () => {
   expect(
-    screen.getByRole('img', { name: /smiling face with sunglasses/i })
+    screen.getByRole('img', { name: /smiling face with sunglasses/i }),
   ).toBeInTheDocument();
 });
 
@@ -29,6 +29,6 @@ test('cells can not be unflagged after win', () => {
   userEvent.click(getCell(flaggedCellCoords), { button: 2 });
 
   expect(
-    queryCell({ ...flaggedCellCoords, isFlagged: true })
+    queryCell({ ...flaggedCellCoords, isFlagged: true }),
   ).toBeInTheDocument();
 });

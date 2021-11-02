@@ -46,7 +46,7 @@ export type AnalyticsEventName = keyof AnalyticsEvents;
 
 const logEvent = <T extends AnalyticsEventName>(
   eventName: T,
-  eventParams: AnalyticsEvents[T]
+  eventParams: AnalyticsEvents[T],
 ): void => {
   firebaseAnalytics?.logEvent<AnalyticsEventName>(eventName, eventParams);
 };

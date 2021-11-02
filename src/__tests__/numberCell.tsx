@@ -24,7 +24,7 @@ describe('number cell', () => {
     userEvent.click(getCell({ x: 3, y: 3 }));
 
     expect(
-      getCell({ x: 4, y: 2, isOpen: true, isMine: true })
+      getCell({ x: 4, y: 2, isOpen: true, isMine: true }),
     ).toBeInTheDocument();
   });
 

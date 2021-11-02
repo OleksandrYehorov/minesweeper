@@ -8,7 +8,7 @@ export type CellMatchData = Partial<
 >;
 
 export const createCellMatcher = (
-  cellMatchData: CellMatchData
+  cellMatchData: CellMatchData,
 ): NameMatcher => {
   const { isFlagged, isMine, isOpen, x, y } = cellMatchData;
   const matchers: [RegExp, boolean][] = [[/cell/i, true]];

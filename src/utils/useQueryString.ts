@@ -8,7 +8,7 @@ const setQueryStringWithoutPageReload = (qsValue: string) => {
 };
 
 const getQueryStringValue = (
-  key: string
+  key: string,
 ): ParsedQuery<string | boolean | number>[typeof key] => {
   const values = parse(window.location.search, {
     parseBooleans: true,
@@ -27,7 +27,7 @@ const setQueryStringValue = <T>(key: string, value: T) => {
 
 export const useQueryString = <T extends Stringifiable>(
   key: string,
-  initialValue: T
+  initialValue: T,
 ): readonly [T, (newValue: T) => void] => {
   const [value, setValue] = useState(getQueryStringValue(key) ?? initialValue);
 
@@ -36,7 +36,7 @@ export const useQueryString = <T extends Stringifiable>(
       setValue(newValue);
       setQueryStringValue(key, newValue);
     },
-    [key]
+    [key],
   );
 
   return [value as T, onSetValue];

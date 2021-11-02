@@ -27,6 +27,7 @@ export const useLongPress = ({
   delay = 300,
 }: Config): UseLongPressProps => {
   const [longPressTriggered, setLongPressTriggered] = useState(false);
+
   const timeout = useRef<ReturnType<typeof setTimeout>>();
   const target = useRef<EventTarget>();
 
@@ -44,7 +45,7 @@ export const useLongPress = ({
         setLongPressTriggered(true);
       }, delay);
     },
-    [onLongPress, delay, shouldPreventDefault]
+    [onLongPress, delay, shouldPreventDefault],
   );
 
   const clear = useCallback(
@@ -65,11 +66,11 @@ export const useLongPress = ({
 
       if (shouldPreventDefault && target.current) {
         target.current.removeEventListener('touchend', (e) =>
-          preventDefault(e as TouchEvent)
+          preventDefault(e as TouchEvent),
         );
       }
     },
-    [shouldPreventDefault, onClick, longPressTriggered]
+    [shouldPreventDefault, onClick, longPressTriggered],
   );
 
   return {

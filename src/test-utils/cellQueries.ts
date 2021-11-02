@@ -14,7 +14,7 @@ export const queryCell = (cellMatchData: CellMatchData): HTMLElement | null => {
 };
 
 export const getAllCells = (
-  cellMatchData: CellMatchData = {}
+  cellMatchData: CellMatchData = {},
 ): HTMLElement[] => {
   return screen.getAllByRole('button', {
     name: createCellMatcher(cellMatchData),
@@ -22,7 +22,7 @@ export const getAllCells = (
 };
 
 export const queryAllCells = (
-  cellMatchData: CellMatchData = {}
+  cellMatchData: CellMatchData = {},
 ): HTMLElement[] => {
   return screen.queryAllByRole('button', {
     name: createCellMatcher(cellMatchData),
