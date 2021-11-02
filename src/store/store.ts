@@ -91,8 +91,8 @@ export const useGameStore = create(
           }
         });
       },
-    })
-  )
+    }),
+  ),
 );
 
 export type GameState = ReturnType<typeof useGameStore.getState>;

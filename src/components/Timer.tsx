@@ -11,18 +11,13 @@ export const Timer: FC = () => {
     let interval: number | undefined;
 
     return match(gameStatus)
-      .with(
-        'playing',
-        (): ReturnType<EffectCallback> => {
-          interval = window.setInterval(() => {
-            setValue((stateValue) => stateValue + 1);
-          }, 1000);
+      .with('playing', (): ReturnType<EffectCallback> => {
+        interval = window.setInterval(() => {
+          setValue((stateValue) => stateValue + 1);
+        }, 1000);
 
-          return () => {
-            window.clearInterval(interval);
-          };
-        }
-      )
+        return () => window.clearInterval(interval);
+      })
       .with('lose', 'win', () => {
         window.clearInterval(interval);
       })

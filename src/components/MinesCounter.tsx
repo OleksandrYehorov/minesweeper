@@ -11,7 +11,7 @@ export const MinesCounter: FC = () => {
     (res, row) =>
       res +
       row.reduce((rowRes, cell) => (cell.isFlagged ? rowRes + 1 : rowRes), 0),
-    0
+    0,
   );
   const minesLeft = mines - flaggedCellsCount;
 

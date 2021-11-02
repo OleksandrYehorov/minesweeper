@@ -14,7 +14,7 @@ export const DifficultySelect: FC = () => {
   const initGame = useGameStore((state) => state.initGame);
   const [difficultyQuery, setDifficultyQuery] = useQueryString<Difficulty>(
     'difficulty',
-    'beginner'
+    'beginner',
   );
 
   const handleClick = useCallback(
@@ -22,7 +22,7 @@ export const DifficultySelect: FC = () => {
       initGame(difficulty);
       setDifficultyQuery(difficulty);
     },
-    [initGame, setDifficultyQuery]
+    [initGame, setDifficultyQuery],
   );
 
   useEffect(() => {

@@ -1,19 +1,15 @@
 {
   "extends": [
-    "airbnb-typescript",
-    "airbnb/hooks",
     "plugin:@typescript-eslint/recommended",
     "plugin:jest/recommended",
     "plugin:testing-library/react",
     "prettier",
-    "prettier/react",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended",
     "plugin:styled-components-a11y/strict"
   ],
   "plugins": [
     "react",
     "@typescript-eslint",
+    "prettier",
     "jest",
     "styled-components-a11y",
     "testing-library"
@@ -55,6 +51,9 @@
       }
     ],
     "react/react-in-jsx-scope": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "no-restricted-syntax": "off",
+    "@typescript-eslint/no-this-alias": "off",
+    "react/require-default-props": "off"
   }
 }

@@ -16,8 +16,9 @@ describe('difficulty level select', () => {
 
       const rows = screen.getAllByTestId('row');
       const height = rows.length;
-      const width = within(rows[0]).getAllByRole('button', { name: /cell/i })
-        .length;
+      const width = within(rows[0]).getAllByRole('button', {
+        name: /cell/i,
+      }).length;
       const boardSize = boardSizes[difficulty];
 
       expect(height).toBe(boardSize.height);

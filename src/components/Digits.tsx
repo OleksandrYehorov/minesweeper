@@ -8,12 +8,13 @@ type Props = {
 };
 
 export const Digits: FC<Props> = ({ value, 'aria-label': ariaLabel }) => {
-  const displayValue = Math.min(value, 999);
+  const width = Math.max(3, String(value).length);
+  const ghostNumbers = '8'.repeat(width);
 
   return (
     <Container>
-      <GhostNumbers>888</GhostNumbers>
-      <Numbers aria-label={ariaLabel}>{displayValue}</Numbers>
+      <GhostNumbers>{ghostNumbers}</GhostNumbers>
+      <Numbers aria-label={ariaLabel}>{value}</Numbers>
     </Container>
   );
 };
