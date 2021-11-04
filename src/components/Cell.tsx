@@ -71,6 +71,12 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
         <FlagIcon />
       </ClosedCell>
     ))
+    .with([{ isOpen: false }, 'win'], () => (
+      // TODO: write tests
+      <ClosedCell aria-label={`closed flagged cell x${x} y${y}`} isFlagged>
+        <FlagIcon />
+      </ClosedCell>
+    ))
     .otherwise(() => (
       <ClosedCell
         aria-label={`closed cell x${x} y${y}`}
