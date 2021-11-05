@@ -36,31 +36,35 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
 
   return match([cellData, gameStatus] as const)
     .with(['ExplodedMine', __], () => (
-      <OpenCell aria-label={`open mine cell x${x} y${y}`} exploded>
+      <OpenCell aria-label={`Exploded mine`} exploded>
         <MineIcon />
       </OpenCell>
     ))
     .with([when(isNumberCell), __], ([matchedData]) => (
       <OpenCell
-        aria-label={`open number cell x${x} y${y}`}
+        aria-label={
+          matchedData === 0
+            ? `Open cell`
+            : `Open cell with ${matchedData} adjacent cells`
+        }
         onClick={handleClickNumberCell}
       >
         <MinesNumber value={matchedData} />
       </OpenCell>
     ))
     .with(['Mine', 'lose'], () => (
-      <OpenCell aria-label={`open mine cell x${x} y${y}`}>
+      <OpenCell aria-label={`Revealed mine`}>
         <MineIcon />
       </OpenCell>
     ))
     .with(['FlaggedEmpty', 'lose'], () => (
-      <OpenCell aria-label={`open flagged cell x${x} y${y}`}>
+      <OpenCell aria-label={`Flagged cell with no mine`}>
         <CrossedMineIcon />
       </OpenCell>
     ))
     .with([when(isFlagged), __], () => (
       <ClosedCell
-        aria-label={`closed flagged cell x${x} y${y}`}
+        aria-label={`Flagged cell`}
         onContextMenu={preventDefault(handleFlagCell)}
         isFlagged
         {...flaggedCellLongPressProps}
@@ -70,7 +74,7 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
     ))
     .otherwise(() => (
       <ClosedCell
-        aria-label={`closed cell x${x} y${y}`}
+        aria-label={`Unrevealed cell`}
         disabled={isFlagged(cellData)}
         isFlagged={false}
         onContextMenu={preventDefault(handleFlagCell)}
@@ -87,7 +91,7 @@ const openCellStyle = css`
   border-left-width: 1px;
 `;
 
-export const StyledCell = styled.button`
+export const StyledCell = styled.button.attrs({ 'data-testid': 'cell' })`
   box-sizing: border-box;
   width: 28px;
   height: 28px;
@@ -99,7 +103,9 @@ export const StyledCell = styled.button`
   background: none;
 `;
 
-export const OpenCell = styled(StyledCell)<{ exploded?: boolean }>`
+export const OpenCell = styled(StyledCell).attrs({
+  'data-open': true,
+})<{ exploded?: boolean }>`
   ${openCellStyle}
   ${({ exploded = false }) =>
     exploded &&
@@ -118,7 +124,9 @@ const notFlaggedCellStyle = css`
   }
 `;
 
-export const ClosedCell = styled(StyledCell)<{ isFlagged: boolean }>`
+export const ClosedCell = styled(StyledCell).attrs({
+  'data-open': false,
+})<{ isFlagged: boolean }>`
   ${shadow}
 
   ${(props) => (props.isFlagged ? null : notFlaggedCellStyle)}
