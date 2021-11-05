@@ -1,5 +1,5 @@
 import { FC, memo } from 'react';
-import { match, __ } from 'ts-pattern';
+import { match, when, __ } from 'ts-pattern';
 import styled, { css } from 'styled-components/macro';
 import { shadow } from '../styles/shadow';
 import { Coords } from '../utils/constants';
@@ -10,6 +10,7 @@ import flagImage from '../images/flag.svg';
 import { preventDefault } from '../utils/preventDefault';
 import { GameStatus, useGameStore } from '../store/store';
 import { useLongPress } from '../utils/useLongPress';
+import { isFlagged, isNumberCell } from '../services/cell';
 
 type CellProps = Coords & {
   gameStatus: GameStatus;
@@ -34,34 +35,30 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
   });
 
   return match([cellData, gameStatus] as const)
-    .with([{ isOpen: true, isMine: true }, __], ([matchedData]) => (
-      <OpenCell
-        aria-label={`open mine cell x${x} y${y}`}
-        exploded={matchedData.isMine}
-      >
+    .with(['ExplodedMine', __], () => (
+      <OpenCell aria-label={`open mine cell x${x} y${y}`} exploded>
         <MineIcon />
       </OpenCell>
     ))
-    .with([{ isOpen: true, isMine: false }, __], ([matchedData]) => (
+    .with([when(isNumberCell), __], ([matchedData]) => (
       <OpenCell
         aria-label={`open number cell x${x} y${y}`}
         onClick={handleClickNumberCell}
-        exploded={matchedData.isMine}
       >
-        <MinesNumber value={matchedData.adjacentMines} />
+        <MinesNumber value={matchedData} />
       </OpenCell>
     ))
-    .with([{ isMine: true, isFlagged: false }, 'lose'], () => (
+    .with(['Mine', 'lose'], () => (
       <OpenCell aria-label={`open mine cell x${x} y${y}`}>
         <MineIcon />
       </OpenCell>
     ))
-    .with([{ isMine: false, isFlagged: true }, 'lose'], () => (
+    .with(['FlaggedEmpty', 'lose'], () => (
       <OpenCell aria-label={`open flagged cell x${x} y${y}`}>
         <CrossedMineIcon />
       </OpenCell>
     ))
-    .with([{ isFlagged: true }, __], () => (
+    .with([when(isFlagged), __], () => (
       <ClosedCell
         aria-label={`closed flagged cell x${x} y${y}`}
         onContextMenu={preventDefault(handleFlagCell)}
@@ -71,16 +68,10 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
         <FlagIcon />
       </ClosedCell>
     ))
-    .with([{ isOpen: false }, 'win'], () => (
-      // TODO: write tests
-      <ClosedCell aria-label={`closed flagged cell x${x} y${y}`} isFlagged>
-        <FlagIcon />
-      </ClosedCell>
-    ))
     .otherwise(() => (
       <ClosedCell
         aria-label={`closed cell x${x} y${y}`}
-        disabled={cellData.isFlagged}
+        disabled={isFlagged(cellData)}
         isFlagged={false}
         onContextMenu={preventDefault(handleFlagCell)}
         {...closedCellLongPressProps}
@@ -110,7 +101,7 @@ export const StyledCell = styled.button`
 
 export const OpenCell = styled(StyledCell)<{ exploded?: boolean }>`
   ${openCellStyle}
-  ${({ exploded }) =>
+  ${({ exploded = false }) =>
     exploded &&
     css`
       background-color: red;

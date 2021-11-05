@@ -15,10 +15,18 @@ beforeEach(() => {
   });
 
   // click all cells
-  getAllCells().forEach((cell) => userEvent.click(cell));
+  getAllCells().forEach((cell) => {
+    userEvent.click(cell);
+  });
 });
 
-test('game is won by opening all non mine cells', () => {
+test.only('game is won by opening all non mine cells', () => {
+  for (let y = 0; y < 9; y++) {
+    for (let x = 0; x < 9; x++) {
+      console.log(getCell({ x, y }).getAttribute('aria-label'));
+    }
+  }
+
   expect(
     screen.getByRole('img', { name: /smiling face with sunglasses/i }),
   ).toBeInTheDocument();

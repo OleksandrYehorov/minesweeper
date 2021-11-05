@@ -1,11 +1,15 @@
-import { GameCell } from '../services/board';
-import { Coords } from '../utils/constants';
-
 export type NameMatcher = (accessibleName: string) => boolean;
 
-export type CellMatchData = Partial<
-  Pick<GameCell, 'isFlagged' | 'isMine' | 'isOpen'> & Coords
->;
+// export type CellMatchData = Partial<
+//   Pick<GameCell, 'isFlagged' | 'isMine' | 'isOpen'> & Coords
+// >;
+export type CellMatchData = {
+  isFlagged?: boolean;
+  isMine?: boolean;
+  isOpen?: boolean;
+  x?: number;
+  y?: number;
+};
 
 export const createCellMatcher = (
   cellMatchData: CellMatchData,
