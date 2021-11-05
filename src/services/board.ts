@@ -1,38 +1,16 @@
 import { minesMockData } from '../test-utils/minesMockData';
 import { Difficulty, boardSizes, Coords } from '../utils/constants';
 import { getRandomInteger } from '../utils/getRandomInteger';
-
-interface BaseCell {
-  readonly id: string;
-  isOpen: boolean;
-  isFlagged: boolean;
-}
-
-interface MineCell extends BaseCell {
-  isMine: true;
-}
-
-interface NumberCell extends BaseCell {
-  isMine: false;
-  adjacentMines: number;
-}
-
-export type GameCell = MineCell | NumberCell;
+import { GameCell, isClosed, isFlagged, isMine, isNumberCell } from './cell';
 
 export type GameBoard = GameCell[][];
 
 export const createBoard = (difficulty: Difficulty): GameBoard => {
   const { width, height } = boardSizes[difficulty];
 
-  return Array.from({ length: height }).map((...[, y]) => {
-    return Array.from({ length: width }).map<GameCell>((...[, x]) => ({
-      id: `cell x${x} y${y}`,
-      isOpen: false,
-      isFlagged: false,
-      isMine: false,
-      adjacentMines: 0,
-    }));
-  });
+  return Array.from({ length: height }, () =>
+    Array.from({ length: width }, () => 'Empty'),
+  );
 };
 
 export const generateMines = (
@@ -41,8 +19,8 @@ export const generateMines = (
   startCoords: Coords,
 ): void => {
   const { width, height, mines } = boardSizes[difficulty];
-  let i = 0;
 
+  let i = 0;
   while (i < mines) {
     const x =
       process.env.NODE_ENV === 'test'
@@ -54,128 +32,113 @@ export const generateMines = (
         : getRandomInteger({ max: height - 1 });
 
     const isStartCell = x === startCoords.x && y === startCoords.y;
-    const skipCell = board[y][x].isMine || isStartCell;
+    const skipCell = isMine(board[y][x]) || isStartCell;
 
     if (!skipCell) {
-      board[y][x].isMine = true;
+      board[y][x] = 'Mine';
       i++;
     }
   }
 };
 
-export const getAdjacentCoords = (
-  board: GameBoard,
-  { x, y }: Coords,
-): Coords[] => {
-  return [
-    { x: x - 1, y: y - 1 }, // top left
-    { x, y: y - 1 }, // top
-    { x: x + 1, y: y - 1 }, // top right
-    { x: x - 1, y }, // left
-    { x: x + 1, y }, // right
-    { x: x - 1, y: y + 1 }, // bottom left
-    { x, y: y + 1 }, // bottom
-    { x: x + 1, y: y + 1 }, // bottom right
-  ].filter((coords) => board[coords.y]?.[coords.x] != null);
-};
+export const getAdjacentCoords =
+  (board: GameBoard) =>
+  ({ x, y }: Coords): Coords[] =>
+    [
+      { x: x - 1, y: y - 1 }, // top left
+      { x, y: y - 1 }, // top
+      { x: x + 1, y: y - 1 }, // top right
+      { x: x - 1, y }, // left
+      { x: x + 1, y }, // right
+      { x: x - 1, y: y + 1 }, // bottom left
+      { x, y: y + 1 }, // bottom
+      { x: x + 1, y: y + 1 }, // bottom right
+    ].filter((coords) => board[coords.y]?.[coords.x] != null);
 
-export const getAdjacentCells = (
-  board: GameBoard,
-  coords: Coords,
-): GameCell[] => {
-  const adjacentCellsCoordinates = getAdjacentCoords(board, coords);
+export const getAdjacentCells =
+  (board: GameBoard) =>
+  (coords: Coords): GameCell[] =>
+    getAdjacentCoords(board)(coords).map(({ x, y }) => board[y][x]);
 
-  return adjacentCellsCoordinates.map(({ x, y }) => board[y][x]);
-};
+export const countAdjacentMines =
+  (board: GameBoard) =>
+  ({ x, y }: Coords): number =>
+    getAdjacentCells(board)({ x, y }).filter(isMine).length;
 
-export const countAdjacentMines = (board: GameBoard): void => {
-  board.forEach((row, y) => {
-    row.forEach((cell, x) => {
-      if (cell.isMine) return;
+export const openCell =
+  (board: GameBoard) =>
+  (coords: Coords): boolean => {
+    const cell = board[coords.y][coords.x];
 
-      const adjacentMines = getAdjacentCells(board, { x, y }).filter(
-        ({ isMine }) => isMine,
-      ).length;
+    if (isMine(cell)) {
+      board[coords.y][coords.x] = 'ExplodedMine';
+      return false;
+    }
 
-      cell.adjacentMines = adjacentMines;
-    });
-  });
-};
+    const cellsToVisit = [coords];
 
-export const openCell = (board: GameBoard, coords: Coords): boolean => {
-  const cell = board[coords.y][coords.x];
-  cell.isOpen = true;
+    while (cellsToVisit.length > 0) {
+      const { x, y } = cellsToVisit.shift() as Coords;
 
-  if (cell.isMine) return false;
+      const adjacentMines = countAdjacentMines(board)({ y, x });
+      board[y][x] = adjacentMines as GameCell;
 
-  const visitedCells = Array.from({ length: board.length }, () =>
-    Array.from({ length: board[0].length }, () => false),
-  );
+      if (adjacentMines === 0) {
+        cellsToVisit.push(
+          ...getAdjacentCoords(board)({ x, y }).filter(
+            ({ x, y }) => board[y][x] === 'Empty' || board[y][x] === 'Mine',
+          ),
+        );
+      }
+    }
 
-  const cellsToVisit = [coords];
+    return true;
+  };
 
-  while (cellsToVisit.length > 0) {
-    const { x, y } = cellsToVisit.shift() as Coords;
-    const currentCell = board[y][x];
+export const checkWin =
+  (board: GameBoard) =>
+  (difficulty: Difficulty): boolean => {
+    const { mines } = boardSizes[difficulty];
 
-    currentCell.isOpen = true;
-    visitedCells[y][x] = true;
+    const closedCells = board.flat().filter(isClosed);
 
-    if (!currentCell.isMine && currentCell.adjacentMines === 0) {
-      const adjacentCoords = getAdjacentCoords(board, { x, y });
-      cellsToVisit.push(
-        ...adjacentCoords.filter(filterAdjacentCoords(visitedCells)),
-      );
+    return closedCells.length === mines && closedCells.every(isMine);
+  };
+
+export const flagRemainingMines = (board: GameBoard): void => {
+  for (let y = 0; y < board.length; y++) {
+    for (let x = 0; x < board[0].length; x++) {
+      if (board[y][x] === 'Mine') board[y][x] = 'FlaggedMine';
     }
   }
-
-  return true;
 };
 
-const filterAdjacentCoords =
-  (memo: boolean[][]) =>
-  ({ x, y }: Coords) =>
-    memo[y][x] === false;
+export const openAdjacentCells =
+  (board: GameBoard) =>
+  ({ x, y }: Coords): boolean => {
+    const cell = board[y][x];
 
-export const checkWin = (board: GameBoard, difficulty: Difficulty): boolean => {
-  const { mines } = boardSizes[difficulty];
+    if (isNumberCell(cell) && cell !== 0) {
+      const adjacentCells = getAdjacentCells(board)({ x, y });
+      const adjacentFlaggedCellsCount = adjacentCells.filter(isFlagged).length;
 
-  const closedCells = board.flat().filter(({ isOpen }) => !isOpen);
+      if (adjacentFlaggedCellsCount === cell) {
+        const adjacentCellsCoords = getAdjacentCoords(board)({ x, y });
 
-  return (
-    closedCells.length === mines && closedCells.every(({ isMine }) => isMine)
-  );
-};
+        const cellsToOpen = adjacentCellsCoords
+          .map<[GameCell, Coords]>((coords) => [
+            board[coords.y][coords.x],
+            coords,
+          ])
+          .filter(([cell]) => cell === 'Empty' || cell === 'Mine');
 
-export const openAdjacentCells = (
-  board: GameBoard,
-  { x, y }: Coords,
-): boolean => {
-  const cell = board[y][x];
+        const success = cellsToOpen
+          .map(([, coords]) => openCell(board)({ x: coords.x, y: coords.y }))
+          .every((status) => status);
 
-  if (cell.isOpen && !cell.isMine && cell.adjacentMines > 0) {
-    const adjacentCells = getAdjacentCells(board, { x, y });
-    const adjacentFlaggedCellsCount = adjacentCells.filter(
-      ({ isFlagged }) => isFlagged,
-    ).length;
-
-    if (adjacentFlaggedCellsCount === cell.adjacentMines) {
-      const adjacentCellsCoords = getAdjacentCoords(board, { x, y });
-
-      const cellsToOpen = adjacentCellsCoords
-        .map<[GameCell, Coords]>((coords) => [
-          board[coords.y][coords.x],
-          coords,
-        ])
-        .filter(([{ isFlagged, isOpen }]) => !isOpen && !isFlagged);
-
-      const success = cellsToOpen
-        .map(([, coords]) => openCell(board, { x: coords.x, y: coords.y }))
-        .every((status) => status);
-
-      return success;
+        return success;
+      }
     }
-  }
 
-  return true;
-};
+    return true;
+  };

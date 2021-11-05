@@ -15,9 +15,9 @@ export const Board: FC = () => {
   return (
     <Container onContextMenu={handleContextMenu} role="none">
       {board.map((row, y) => (
-        <Row key={row[0].id} data-testid="row">
+        <Row key={String(row) + y} data-testid="row">
           {row.map((cell, x) => (
-            <Cell key={cell.id} x={x} y={y} gameStatus={gameStatus} />
+            <Cell key={String(cell) + x} x={x} y={y} gameStatus={gameStatus} />
           ))}
         </Row>
       ))}
@@ -49,22 +49,3 @@ const Row = styled.div`
     border-left-width: 0;
   }
 `;
-
-// export const Board: FC = () => {
-//   const difficulty = useGameStore((state) => state.difficulty);
-//   const { width, height } = boardSizes[difficulty];
-
-//   return (
-//     <Container
-//       data-testid="board"
-//       onContextMenu={handleContextMenu}
-//       role="none"
-//     >
-//       {[...range({ to: height })].map((...[, y]) => {
-//         return [...range({ to: width })].map((...[, x]) => (
-//           <Cell key={`x${x}y${y} ${difficulty}`} x={x} y={y} />
-//         ));
-//       })}
-//     </Container>
-//   );
-// };
