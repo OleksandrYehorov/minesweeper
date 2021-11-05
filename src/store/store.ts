@@ -1,13 +1,15 @@
+import { match } from 'ts-pattern';
 import create from 'zustand';
 import { Analytics } from '../services/analytics';
 import {
   checkWin,
-  countAdjacentMines,
   createBoard,
+  flagRemainingMines,
   generateMines,
   openAdjacentCells,
   openCell,
 } from '../services/board';
+import { GameCell } from '../services/cell';
 import { Coords, Difficulty } from '../utils/constants';
 import { now } from '../utils/now';
 import { combineImmer } from './middlewares/combineImmer';
@@ -40,17 +42,14 @@ export const useGameStore = create(
 
           if (state.status === 'starting') {
             generateMines(state.board, state.difficulty, { x, y });
-            countAdjacentMines(state.board);
 
             state.status = 'playing';
             state.startedAt = now();
 
-            Analytics.logStartGame({
-              difficulty: state.difficulty,
-            });
+            Analytics.logStartGame({ difficulty: state.difficulty });
           }
 
-          const success = openCell(state.board, { x, y });
+          const success = openCell(state.board)({ x, y });
 
           if (!success) {
             state.status = 'lose';
@@ -61,7 +60,8 @@ export const useGameStore = create(
             });
           }
 
-          if (checkWin(state.board, state.difficulty)) {
+          if (checkWin(state.board)(state.difficulty)) {
+            flagRemainingMines(state.board);
             state.status = 'win';
 
             Analytics.logWinGame({
@@ -73,21 +73,25 @@ export const useGameStore = create(
       },
       clickNumberCell({ x, y }: Coords) {
         set((state) => {
-          const success = openAdjacentCells(state.board, { x, y });
+          const success = openAdjacentCells(state.board)({ x, y });
 
           if (!success) {
             state.status = 'lose';
-          } else if (checkWin(state.board, state.difficulty)) {
+          } else if (checkWin(state.board)(state.difficulty)) {
+            flagRemainingMines(state.board);
             state.status = 'win';
           }
         });
       },
       flagCell({ x, y }: Coords) {
         set((state) => {
-          const clickedCell = state.board[y][x];
-
           if (state.status === 'playing') {
-            clickedCell.isFlagged = !clickedCell.isFlagged;
+            state.board[y][x] = match<GameCell, GameCell>(state.board[y][x])
+              .with('Empty', () => 'FlaggedEmpty')
+              .with('Mine', () => 'FlaggedMine')
+              .with('FlaggedEmpty', () => 'Empty')
+              .with('FlaggedMine', () => 'Mine')
+              .run();
           }
         });
       },

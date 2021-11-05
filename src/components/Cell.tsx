@@ -1,5 +1,5 @@
 import { FC, memo } from 'react';
-import { match, __ } from 'ts-pattern';
+import { match, when, __ } from 'ts-pattern';
 import styled, { css } from 'styled-components/macro';
 import { shadow } from '../styles/shadow';
 import { Coords } from '../utils/constants';
@@ -10,6 +10,7 @@ import flagImage from '../images/flag.svg';
 import { preventDefault } from '../utils/preventDefault';
 import { GameStatus, useGameStore } from '../store/store';
 import { useLongPress } from '../utils/useLongPress';
+import { isFlagged, isNumberCell } from '../services/cell';
 
 type CellProps = Coords & {
   gameStatus: GameStatus;
@@ -34,36 +35,36 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
   });
 
   return match([cellData, gameStatus] as const)
-    .with([{ isOpen: true, isMine: true }, __], ([matchedData]) => (
-      <OpenCell
-        aria-label={`open mine cell x${x} y${y}`}
-        exploded={matchedData.isMine}
-      >
+    .with(['ExplodedMine', __], () => (
+      <OpenCell aria-label={`Exploded mine`} exploded>
         <MineIcon />
       </OpenCell>
     ))
-    .with([{ isOpen: true, isMine: false }, __], ([matchedData]) => (
+    .with([when(isNumberCell), __], ([matchedData]) => (
       <OpenCell
-        aria-label={`open number cell x${x} y${y}`}
+        aria-label={
+          matchedData === 0
+            ? `Open cell`
+            : `Open cell with ${matchedData} adjacent cells`
+        }
         onClick={handleClickNumberCell}
-        exploded={matchedData.isMine}
       >
-        <MinesNumber value={matchedData.adjacentMines} />
+        <MinesNumber value={matchedData} />
       </OpenCell>
     ))
-    .with([{ isMine: true, isFlagged: false }, 'lose'], () => (
-      <OpenCell aria-label={`open mine cell x${x} y${y}`}>
+    .with(['Mine', 'lose'], () => (
+      <OpenCell aria-label={`Revealed mine`}>
         <MineIcon />
       </OpenCell>
     ))
-    .with([{ isMine: false, isFlagged: true }, 'lose'], () => (
-      <OpenCell aria-label={`open flagged cell x${x} y${y}`}>
+    .with(['FlaggedEmpty', 'lose'], () => (
+      <OpenCell aria-label={`Flagged cell with no mine`}>
         <CrossedMineIcon />
       </OpenCell>
     ))
-    .with([{ isFlagged: true }, __], () => (
+    .with([when(isFlagged), __], () => (
       <ClosedCell
-        aria-label={`closed flagged cell x${x} y${y}`}
+        aria-label={`Flagged cell`}
         onContextMenu={preventDefault(handleFlagCell)}
         isFlagged
         {...flaggedCellLongPressProps}
@@ -71,16 +72,10 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
         <FlagIcon />
       </ClosedCell>
     ))
-    .with([{ isOpen: false }, 'win'], () => (
-      // TODO: write tests
-      <ClosedCell aria-label={`closed flagged cell x${x} y${y}`} isFlagged>
-        <FlagIcon />
-      </ClosedCell>
-    ))
     .otherwise(() => (
       <ClosedCell
-        aria-label={`closed cell x${x} y${y}`}
-        disabled={cellData.isFlagged}
+        aria-label={`Unrevealed cell`}
+        disabled={isFlagged(cellData)}
         isFlagged={false}
         onContextMenu={preventDefault(handleFlagCell)}
         {...closedCellLongPressProps}
@@ -96,7 +91,7 @@ const openCellStyle = css`
   border-left-width: 1px;
 `;
 
-export const StyledCell = styled.button`
+export const StyledCell = styled.button.attrs({ 'data-testid': 'cell' })`
   box-sizing: border-box;
   width: 28px;
   height: 28px;
@@ -108,9 +103,11 @@ export const StyledCell = styled.button`
   background: none;
 `;
 
-export const OpenCell = styled(StyledCell)<{ exploded?: boolean }>`
+export const OpenCell = styled(StyledCell).attrs({
+  'data-open': true,
+})<{ exploded?: boolean }>`
   ${openCellStyle}
-  ${({ exploded }) =>
+  ${({ exploded = false }) =>
     exploded &&
     css`
       background-color: red;
@@ -127,7 +124,9 @@ const notFlaggedCellStyle = css`
   }
 `;
 
-export const ClosedCell = styled(StyledCell)<{ isFlagged: boolean }>`
+export const ClosedCell = styled(StyledCell).attrs({
+  'data-open': false,
+})<{ isFlagged: boolean }>`
   ${shadow}
 
   ${(props) => (props.isFlagged ? null : notFlaggedCellStyle)}

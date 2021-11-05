@@ -1,22 +1,22 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../App';
-import { getCell } from '../test-utils/cellQueries';
+import { getCellByCoords } from '../test-utils/getCellByCoords';
 import { minesMockData } from '../test-utils/minesMockData';
 import { Coords } from '../utils/constants';
 
 beforeEach(() => {
   render(<App />);
 
-  userEvent.click(getCell(minesMockData.beginner.firstClick));
+  userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
 });
 
 describe('mines counter', () => {
   test('shows remaining mines', () => {
     expect(screen.getByLabelText(/mines count/i)).toHaveTextContent('10');
 
-    userEvent.click(getCell({ x: 0, y: 0 }), { button: 2 });
-    userEvent.click(getCell({ x: 1, y: 0 }), { button: 2 });
+    userEvent.click(getCellByCoords({ x: 0, y: 0 }), { button: 2 });
+    userEvent.click(getCellByCoords({ x: 1, y: 0 }), { button: 2 });
 
     expect(screen.getByLabelText(/mines count/i)).toHaveTextContent('8');
   });
@@ -40,7 +40,7 @@ describe('mines counter', () => {
     ];
 
     coords.forEach(({ x, y }) => {
-      userEvent.click(getCell({ x, y }), { button: 2 });
+      userEvent.click(getCellByCoords({ x, y }), { button: 2 });
     });
 
     expect(screen.getByLabelText(/mines count/i)).toHaveTextContent('-2');

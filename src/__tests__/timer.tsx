@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../App';
-import { getCell } from '../test-utils/cellQueries';
+import { getCellByCoords } from '../test-utils/getCellByCoords';
 import { minesMockData } from '../test-utils/minesMockData';
 
 jest.useFakeTimers('modern');
@@ -15,7 +15,7 @@ test('timer shows playing time', () => {
   });
   // must be still 0 because game is not started
   expect(screen.getByLabelText(/timer/i)).toHaveTextContent('0');
-  userEvent.click(getCell(minesMockData.beginner.firstClick));
+  userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
   expect(screen.getByLabelText(/timer/i)).toHaveTextContent('0');
   act(() => {
     jest.advanceTimersByTime(3000);

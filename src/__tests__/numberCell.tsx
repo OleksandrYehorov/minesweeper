@@ -1,40 +1,57 @@
-import { render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../App';
-import { getCell } from '../test-utils/cellQueries';
+import { getCellByCoords } from '../test-utils/getCellByCoords';
 import { minesMockData } from '../test-utils/minesMockData';
 
 beforeEach(() => render(<App />));
 
 describe('number cell', () => {
   test('upon click opens remaining not flagged cells', () => {
-    userEvent.click(getCell(minesMockData.beginner.firstClick));
-    userEvent.click(getCell({ x: 6, y: 3 }), { button: 2 });
-    userEvent.click(getCell({ x: 7, y: 3 }), { button: 2 });
-    userEvent.click(getCell({ x: 7, y: 4 }));
+    userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
+    userEvent.click(getCellByCoords({ x: 6, y: 3 }), { button: 2 });
+    userEvent.click(getCellByCoords({ x: 7, y: 3 }), { button: 2 });
+    userEvent.click(getCellByCoords({ x: 7, y: 4 }));
 
-    expect(getCell({ x: 8, y: 3, isOpen: true })).toBeInTheDocument();
-    expect(getCell({ x: 8, y: 4, isOpen: true })).toBeInTheDocument();
-    expect(getCell({ x: 8, y: 5, isOpen: true })).toBeInTheDocument();
+    expect(getCellByCoords({ x: 8, y: 3 }).getAttribute('data-open')).toBe(
+      'true',
+    );
+    expect(getCellByCoords({ x: 8, y: 4 }).getAttribute('data-open')).toBe(
+      'true',
+    );
+    expect(getCellByCoords({ x: 8, y: 5 }).getAttribute('data-open')).toBe(
+      'true',
+    );
   });
 
   test('upon click opens mine cells', () => {
-    userEvent.click(getCell(minesMockData.beginner.firstClick));
-    userEvent.click(getCell({ x: 3, y: 2 }), { button: 2 });
-    userEvent.click(getCell({ x: 3, y: 3 }));
+    userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
+    userEvent.click(getCellByCoords({ x: 3, y: 2 }), { button: 2 });
+    userEvent.click(getCellByCoords({ x: 3, y: 3 }));
 
     expect(
-      getCell({ x: 4, y: 2, isOpen: true, isMine: true }),
+      within(getCellByCoords({ x: 4, y: 2 })).queryByRole('img', {
+        name: 'mine',
+      }),
     ).toBeInTheDocument();
   });
 
   test('does not open cells if number and flags are different', () => {
-    userEvent.click(getCell(minesMockData.beginner.firstClick));
-    userEvent.click(getCell({ x: 6, y: 3 }), { button: 2 });
-    userEvent.click(getCell({ x: 7, y: 4 }));
+    userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
+    userEvent.click(getCellByCoords({ x: 6, y: 3 }), { button: 2 });
+    userEvent.click(getCellByCoords({ x: 7, y: 4 }));
 
-    expect(getCell({ x: 8, y: 3, isOpen: false })).toBeInTheDocument();
-    expect(getCell({ x: 8, y: 4, isOpen: false })).toBeInTheDocument();
-    expect(getCell({ x: 8, y: 5, isOpen: false })).toBeInTheDocument();
+    // expect(getCell({ x: 8, y: 3, isOpen: false })).toBeInTheDocument();
+    // expect(getCell({ x: 8, y: 4, isOpen: false })).toBeInTheDocument();
+    // expect(getCell({ x: 8, y: 5, isOpen: false })).toBeInTheDocument();
+    expect(getCellByCoords({ x: 8, y: 3 }).getAttribute('data-open')).toBe(
+      'false',
+    );
+    expect(getCellByCoords({ x: 8, y: 4 }).getAttribute('data-open')).toBe(
+      'false',
+    );
+    expect(getCellByCoords({ x: 8, y: 5 }).getAttribute('data-open')).toBe(
+      'false',
+    );
   });
 });
