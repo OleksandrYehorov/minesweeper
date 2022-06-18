@@ -25,7 +25,7 @@
   "dependencies": {
     "date-fns": "^2.18.0",
     "dseg": "^0.46.0",
-    "firebase": "^8.2.9",
+    "firebase": "^9.8.3",
     "immer": "^9.0.6",
     "query-string": "^6.13.8",
     "react": "^18.0.0",
