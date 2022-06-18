@@ -20,7 +20,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
-    "browserslist-update": "npx browserslist@latest --update-db"
+    "browserslist-update": "npx browserslist@latest --update-db",
+    "check-deps-versions": "npx ncu"
   },
   "dependencies": {
     "date-fns": "^2.18.0",
