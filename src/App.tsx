@@ -1,5 +1,5 @@
 import { FC, StrictMode } from 'react';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { Game } from './components/Game';
 import { GlobalStyle } from './styles/global';
 

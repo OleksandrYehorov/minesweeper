@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import styled, { css } from 'styled-components/macro';
+import styled, { css } from 'styled-components';
 import { invertedShadow } from '../styles/shadow';
 
 type Props = {
