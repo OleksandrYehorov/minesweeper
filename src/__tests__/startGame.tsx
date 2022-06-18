@@ -4,11 +4,8 @@ import { App } from '../App';
 import { getCellByCoords } from '../test-utils/getCellByCoords';
 import { minesMockData } from '../test-utils/minesMockData';
 
-beforeEach(() => {
-  render(<App />);
-});
-
 test('game starts upon clicking cell', () => {
+  render(<App />);
   userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
 
   const openCells = screen

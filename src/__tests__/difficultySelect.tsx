@@ -3,13 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { App } from '../App';
 import { boardSizes, difficultyLevels } from '../utils/constants';
 
-beforeEach(() => {
-  render(<App />);
-});
-
 describe('difficulty level select', () => {
   difficultyLevels.forEach((difficulty) => {
     test(`${difficulty}`, () => {
+      render(<App />);
       const button = screen.getByRole('button', {
         name: RegExp(`${difficulty}`, 'i'),
       });

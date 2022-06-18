@@ -4,12 +4,9 @@ import { App } from '../App';
 import { getCellByCoords } from '../test-utils/getCellByCoords';
 import { minesMockData } from '../test-utils/minesMockData';
 
-beforeEach(() => {
-  render(<App />);
-});
-
 describe('number cell', () => {
   test('upon click opens remaining not flagged cells', () => {
+    render(<App />);
     userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
     // userEvent.click(getCellByCoords({ x: 6, y: 3 }), { button: 2 });
     fireEvent.contextMenu(getCellByCoords({ x: 6, y: 3 }));
@@ -29,19 +26,21 @@ describe('number cell', () => {
   });
 
   test('upon click opens mine cells', () => {
+    render(<App />);
     userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
     // userEvent.click(getCellByCoords({ x: 3, y: 2 }), { button: 2 });
     fireEvent.contextMenu(getCellByCoords({ x: 3, y: 2 }));
     userEvent.click(getCellByCoords({ x: 3, y: 3 }));
 
     expect(
-      within(getCellByCoords({ x: 4, y: 2 })).queryByRole('img', {
+      within(getCellByCoords({ x: 4, y: 2 })).getByRole('img', {
         name: 'mine',
       }),
     ).toBeInTheDocument();
   });
 
   test('does not open cells if number and flags are different', () => {
+    render(<App />);
     userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
     // userEvent.click(getCellByCoords({ x: 6, y: 3 }), { button: 2 });
     fireEvent.contextMenu(getCellByCoords({ x: 6, y: 3 }));
