@@ -3,7 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { App } from '../App';
 import { boardSizes, difficultyLevels } from '../utils/constants';
 
-beforeEach(() => render(<App />));
+beforeEach(() => {
+  render(<App />);
+});
 
 describe('difficulty level select', () => {
   difficultyLevels.forEach((difficulty) => {
@@ -13,7 +15,6 @@ describe('difficulty level select', () => {
       });
 
       userEvent.click(button);
-
       const rows = screen.getAllByTestId('row');
       const height = rows.length;
       const width = within(rows[0]).getAllByRole('button', {
@@ -21,8 +22,8 @@ describe('difficulty level select', () => {
       }).length;
       const boardSize = boardSizes[difficulty];
 
-      expect(height).toBe(boardSize.height);
       expect(width).toBe(boardSize.width);
+      expect(height).toBe(boardSize.height);
     });
   });
 });

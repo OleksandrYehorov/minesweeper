@@ -1,4 +1,4 @@
-import { createGlobalStyle, css } from 'styled-components/macro';
+import { createGlobalStyle, css } from 'styled-components';
 import dsegWoff2 from 'dseg/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff2';
 import dsegWoff from 'dseg/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff';
 import dsegTtf from 'dseg/fonts/DSEG7-Classic/DSEG7Classic-Bold.ttf';

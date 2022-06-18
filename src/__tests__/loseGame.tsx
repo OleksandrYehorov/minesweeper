@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../App';
 import { getCellByCoords } from '../test-utils/getCellByCoords';
@@ -17,7 +17,8 @@ test('game is lost by opening a mine cell', () => {
 });
 
 test('upon lose flagged cells without mines are marked as crossed mines', () => {
-  userEvent.click(getCellByCoords({ x: 0, y: 0 }), { button: 2 });
+  // userEvent.click(getCellByCoords({ x: 0, y: 0 }), { button: 2 });
+  fireEvent.contextMenu(getCellByCoords({ x: 0, y: 0 }));
   userEvent.click(getCellByCoords(minesMockData.beginner.mines[0]));
 
   expect(
@@ -28,12 +29,14 @@ test('upon lose flagged cells without mines are marked as crossed mines', () => 
 });
 
 test('upon lose all not flagged mines are revealed', () => {
-  userEvent.click(getCellByCoords(minesMockData.beginner.mines[0]), {
-    button: 2,
-  });
-  userEvent.click(getCellByCoords(minesMockData.beginner.mines[1]), {
-    button: 2,
-  });
+  // userEvent.click(getCellByCoords(minesMockData.beginner.mines[0]), {
+  //   button: 2,
+  // });
+  fireEvent.contextMenu(getCellByCoords(minesMockData.beginner.mines[0]));
+  // userEvent.click(getCellByCoords(minesMockData.beginner.mines[1]), {
+  //   button: 2,
+  // });
+  fireEvent.contextMenu(getCellByCoords(minesMockData.beginner.mines[1]));
   userEvent.click(getCellByCoords(minesMockData.beginner.mines[2]));
 
   const cells = screen.getAllByTestId('cell');
@@ -49,14 +52,17 @@ test('upon lose all not flagged mines are revealed', () => {
 });
 
 test('upon lose cells can not be clicked, flagged and unflagged', () => {
-  userEvent.click(getCellByCoords({ x: 0, y: 0 }), { button: 2 });
+  // userEvent.click(getCellByCoords({ x: 0, y: 0 }), { button: 2 });
+  fireEvent.contextMenu(getCellByCoords({ x: 0, y: 0 }));
   userEvent.click(getCellByCoords(minesMockData.beginner.mines[0]));
 
   // try to unflag flagged cell
-  userEvent.click(getCellByCoords({ x: 0, y: 0 }), { button: 2 });
+  // userEvent.click(getCellByCoords({ x: 0, y: 0 }), { button: 2 });
+  fireEvent.contextMenu(getCellByCoords({ x: 0, y: 0 }));
 
   // try to flag cell
-  userEvent.click(getCellByCoords({ x: 1, y: 0 }), { button: 2 });
+  // userEvent.click(getCellByCoords({ x: 1, y: 0 }), { button: 2 });
+  fireEvent.contextMenu(getCellByCoords({ x: 1, y: 0 }));
 
   // try to open cell
   userEvent.click(getCellByCoords({ x: 2, y: 0 }));

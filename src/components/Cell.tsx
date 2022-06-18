@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 import { match, when, __ } from 'ts-pattern';
-import styled, { css } from 'styled-components/macro';
+import styled, { css } from 'styled-components';
 import { shadow } from '../styles/shadow';
 import { Coords } from '../utils/constants';
 import { MinesNumber } from './MinesNumber';

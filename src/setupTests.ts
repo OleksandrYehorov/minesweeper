@@ -4,4 +4,4 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
-jest.setTimeout(10 * 1000);
+// jest.setTimeout(10 * 1000);

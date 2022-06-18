@@ -4,21 +4,22 @@ import { App } from '../App';
 import { getCellByCoords } from '../test-utils/getCellByCoords';
 import { minesMockData } from '../test-utils/minesMockData';
 
-jest.useFakeTimers('modern');
-
-beforeEach(() => render(<App />));
+beforeEach(() => {
+  vi.useFakeTimers();
+  render(<App />);
+});
 
 test('timer shows playing time', () => {
   expect(screen.getByLabelText(/timer/i)).toHaveTextContent('0');
   act(() => {
-    jest.advanceTimersByTime(3100);
+    vi.advanceTimersByTime(3100);
   });
   // must be still 0 because game is not started
   expect(screen.getByLabelText(/timer/i)).toHaveTextContent('0');
   userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
   expect(screen.getByLabelText(/timer/i)).toHaveTextContent('0');
   act(() => {
-    jest.advanceTimersByTime(3000);
+    vi.advanceTimersByTime(3100);
   });
   // must be 3 since game was started 3 seconds ago
   expect(screen.getByLabelText(/timer/i)).toHaveTextContent('3');

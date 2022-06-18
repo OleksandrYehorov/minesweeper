@@ -1,7 +1,7 @@
 {
   "extends": [
     "plugin:@typescript-eslint/recommended",
-    "plugin:jest/recommended",
+    // "plugin:jest/recommended",
     "plugin:testing-library/react",
     "prettier",
     "plugin:styled-components-a11y/strict"
@@ -10,14 +10,14 @@
     "react",
     "@typescript-eslint",
     "prettier",
-    "jest",
+    // "jest",
     "styled-components-a11y",
     "testing-library"
   ],
   "env": {
     "browser": true,
-    "es6": true,
-    "jest": true
+    "es6": true
+    // "jest": true
   },
   "globals": {
     "Atomics": "readonly",
@@ -30,6 +30,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
+  "ignorePatterns": [".vite.config.ts"],
   "rules": {
     "@typescript-eslint/camelcase": "off",
     "linebreak-style": "off",
@@ -43,13 +44,13 @@
     "no-param-reassign": "off",
     "consistent-return": "off",
     "no-plusplus": "off",
-    "no-restricted-imports": [
-      "error",
-      {
-        "name": "styled-components",
-        "message": "Please use 'styled-components/macro' instead."
-      }
-    ],
+    // "no-restricted-imports": [
+    //   "error",
+    //   {
+    //     "name": "styled-components",
+    //     "message": "Please use 'styled-components/macro' instead."
+    //   }
+    // ],
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "no-restricted-syntax": "off",

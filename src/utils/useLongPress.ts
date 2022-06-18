@@ -32,7 +32,8 @@ export const useLongPress = ({
   const target = useRef<EventTarget>();
 
   const start = useCallback(
-    (event) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (event: any) => {
       if (shouldPreventDefault && event.target) {
         event.target.addEventListener('touchend', preventDefault, {
           passive: false,
@@ -49,7 +50,8 @@ export const useLongPress = ({
   );
 
   const clear = useCallback(
-    (event, shouldTriggerClick = true) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (event: any, shouldTriggerClick = true) => {
       if (timeout.current) {
         clearTimeout(timeout.current);
       }

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { match } from 'ts-pattern';
 import { invertedShadow, shadow } from '../styles/shadow';
 import dizzyFace from '../images/dizzy-face.png';
