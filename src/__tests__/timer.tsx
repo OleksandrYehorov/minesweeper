@@ -6,10 +6,10 @@ import { minesMockData } from '../test-utils/minesMockData';
 
 beforeEach(() => {
   vi.useFakeTimers();
-  render(<App />);
 });
 
 test('timer shows playing time', () => {
+  render(<App />);
   expect(screen.getByLabelText(/timer/i)).toHaveTextContent('0');
   act(() => {
     vi.advanceTimersByTime(3100);

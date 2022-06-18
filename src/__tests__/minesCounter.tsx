@@ -5,14 +5,11 @@ import { getCellByCoords } from '../test-utils/getCellByCoords';
 import { minesMockData } from '../test-utils/minesMockData';
 import { Coords } from '../utils/constants';
 
-beforeEach(() => {
-  render(<App />);
-
-  userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
-});
-
 describe('mines counter', () => {
   test('shows remaining mines', () => {
+    render(<App />);
+
+    userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
     expect(screen.getByLabelText(/mines count/i)).toHaveTextContent('10');
 
     // userEvent.click(getCellByCoords({ x: 0, y: 0 }), { button: 2 });
@@ -24,6 +21,9 @@ describe('mines counter', () => {
   });
 
   test('shows negative count if there are more than 10 flags', () => {
+    render(<App />);
+
+    userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
     expect(screen.getByLabelText(/mines count/i)).toHaveTextContent('10');
 
     const coords: Coords[] = [

@@ -4,11 +4,8 @@ import { App } from '../App';
 import { getCellByCoords } from '../test-utils/getCellByCoords';
 import { minesMockData } from '../test-utils/minesMockData';
 
-beforeEach(() => {
-  render(<App />);
-});
-
 test('click on the emoji button restarts the game', () => {
+  render(<App />);
   userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
   userEvent.click(screen.getByRole('button', { name: /restart/i }));
 

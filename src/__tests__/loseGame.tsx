@@ -4,31 +4,34 @@ import { App } from '../App';
 import { getCellByCoords } from '../test-utils/getCellByCoords';
 import { minesMockData } from '../test-utils/minesMockData';
 
-beforeEach(() => {
+test('game is lost by opening a mine cell', () => {
   render(<App />);
 
   userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
-});
-
-test('game is lost by opening a mine cell', () => {
   userEvent.click(getCellByCoords(minesMockData.beginner.mines[0]));
 
   expect(screen.getByRole('img', { name: /dizzy face/i })).toBeInTheDocument();
 });
 
 test('upon lose flagged cells without mines are marked as crossed mines', () => {
+  render(<App />);
+
+  userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
   // userEvent.click(getCellByCoords({ x: 0, y: 0 }), { button: 2 });
   fireEvent.contextMenu(getCellByCoords({ x: 0, y: 0 }));
   userEvent.click(getCellByCoords(minesMockData.beginner.mines[0]));
 
   expect(
-    within(getCellByCoords({ x: 0, y: 0 })).queryByRole('img', {
+    within(getCellByCoords({ x: 0, y: 0 })).getByRole('img', {
       name: 'crossed mine',
     }),
   ).toBeInTheDocument();
 });
 
 test('upon lose all not flagged mines are revealed', () => {
+  render(<App />);
+
+  userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
   // userEvent.click(getCellByCoords(minesMockData.beginner.mines[0]), {
   //   button: 2,
   // });
@@ -52,6 +55,9 @@ test('upon lose all not flagged mines are revealed', () => {
 });
 
 test('upon lose cells can not be clicked, flagged and unflagged', () => {
+  render(<App />);
+
+  userEvent.click(getCellByCoords(minesMockData.beginner.firstClick));
   // userEvent.click(getCellByCoords({ x: 0, y: 0 }), { button: 2 });
   fireEvent.contextMenu(getCellByCoords({ x: 0, y: 0 }));
   userEvent.click(getCellByCoords(minesMockData.beginner.mines[0]));
@@ -68,7 +74,7 @@ test('upon lose cells can not be clicked, flagged and unflagged', () => {
   userEvent.click(getCellByCoords({ x: 2, y: 0 }));
 
   expect(
-    within(getCellByCoords({ x: 0, y: 0 })).queryByRole('img', {
+    within(getCellByCoords({ x: 0, y: 0 })).getByRole('img', {
       name: 'crossed mine',
     }),
   ).toBeInTheDocument();
