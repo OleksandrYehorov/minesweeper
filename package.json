@@ -32,7 +32,7 @@
     "react-dom": "^18.0.0",
     "styled-components": "^5.2.0",
     "ts-pattern": "^4.0.3",
-    "zustand": "^3.3.3"
+    "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
