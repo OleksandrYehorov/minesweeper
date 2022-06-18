@@ -23,11 +23,11 @@ export const generateMines = (
   let i = 0;
   while (i < mines) {
     const x =
-      process.env.NODE_ENV === 'test'
+      import.meta.env.MODE === 'test'
         ? minesMockData[difficulty].mines[i].x
         : getRandomInteger({ max: width - 1 });
     const y =
-      process.env.NODE_ENV === 'test'
+      import.meta.env.MODE === 'test'
         ? minesMockData[difficulty].mines[i].y
         : getRandomInteger({ max: height - 1 });
 
