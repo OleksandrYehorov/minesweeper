@@ -1,8 +1,12 @@
 import { intervalToDuration, formatDuration } from 'date-fns';
-import firebase from 'firebase/app';
-import 'firebase/analytics';
 import { Difficulty } from '../utils/constants';
 import { now } from '../utils/now';
+import { initializeApp } from 'firebase/app';
+import {
+  getAnalytics,
+  setAnalyticsCollectionEnabled,
+  logEvent as firebaseLogEvent,
+} from 'firebase/analytics';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDJdOEpo7tADYFOhGZwyHJrKQ66tLUZ_Sk',
@@ -14,17 +18,10 @@ const firebaseConfig = {
   measurementId: 'G-BT2Q977QMC',
 };
 
-const initFirebaseAnalytics = () => {
-  if (process.env.NODE_ENV === 'production') {
-    firebase.initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
+const firebaseAnalytics = getAnalytics(firebaseApp);
 
-    return firebase.analytics();
-  }
-
-  return null;
-};
-
-const firebaseAnalytics = initFirebaseAnalytics();
+setAnalyticsCollectionEnabled(firebaseAnalytics, import.meta.env.PROD);
 
 export type AnalyticsEvents = {
   start_game: {
@@ -48,7 +45,11 @@ const logEvent = <T extends AnalyticsEventName>(
   eventName: T,
   eventParams: AnalyticsEvents[T],
 ): void => {
-  firebaseAnalytics?.logEvent<AnalyticsEventName>(eventName, eventParams);
+  firebaseLogEvent<AnalyticsEventName>(
+    firebaseAnalytics,
+    eventName,
+    eventParams,
+  );
 };
 
 export type LogEndGameParams = {

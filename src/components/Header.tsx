@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { invertedShadow } from '../styles/shadow';
 import { MinesCounter } from './MinesCounter';
 import { StartGameButton } from './StartGameButton';

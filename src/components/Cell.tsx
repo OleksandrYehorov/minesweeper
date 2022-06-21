@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
-import { match, when, __ } from 'ts-pattern';
-import styled, { css } from 'styled-components/macro';
+import { match, P } from 'ts-pattern';
+import styled, { css } from 'styled-components';
 import { shadow } from '../styles/shadow';
 import { Coords } from '../utils/constants';
 import { MinesNumber } from './MinesNumber';
@@ -9,7 +9,7 @@ import crossedMineImage from '../images/crossedMine.svg';
 import flagImage from '../images/flag.svg';
 import { preventDefault } from '../utils/preventDefault';
 import { GameStatus, useGameStore } from '../store/store';
-import { useLongPress } from '../utils/useLongPress';
+import { useLongTouch } from '../utils/useLongTouch';
 import { isFlagged, isNumberCell } from '../services/cell';
 
 type CellProps = Coords & {
@@ -26,21 +26,15 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
   const handleClickNumberCell = () => clickNumberCell({ x, y });
   const handleFlagCell = () => flagCell({ x, y });
 
-  const flaggedCellLongPressProps = useLongPress({
-    onLongPress: handleFlagCell,
-  });
-  const closedCellLongPressProps = useLongPress({
-    onLongPress: handleFlagCell,
-    onClick: handleClickCell,
-  });
+  const longTouchProps = useLongTouch(handleFlagCell);
 
   return match([cellData, gameStatus] as const)
-    .with(['ExplodedMine', __], () => (
+    .with(['ExplodedMine', P._], () => (
       <OpenCell aria-label={`Exploded mine`} exploded>
         <MineIcon />
       </OpenCell>
     ))
-    .with([when(isNumberCell), __], ([matchedData]) => (
+    .with([P.when(isNumberCell), P._], ([matchedData]) => (
       <OpenCell
         aria-label={
           matchedData === 0
@@ -62,12 +56,12 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
         <CrossedMineIcon />
       </OpenCell>
     ))
-    .with([when(isFlagged), __], () => (
+    .with([P.when(isFlagged), P._], () => (
       <ClosedCell
         aria-label={`Flagged cell`}
         onContextMenu={preventDefault(handleFlagCell)}
         isFlagged
-        {...flaggedCellLongPressProps}
+        {...longTouchProps}
       >
         <FlagIcon />
       </ClosedCell>
@@ -78,7 +72,8 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
         disabled={isFlagged(cellData)}
         isFlagged={false}
         onContextMenu={preventDefault(handleFlagCell)}
-        {...closedCellLongPressProps}
+        onClick={handleClickCell}
+        {...longTouchProps}
       />
     ));
 });

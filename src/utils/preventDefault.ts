@@ -5,7 +5,6 @@ interface EventWithPreventDefault {
 export const preventDefault =
   <T extends EventWithPreventDefault>(fn?: (event?: T) => void) =>
   (event?: T): void => {
-    event?.preventDefault?.();
-
+    event?.preventDefault();
     return fn?.(event);
   };

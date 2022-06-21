@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { useGameStore } from '../store/store';
 import { invisibleScrollbar } from '../styles/invisibleScrollbar';
 import { invertedShadow } from '../styles/shadow';
@@ -13,7 +13,11 @@ export const Board: FC = () => {
   const gameStatus = useGameStore((state) => state.status);
 
   return (
-    <Container onContextMenu={handleContextMenu} role="none">
+    <Container
+      onContextMenu={handleContextMenu}
+      role="none"
+      data-testid="board"
+    >
       {board.map((row, y) => (
         <Row key={String(row) + y} data-testid="row">
           {row.map((cell, x) => (
