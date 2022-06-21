@@ -9,7 +9,7 @@ import crossedMineImage from '../images/crossedMine.svg';
 import flagImage from '../images/flag.svg';
 import { preventDefault } from '../utils/preventDefault';
 import { GameStatus, useGameStore } from '../store/store';
-import { useLongPress } from '../utils/useLongPress';
+import { useLongTouch } from '../utils/useLongTouch';
 import { isFlagged, isNumberCell } from '../services/cell';
 
 type CellProps = Coords & {
@@ -26,13 +26,7 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
   const handleClickNumberCell = () => clickNumberCell({ x, y });
   const handleFlagCell = () => flagCell({ x, y });
 
-  const flaggedCellLongPressProps = useLongPress({
-    onLongPress: handleFlagCell,
-  });
-  const closedCellLongPressProps = useLongPress({
-    onLongPress: handleFlagCell,
-    onClick: handleClickCell,
-  });
+  const longTouchProps = useLongTouch(handleFlagCell);
 
   return match([cellData, gameStatus] as const)
     .with(['ExplodedMine', P._], () => (
@@ -67,7 +61,7 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
         aria-label={`Flagged cell`}
         onContextMenu={preventDefault(handleFlagCell)}
         isFlagged
-        {...flaggedCellLongPressProps}
+        {...longTouchProps}
       >
         <FlagIcon />
       </ClosedCell>
@@ -78,7 +72,8 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
         disabled={isFlagged(cellData)}
         isFlagged={false}
         onContextMenu={preventDefault(handleFlagCell)}
-        {...closedCellLongPressProps}
+        onClick={handleClickCell}
+        {...longTouchProps}
       />
     ));
 });

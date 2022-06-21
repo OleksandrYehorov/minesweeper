@@ -1,4 +1,4 @@
-import { minesMockData } from '../test-utils/minesMockData';
+import { minesMockData } from '../utils/minesMockData';
 import { Difficulty, boardSizes, Coords } from '../utils/constants';
 import { getRandomInteger } from '../utils/getRandomInteger';
 import { GameCell, isClosed, isFlagged, isMine, isNumberCell } from './cell';

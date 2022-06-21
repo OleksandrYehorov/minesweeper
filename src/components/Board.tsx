@@ -13,7 +13,11 @@ export const Board: FC = () => {
   const gameStatus = useGameStore((state) => state.status);
 
   return (
-    <Container onContextMenu={handleContextMenu} role="none">
+    <Container
+      onContextMenu={handleContextMenu}
+      role="none"
+      data-testid="board"
+    >
       {board.map((row, y) => (
         <Row key={String(row) + y} data-testid="row">
           {row.map((cell, x) => (
