@@ -28,15 +28,13 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm run test:coverage
+        run: npm run test
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v1
 
       - name: Build
         run: npm run build
-        env:
-          CI: false
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1

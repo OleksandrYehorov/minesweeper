@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vite';
 import { ManifestOptions, VitePWA } from 'vite-plugin-pwa';
 import react from '@vitejs/plugin-react';
 
@@ -47,8 +47,8 @@ const manifest: Partial<ManifestOptions> = {
   ] as unknown as [],
 };
 
-// https://vitejs.dev/config/
 export default defineConfig({
+  base: '/minesweeper/',
   plugins: [
     react(),
     VitePWA({
@@ -66,11 +66,5 @@ export default defineConfig({
   ],
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
-  },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/setupTests.ts',
-    include: ['./src/__tests__/*'],
   },
 });

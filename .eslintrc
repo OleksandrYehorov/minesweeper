@@ -1,8 +1,6 @@
 {
   "extends": [
     "plugin:@typescript-eslint/recommended",
-    // "plugin:jest/recommended",
-    "plugin:testing-library/react",
     "prettier",
     "plugin:styled-components-a11y/strict"
   ],
@@ -10,14 +8,12 @@
     "react",
     "@typescript-eslint",
     "prettier",
-    // "jest",
     "styled-components-a11y",
-    "testing-library"
+    "react-hooks"
   ],
   "env": {
     "browser": true,
     "es6": true
-    // "jest": true
   },
   "globals": {
     "Atomics": "readonly",
@@ -30,8 +26,10 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": [".vite.config.ts"],
+  "ignorePatterns": [".vite.config.ts", "dev-dist"],
   "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/camelcase": "off",
     "linebreak-style": "off",
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
@@ -55,6 +53,6 @@
     "react/jsx-props-no-spreading": "off",
     "no-restricted-syntax": "off",
     "@typescript-eslint/no-this-alias": "off",
-    "react/require-default-props": "off"
+    "@typescript-eslint/no-namespace": "off"
   }
 }
