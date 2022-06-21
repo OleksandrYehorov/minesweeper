@@ -16,8 +16,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "downlevelIteration": true,
-    "types": ["vitest/globals"]
+    "types": ["cypress", "node", "@testing-library/cypress"]
   },
-  "include": ["src", "vite.config.ts"],
+  "include": ["src", "cypress", "vite.config.ts", "cypress.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

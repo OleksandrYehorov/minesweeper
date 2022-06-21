@@ -45,5 +45,10 @@ export const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
+  img {
+    pointer-events: none;
+  }
+
+
   ${scrollOverflowSafariHack}
 `;
