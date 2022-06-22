@@ -8,19 +8,25 @@ import mineImage from '../images/mine.svg';
 import crossedMineImage from '../images/crossedMine.svg';
 import flagImage from '../images/flag.svg';
 import { preventDefault } from '../utils/preventDefault';
-import { GameStatus, useGameStore } from '../store/store';
+import { useGameStore } from '../store/gameStore';
 import { useLongTouch } from '../utils/useLongTouch';
 import { isFlagged, isNumberCell } from '../services/cell';
+import shallow from 'zustand/shallow';
 
-type CellProps = Coords & {
-  gameStatus: GameStatus;
-};
+type CellProps = Coords;
 
-export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
-  const cellData = useGameStore((state) => state.board[y][x]);
-  const clickCell = useGameStore((state) => state.clickCell);
-  const clickNumberCell = useGameStore((state) => state.clickNumberCell);
-  const flagCell = useGameStore((state) => state.flagCell);
+export const Cell: FC<CellProps> = memo(({ x, y }) => {
+  const { gameStatus, cellData, clickCell, clickNumberCell, flagCell } =
+    useGameStore(
+      ({ status, board, clickCell, clickNumberCell, flagCell }) => ({
+        gameStatus: status,
+        cellData: board[y][x],
+        clickCell,
+        clickNumberCell,
+        flagCell,
+      }),
+      shallow,
+    );
 
   const handleClickCell = () => clickCell({ x, y });
   const handleClickNumberCell = () => clickNumberCell({ x, y });
@@ -56,6 +62,11 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
         <CrossedMineIcon />
       </OpenCell>
     ))
+    .with(['Mine', 'win'], () => (
+      <ClosedCell aria-label={`Flagged cell`} isFlagged>
+        <FlagIcon />
+      </ClosedCell>
+    ))
     .with([P.when(isFlagged), P._], () => (
       <ClosedCell
         aria-label={`Flagged cell`}
@@ -77,6 +88,7 @@ export const Cell: FC<CellProps> = memo(({ x, y, gameStatus }) => {
       />
     ));
 });
+Cell.displayName = 'Cell';
 
 const openCellStyle = css`
   border-color: grey;

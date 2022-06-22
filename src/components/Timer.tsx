@@ -1,6 +1,6 @@
 import { EffectCallback, FC, useEffect, useState } from 'react';
 import { match } from 'ts-pattern';
-import { useGameStore } from '../store/store';
+import { useGameStore } from '../store/gameStore';
 import { Digits } from './Digits';
 
 export const Timer: FC = () => {

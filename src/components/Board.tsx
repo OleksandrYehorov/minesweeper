@@ -1,16 +1,17 @@
 import { FC } from 'react';
 import styled from 'styled-components';
-import { useGameStore } from '../store/store';
+import { useGameStore } from '../store/gameStore';
 import { invisibleScrollbar } from '../styles/invisibleScrollbar';
 import { invertedShadow } from '../styles/shadow';
+import { boardSizes } from '../utils/constants';
 import { preventDefault } from '../utils/preventDefault';
 import { Cell, OpenCell } from './Cell';
 
 const handleContextMenu = preventDefault();
 
 export const Board: FC = () => {
-  const board = useGameStore((state) => state.board);
-  const gameStatus = useGameStore((state) => state.status);
+  const difficulty = useGameStore((state) => state.difficulty);
+  const { height, width } = boardSizes[difficulty];
 
   return (
     <Container
@@ -18,10 +19,10 @@ export const Board: FC = () => {
       role="none"
       data-testid="board"
     >
-      {board.map((row, y) => (
-        <Row key={String(row) + y} data-testid="row">
-          {row.map((cell, x) => (
-            <Cell key={String(cell) + x} x={x} y={y} gameStatus={gameStatus} />
+      {Array.from({ length: height }).map((row, y) => (
+        <Row key={y} data-testid="row">
+          {Array.from({ length: width }).map((_, x) => (
+            <Cell key={`x: ${x}, y: ${y}`} x={x} y={y} />
           ))}
         </Row>
       ))}
