@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { invertedShadow, shadow } from '../styles/shadow';
 import { Difficulty, difficultyLevels } from '../utils/constants';
 import { useQueryString } from '../utils/useQueryString';
-import { useGameStore } from '../store/store';
+import { useGameStore } from '../store/gameStore';
 
 interface ButtonProps {
   active?: boolean;
@@ -51,6 +51,7 @@ const Select = styled.div`
   flex-direction: column;
 `;
 
+// TODO: fix text color
 const Button = styled.button<ButtonProps>`
   ${shadow}
   opacity: ${({ active }) => (active ? 1 : 0.6)};

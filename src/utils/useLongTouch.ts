@@ -7,7 +7,7 @@ type LongTouchProps = Required<
   >
 >;
 
-export const LONG_TOUCH_DELAY = 500;
+export const LONG_TOUCH_DELAY = 300;
 
 export const useLongTouch = (
   onLongPress: (event: React.TouchEvent<HTMLElement>) => void,
@@ -19,7 +19,7 @@ export const useLongTouch = (
     (event: React.TouchEvent<HTMLElement>) => {
       timeout.current = setTimeout(() => onLongPress(event), delay);
     },
-    [onLongPress, delay],
+    [delay, onLongPress],
   );
 
   const onTouchEnd = useCallback(() => {
