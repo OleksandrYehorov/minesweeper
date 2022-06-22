@@ -50,7 +50,6 @@ const Select = styled.div`
   flex-direction: column;
 `;
 
-// TODO: fix text color
 const Button = styled.button<ButtonProps>`
   ${shadow}
   opacity: ${({ active }) => (active ? 1 : 0.6)};
@@ -60,4 +59,5 @@ const Button = styled.button<ButtonProps>`
   cursor: pointer;
   text-transform: capitalize;
   flex-grow: 1;
+  color: black;
 `;
