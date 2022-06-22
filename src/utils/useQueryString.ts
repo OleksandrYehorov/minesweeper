@@ -29,7 +29,7 @@ export const useQueryString = <T extends Stringifiable>(
   key: string,
   initialValue: T,
 ): readonly [T, (newValue: T) => void] => {
-  const [value, setValue] = useState(getQueryStringValue(key) ?? initialValue);
+  const [value, setValue] = useState(getQueryStringValue(key) || initialValue);
 
   const onSetValue = useCallback(
     (newValue: T) => {

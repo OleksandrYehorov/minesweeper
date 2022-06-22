@@ -12,7 +12,6 @@ interface ButtonProps {
 export const DifficultySelect: FC = () => {
   const difficultyState = useGameStore((state) => state.difficulty);
   const initGame = useGameStore((state) => state.initGame);
-  // TODO: validate "difficulty" param value
   const [difficultyQuery, setDifficultyQuery] = useQueryString<Difficulty>(
     'difficulty',
     'beginner',
