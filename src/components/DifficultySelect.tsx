@@ -3,15 +3,16 @@ import styled from 'styled-components';
 import { invertedShadow, shadow } from '../styles/shadow';
 import { Difficulty, difficultyLevels } from '../utils/constants';
 import { useQueryString } from '../utils/useQueryString';
-import { useGameStore } from '../store/gameStore';
+import { gameState, initGame } from '../state/gameState';
+import { useSnapshot } from 'valtio';
 
 interface ButtonProps {
   active?: boolean;
 }
 
 export const DifficultySelect: FC = () => {
-  const difficultyState = useGameStore((state) => state.difficulty);
-  const initGame = useGameStore((state) => state.initGame);
+  const { difficulty } = useSnapshot(gameState);
+  // TODO: consider using valtio subscribeKey
   const [difficultyQuery, setDifficultyQuery] = useQueryString<Difficulty>(
     'difficulty',
     'beginner',
@@ -19,10 +20,11 @@ export const DifficultySelect: FC = () => {
 
   const handleClick = useCallback(
     (difficulty: Difficulty) => {
+      // TODO: resize window https://web.dev/learn/pwa/windows/
       initGame(difficulty);
       setDifficultyQuery(difficulty);
     },
-    [initGame, setDifficultyQuery],
+    [setDifficultyQuery],
   );
 
   useEffect(() => {
@@ -31,13 +33,13 @@ export const DifficultySelect: FC = () => {
 
   return (
     <Select>
-      {difficultyLevels.map((difficulty) => (
+      {difficultyLevels.map((difficultyLevel) => (
         <Button
-          key={difficulty}
-          active={difficultyState === difficulty}
-          onClick={() => handleClick(difficulty)}
+          key={difficultyLevel}
+          active={difficulty === difficultyLevel}
+          onClick={() => handleClick(difficultyLevel)}
         >
-          {difficulty}
+          {difficultyLevel}
         </Button>
       ))}
     </Select>

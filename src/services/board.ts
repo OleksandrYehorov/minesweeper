@@ -1,11 +1,11 @@
-import { minesMockData } from '../utils/minesMockData';
-import { Difficulty, boardSizes, Coords } from '../utils/constants';
+import { match } from 'ts-pattern';
+import { GameState } from '../state/gameState';
+import { boardSizes, Coords, Difficulty } from '../utils/constants';
 import { getRandomInteger } from '../utils/getRandomInteger';
-import { GameCell, isFlagged, isMine, isNumberCell } from './cell';
-import { GameState } from '../store/gameStore';
+import { minesMockData } from '../utils/minesMockData';
 import { now } from '../utils/now';
 import { Analytics } from './analytics';
-import { match } from 'ts-pattern';
+import { GameCell, isFlagged, isMine, isNumberCell, NumberCell } from './cell';
 
 export type GameBoard = GameCell[][];
 
@@ -58,12 +58,11 @@ const getAdjacentCoords = (board: GameBoard, { x, y }: Coords): Coords[] =>
   ].filter(({ x, y }) => board[y]?.[x] != null);
 
 export const openCell = (state: GameState, { x, y }: Coords): boolean => {
-  const cell = state.board[y][x];
   const visited = new Set<string>();
 
-  if (isNumberCell(cell)) return true;
+  if (isNumberCell(state.board[y][x])) return true;
 
-  if (isMine(cell)) {
+  if (isMine(state.board[y][x])) {
     state.board[y][x] = 'ExplodedMine';
     return false;
   }
@@ -79,7 +78,7 @@ export const openCell = (state: GameState, { x, y }: Coords): boolean => {
       .map(getCell(state.board))
       .filter(isMine).length;
 
-    state.board[y][x] = adjacentMines as GameCell;
+    state.board[y][x] = adjacentMines as NumberCell;
     state.openCellsCount++;
     visited.add(`${x}${y}`);
 

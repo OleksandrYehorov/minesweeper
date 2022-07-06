@@ -5,7 +5,8 @@ import { invertedShadow, shadow } from '../styles/shadow';
 import dizzyFace from '../images/dizzy-face.png';
 import smilingFace from '../images/smiling-face.png';
 import smilingFaceWithSunglasses from '../images/smiling-face-with-sunglasses.png';
-import { GameStatus, useGameStore } from '../store/gameStore';
+import { gameState, GameStatus, initGame } from '../state/gameState';
+import { useSnapshot } from 'valtio';
 
 const emojisPattern = (status: GameStatus) =>
   match(status)
@@ -21,9 +22,8 @@ const emojisPattern = (status: GameStatus) =>
     .run();
 
 export const StartGameButton: FC = () => {
-  const gameStatus = useGameStore((state) => state.status);
-  const initGame = useGameStore((state) => state.initGame);
-  const emoji = emojisPattern(gameStatus);
+  const { status } = useSnapshot(gameState);
+  const emoji = emojisPattern(status);
 
   const handleClick = () => initGame();
 

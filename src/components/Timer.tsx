@@ -1,16 +1,18 @@
 import { EffectCallback, FC, useEffect, useState } from 'react';
 import { match } from 'ts-pattern';
-import { useGameStore } from '../store/gameStore';
+import { useSnapshot } from 'valtio';
+import { gameState } from '../state/gameState';
 import { Digits } from './Digits';
 
 export const Timer: FC = () => {
+  const { status } = useSnapshot(gameState);
   const [value, setValue] = useState(0);
-  const gameStatus = useGameStore((state) => state.status);
 
+  // TODO: make precise
   useEffect(() => {
     let interval: number | undefined;
 
-    return match(gameStatus)
+    return match(status)
       .with('playing', (): ReturnType<EffectCallback> => {
         interval = window.setInterval(() => {
           setValue((stateValue) => stateValue + 1);
@@ -25,7 +27,7 @@ export const Timer: FC = () => {
         setValue(0);
       })
       .run();
-  }, [gameStatus]);
+  }, [status]);
 
   return <Digits value={value} aria-label="timer" />;
 };

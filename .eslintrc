@@ -2,7 +2,8 @@
   "extends": [
     "plugin:@typescript-eslint/recommended",
     "prettier",
-    "plugin:styled-components-a11y/strict"
+    "plugin:styled-components-a11y/strict",
+    "plugin:valtio/recommended"
   ],
   "plugins": [
     "react",
@@ -26,7 +27,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": [".vite.config.ts", "dev-dist"],
+  "ignorePatterns": [".vite.config.ts", "dist", "dev-dist"],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
@@ -42,6 +43,7 @@
     "no-param-reassign": "off",
     "consistent-return": "off",
     "no-plusplus": "off",
+    // TODO: check vite implementation of this
     // "no-restricted-imports": [
     //   "error",
     //   {
@@ -53,6 +55,7 @@
     "react/jsx-props-no-spreading": "off",
     "no-restricted-syntax": "off",
     "@typescript-eslint/no-this-alias": "off",
-    "@typescript-eslint/no-namespace": "off"
+    "@typescript-eslint/no-namespace": "off",
+    "valtio/state-snapshot-rule": "off" // TODO: check it
   }
 }
