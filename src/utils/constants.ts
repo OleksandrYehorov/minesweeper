@@ -21,6 +21,8 @@ export const boardSizes: Record<Difficulty, BoardData> = {
   // ultimate: new BoardData(128, 72, 720 * 2),
 };
 
+export const chunkSize = new BoardData(16, 16, 40);
+
 export interface Coords {
   x: number;
   y: number;
