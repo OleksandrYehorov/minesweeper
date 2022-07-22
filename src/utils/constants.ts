@@ -2,16 +2,23 @@ export const difficultyLevels = ['beginner', 'intermediate', 'expert'] as const;
 
 export type Difficulty = typeof difficultyLevels[number];
 
-export interface BoardData {
-  width: number;
-  height: number;
-  mines: number;
+class BoardData {
+  public readonly totalCellsCount: number;
+
+  constructor(
+    public readonly width: number,
+    public readonly height: number,
+    public readonly mines: number,
+  ) {
+    this.totalCellsCount = height * width;
+  }
 }
 
 export const boardSizes: Record<Difficulty, BoardData> = {
-  beginner: { width: 9, height: 9, mines: 10 },
-  intermediate: { width: 16, height: 16, mines: 40 },
-  expert: { width: 30, height: 16, mines: 99 },
+  beginner: new BoardData(9, 9, 10),
+  intermediate: new BoardData(16, 16, 40),
+  expert: new BoardData(30, 16, 99),
+  // ultimate: new BoardData(128, 72, 720 * 2),
 };
 
 export interface Coords {

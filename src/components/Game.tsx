@@ -23,6 +23,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-width: 100%;
-  max-height: 100%;
+  max-width: calc(100% - 2rem);
+  max-height: calc(100% - 2rem);
+  @media (max-width: 768px) {
+    max-width: calc(100% - 1rem);
+    max-height: calc(100% - 1rem);
+  }
 `;

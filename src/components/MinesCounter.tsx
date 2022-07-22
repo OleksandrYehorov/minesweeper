@@ -1,15 +1,15 @@
 import { FC } from 'react';
-import { isFlagged } from '../services/cell';
-import { useGameStore } from '../store/store';
+import { useGameStore } from '../store/gameStore';
 import { boardSizes } from '../utils/constants';
 import { Digits } from './Digits';
 
 export const MinesCounter: FC = () => {
-  const difficulty = useGameStore((store) => store.difficulty);
-  const board = useGameStore((store) => store.board);
+  const flagsCount = useGameStore(
+    (state) => state.flaggedEmptyCount + state.flaggedMinesCount,
+  );
+  const difficulty = useGameStore((state) => state.difficulty);
   const { mines } = boardSizes[difficulty];
-  const flaggedCellsCount = board.flat().filter(isFlagged).length;
-  const minesLeft = mines - flaggedCellsCount;
+  const minesLeft = mines - flagsCount;
 
   return <Digits value={minesLeft} aria-label="mines count" />;
 };

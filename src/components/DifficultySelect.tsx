@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { invertedShadow, shadow } from '../styles/shadow';
 import { Difficulty, difficultyLevels } from '../utils/constants';
 import { useQueryString } from '../utils/useQueryString';
-import { useGameStore } from '../store/store';
+import { useGameStore } from '../store/gameStore';
 
 interface ButtonProps {
   active?: boolean;
@@ -12,7 +12,6 @@ interface ButtonProps {
 export const DifficultySelect: FC = () => {
   const difficultyState = useGameStore((state) => state.difficulty);
   const initGame = useGameStore((state) => state.initGame);
-  // TODO: validate "difficulty" param value
   const [difficultyQuery, setDifficultyQuery] = useQueryString<Difficulty>(
     'difficulty',
     'beginner',
@@ -60,4 +59,5 @@ const Button = styled.button<ButtonProps>`
   cursor: pointer;
   text-transform: capitalize;
   flex-grow: 1;
+  color: black;
 `;

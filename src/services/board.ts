@@ -1,7 +1,11 @@
 import { minesMockData } from '../utils/minesMockData';
 import { Difficulty, boardSizes, Coords } from '../utils/constants';
 import { getRandomInteger } from '../utils/getRandomInteger';
-import { GameCell, isClosed, isFlagged, isMine, isNumberCell } from './cell';
+import { GameCell, isFlagged, isMine, isNumberCell } from './cell';
+import { GameState } from '../store/gameStore';
+import { now } from '../utils/now';
+import { Analytics } from './analytics';
+import { match } from 'ts-pattern';
 
 export type GameBoard = GameCell[][];
 
@@ -41,104 +45,174 @@ export const generateMines = (
   }
 };
 
-export const getAdjacentCoords =
-  (board: GameBoard) =>
-  ({ x, y }: Coords): Coords[] =>
-    [
-      { x: x - 1, y: y - 1 }, // top left
-      { x, y: y - 1 }, // top
-      { x: x + 1, y: y - 1 }, // top right
-      { x: x - 1, y }, // left
-      { x: x + 1, y }, // right
-      { x: x - 1, y: y + 1 }, // bottom left
-      { x, y: y + 1 }, // bottom
-      { x: x + 1, y: y + 1 }, // bottom right
-    ].filter((coords) => board[coords.y]?.[coords.x] != null);
+const getAdjacentCoords = (board: GameBoard, { x, y }: Coords): Coords[] =>
+  [
+    { x: x - 1, y: y - 1 }, // top left
+    { x, y: y - 1 }, // top
+    { x: x + 1, y: y - 1 }, // top right
+    { x: x - 1, y }, // left
+    { x: x + 1, y }, // right
+    { x: x - 1, y: y + 1 }, // bottom left
+    { x, y: y + 1 }, // bottom
+    { x: x + 1, y: y + 1 }, // bottom right
+  ].filter(({ x, y }) => board[y]?.[x] != null);
 
-export const getAdjacentCells =
-  (board: GameBoard) =>
-  (coords: Coords): GameCell[] =>
-    getAdjacentCoords(board)(coords).map(({ x, y }) => board[y][x]);
+export const openCell = (state: GameState, { x, y }: Coords): boolean => {
+  const cell = state.board[y][x];
+  const visited = new Set<string>();
 
-export const countAdjacentMines =
-  (board: GameBoard) =>
-  ({ x, y }: Coords): number =>
-    getAdjacentCells(board)({ x, y }).filter(isMine).length;
+  if (isNumberCell(cell)) return true;
 
-export const openCell =
-  (board: GameBoard) =>
-  (coords: Coords): boolean => {
-    const cell = board[coords.y][coords.x];
+  if (isMine(cell)) {
+    state.board[y][x] = 'ExplodedMine';
+    return false;
+  }
 
-    if (isMine(cell)) {
-      board[coords.y][coords.x] = 'ExplodedMine';
-      return false;
-    }
+  const cellsToVisit = [{ x, y }];
 
-    const cellsToVisit = [coords];
+  while (cellsToVisit.length > 0) {
+    const { x, y } = cellsToVisit.shift() as Coords;
 
-    while (cellsToVisit.length > 0) {
-      const { x, y } = cellsToVisit.shift() as Coords;
+    if (visited.has(`${x}${y}`)) continue;
 
-      const adjacentMines = countAdjacentMines(board)({ y, x });
-      board[y][x] = adjacentMines as GameCell;
+    const adjacentMines = getAdjacentCoords(state.board, { x, y })
+      .map(getCell(state.board))
+      .filter(isMine).length;
 
-      if (adjacentMines === 0) {
-        cellsToVisit.push(
-          ...getAdjacentCoords(board)({ x, y }).filter(
-            ({ x, y }) => board[y][x] === 'Empty' || board[y][x] === 'Mine',
-          ),
-        );
-      }
-    }
+    state.board[y][x] = adjacentMines as GameCell;
+    state.openCellsCount++;
+    visited.add(`${x}${y}`);
 
-    return true;
-  };
-
-export const checkWin =
-  (board: GameBoard) =>
-  (difficulty: Difficulty): boolean => {
-    const { mines } = boardSizes[difficulty];
-
-    const closedCells = board.flat().filter(isClosed);
-
-    return closedCells.length === mines && closedCells.every(isMine);
-  };
-
-export const flagRemainingMines = (board: GameBoard): void => {
-  for (let y = 0; y < board.length; y++) {
-    for (let x = 0; x < board[0].length; x++) {
-      if (board[y][x] === 'Mine') board[y][x] = 'FlaggedMine';
+    if (adjacentMines === 0) {
+      const nextCellsToVisit = getAdjacentCoords(state.board, { x, y }).filter(
+        ({ x, y }) => {
+          const cell = state.board[y][x];
+          return cell === 'Empty' || cell === 'Mine';
+        },
+      );
+      cellsToVisit.push(...nextCellsToVisit);
     }
   }
+
+  return true;
 };
 
-export const openAdjacentCells =
+export const checkWin = (state: GameState): boolean => {
+  const { mines } = boardSizes[state.difficulty];
+
+  return mines + state.openCellsCount === state.totalCellsCount;
+};
+
+const getCell =
   (board: GameBoard) =>
-  ({ x, y }: Coords): boolean => {
-    const cell = board[y][x];
+  ({ x, y }: Coords) =>
+    board[y][x];
 
-    if (isNumberCell(cell) && cell !== 0) {
-      const adjacentCells = getAdjacentCells(board)({ x, y });
-      const adjacentFlaggedCellsCount = adjacentCells.filter(isFlagged).length;
+export const openAdjacentCells = (
+  state: GameState,
+  { x, y }: Coords,
+): boolean => {
+  const cell = state.board[y][x];
 
-      if (adjacentFlaggedCellsCount === cell) {
-        const adjacentCellsCoords = getAdjacentCoords(board)({ x, y });
+  if (isNumberCell(cell) && cell !== 0) {
+    const adjacentCellsCoords = getAdjacentCoords(state.board, { x, y });
+    const adjacentCells = adjacentCellsCoords.map(getCell(state.board));
+    const adjacentFlaggedCellsCount = adjacentCells.filter(isFlagged).length;
 
-        const cellsToOpen = adjacentCellsCoords
-          .map<[GameCell, Coords]>((coords) => [
-            board[coords.y][coords.x],
-            coords,
-          ])
-          .filter(([cell]) => cell === 'Empty' || cell === 'Mine');
+    if (adjacentFlaggedCellsCount === cell) {
+      const cellsToOpen = adjacentCellsCoords
+        .map<[GameCell, Coords]>((coords) => [
+          getCell(state.board)(coords),
+          coords,
+        ])
+        .filter(([cell]) => cell === 'Empty' || cell === 'Mine')
+        .map(([, coords]) => coords);
 
-        const success = cellsToOpen
-          .map(([, coords]) => openCell(board)({ x: coords.x, y: coords.y }))
-          .every((status) => status);
+      const success = cellsToOpen
+        .map((coords) => openCell(state, coords))
+        .every((status) => status);
 
-        return success;
-      }
+      return success;
     }
+  }
 
-    return true;
-  };
+  return true;
+};
+
+function checkGameEnd(state: GameState, success: boolean) {
+  if (success) {
+    if (checkWin(state)) {
+      state.status = 'win';
+      Analytics.logWinGame({
+        difficulty: state.difficulty,
+        startedAt: state.startedAt,
+      });
+    }
+  } else {
+    state.status = 'lose';
+    Analytics.logLoseGame({
+      difficulty: state.difficulty,
+      startedAt: state.startedAt,
+    });
+  }
+}
+
+export const initGame = (state: GameState, difficulty: Difficulty) => {
+  state.status = 'starting';
+  state.difficulty = difficulty;
+  state.board = createBoard(difficulty);
+  state.totalCellsCount =
+    boardSizes[difficulty].height * boardSizes[difficulty].width;
+  state.openCellsCount = 0;
+  state.flaggedMinesCount = 0;
+  state.flaggedEmptyCount = 0;
+  state.startedAt = now();
+};
+
+export const clickCell = (state: GameState, { x, y }: Coords) => {
+  if (state.status === 'win' || state.status === 'lose') {
+    return;
+  }
+
+  if (state.status === 'starting') {
+    generateMines(state.board, state.difficulty, { x, y });
+
+    state.status = 'playing';
+    state.startedAt = now();
+
+    Analytics.logStartGame({ difficulty: state.difficulty });
+  }
+
+  const success = openCell(state, { x, y });
+
+  checkGameEnd(state, success);
+};
+
+export const clickNumberCell = (state: GameState, { x, y }: Coords) => {
+  const success = openAdjacentCells(state, { x, y });
+
+  checkGameEnd(state, success);
+};
+
+export const flagCell = (state: GameState, { x, y }: Coords) => {
+  if (state.status === 'playing') {
+    state.board[y][x] = match<GameCell, GameCell>(state.board[y][x])
+      .with('Empty', () => {
+        state.flaggedEmptyCount++;
+        return 'FlaggedEmpty';
+      })
+      .with('Mine', () => {
+        state.flaggedMinesCount++;
+        return 'FlaggedMine';
+      })
+      .with('FlaggedEmpty', () => {
+        state.flaggedEmptyCount--;
+        return 'Empty';
+      })
+      .with('FlaggedMine', () => {
+        state.flaggedMinesCount--;
+        return 'Mine';
+      })
+      .run();
+  }
+};

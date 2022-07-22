@@ -5,7 +5,7 @@ import { invertedShadow, shadow } from '../styles/shadow';
 import dizzyFace from '../images/dizzy-face.png';
 import smilingFace from '../images/smiling-face.png';
 import smilingFaceWithSunglasses from '../images/smiling-face-with-sunglasses.png';
-import { GameStatus, useGameStore } from '../store/store';
+import { GameStatus, useGameStore } from '../store/gameStore';
 
 const emojisPattern = (status: GameStatus) =>
   match(status)
