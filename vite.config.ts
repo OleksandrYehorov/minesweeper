@@ -44,7 +44,7 @@ const manifest: Partial<ManifestOptions> = {
       description: 'Play expert level',
       url: '/minesweeper/?difficulty=expert',
     },
-  ] as unknown as [],
+  ] as ManifestOptions['shortcuts'],
 };
 
 export default defineConfig({
