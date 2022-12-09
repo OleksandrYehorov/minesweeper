@@ -1,4 +1,6 @@
+import { pipe } from 'remeda';
 import create from 'zustand';
+import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import {
   clickCell,
@@ -29,8 +31,8 @@ export type GameState = {
   flagCell({ x, y }: Coords): void;
 };
 
-export const useGameStore = create<GameState>()(
-  immer((set, get) => ({
+export const useGameStore = pipe(
+  immer<GameState>((set, get) => ({
     status: 'starting' as GameStatus,
     difficulty: initialDifficultyLevel,
     board: createBoard(initialDifficultyLevel),
@@ -60,4 +62,6 @@ export const useGameStore = create<GameState>()(
       });
     },
   })),
+  devtools,
+  create(),
 );
