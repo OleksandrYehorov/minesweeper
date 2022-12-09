@@ -1,0 +1,88 @@
+/* :root {
+	font-family: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	--font-mono: 'Fira Mono', monospace;
+	--pure-white: #ffffff;
+	--primary-color: #b9c6d2;
+	--secondary-color: #d0dde9;
+	--tertiary-color: #edf0f8;
+	--accent-color: #ff3e00;
+	--heading-color: rgba(0, 0, 0, 0.7);
+	--text-color: #444444;
+	--background-without-opacity: rgba(255, 255, 255, 0.7);
+	--column-width: 42rem;
+	--column-margin-top: 4rem;
+} */
+
+.shadow {
+	background-color: lightgray;
+	border-width: 0.2rem;
+	border-style: solid;
+	border-top-color: white;
+	border-left-color: white;
+	border-bottom-color: grey;
+	border-right-color: grey;
+}
+
+.inverted-shadow {
+	background-color: lightgray;
+	border-width: 0.2rem;
+	border-style: solid;
+	border-top-color: grey;
+	border-left-color: grey;
+	border-bottom-color: white;
+	border-right-color: white;
+}
+
+.invisible-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.invisible-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+@font-face {
+	font-family: 'DSEG7-Classic';
+	src: url(/node_modules/dseg/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff2) format('woff2'),
+		url(/node_modules/dseg/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff) format('woff'),
+		url(/node_modules/dseg/fonts/DSEG7-Classic/DSEG7Classic-Bold.ttf) format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
+html,
+body,
+#root {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	background-color: #008080;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 30%;
+	overscroll-behavior: none;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+		'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+img {
+	pointer-events: none;
+}
+
+html,
+body {
+	position: fixed;
+	overflow: hidden;
+}
+
+#root {
+	width: 100vw;
+	height: 100vh;
+	overflow-y: auto;
+}
