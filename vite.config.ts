@@ -1,6 +1,7 @@
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { ManifestOptions, VitePWA } from 'vite-plugin-pwa';
-import react from '@vitejs/plugin-react';
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 
 const manifest: Partial<ManifestOptions> = {
   short_name: 'Minesweeper',
@@ -51,6 +52,7 @@ export default defineConfig({
   base: '/minesweeper/',
   plugins: [
     react(),
+    vanillaExtractPlugin(),
     VitePWA({
       devOptions: {
         enabled: true,

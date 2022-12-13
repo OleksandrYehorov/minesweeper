@@ -1,26 +1,10 @@
 import { FC } from 'react';
-import styled from 'styled-components';
-
-const numbersColors = [
-  '#0000fd',
-  '#017e00',
-  '#fd0000',
-  '#010180',
-  '#830003',
-  '#008080',
-  '#000000',
-  '#808080',
-] as const;
+import { number } from './MinesNumber.css';
 
 export const MinesNumber: FC<{ value: number }> = ({ value }) => {
-  const color = numbersColors[value - 1];
+  const color = (value - 1) as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
-  return value === 0 ? null : <Number color={color}>{value}</Number>;
+  if (value === 0) return null;
+
+  return <span className={number({ color })}>{value}</span>;
 };
-
-const Number = styled.span<{ color: typeof numbersColors[number] }>`
-  color: ${({ color }) => color};
-  font-family: 'Lato', sans-serif;
-  font-weight: 900;
-  font-size: 1.2rem;
-`;
