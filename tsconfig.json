@@ -21,7 +21,8 @@
       "node",
       "@testing-library/cypress",
       "vite-plugin-pwa/client"
-    ]
+    ],
+    "baseUrl": "src"
   },
   "include": ["src", "cypress", "vite.config.ts", "cypress.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]

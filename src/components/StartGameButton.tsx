@@ -1,57 +1,44 @@
 import { FC } from 'react';
-import styled from 'styled-components';
 import { match } from 'ts-pattern';
-import { invertedShadow, shadow } from '../styles/shadow';
 import dizzyFace from '../images/dizzy-face.png';
-import smilingFace from '../images/smiling-face.png';
 import smilingFaceWithSunglasses from '../images/smiling-face-with-sunglasses.png';
+import smilingFace from '../images/smiling-face.png';
 import { GameStatus, useGameStore } from '../store/gameStore';
+import { button } from './StartGameButton.css';
+
+const width = 28;
+const height = 28;
 
 const emojisPattern = (status: GameStatus) =>
   match(status)
-    .with('starting', () => <Emoji src={smilingFace} alt="smiling face" />)
-    .with('playing', () => <Emoji src={smilingFace} alt="smiling face" />)
+    .with('starting', () => (
+      <img src={smilingFace} alt="smiling face" width={width} height={height} />
+    ))
+    .with('playing', () => (
+      <img src={smilingFace} width={width} height={height} alt="smiling face" />
+    ))
     .with('win', () => (
-      <Emoji
+      <img
         src={smilingFaceWithSunglasses}
         alt="smiling face with sunglasses"
+        width={width}
+        height={height}
       />
     ))
-    .with('lose', () => <Emoji src={dizzyFace} alt="dizzy face" />)
+    .with('lose', () => (
+      <img src={dizzyFace} alt="dizzy face" width={width} height={height} />
+    ))
     .run();
 
 export const StartGameButton: FC = () => {
   const gameStatus = useGameStore((state) => state.status);
   const initGame = useGameStore((state) => state.initGame);
-  const emoji = emojisPattern(gameStatus);
 
   const handleClick = () => initGame();
 
   return (
-    <Button aria-label="restart" onClick={handleClick}>
-      {emoji}
-    </Button>
+    <button aria-label="restart" onClick={handleClick} className={button}>
+      {emojisPattern(gameStatus)}
+    </button>
   );
 };
-
-const Button = styled.button`
-  ${shadow}
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  width: 2.6rem;
-  height: 2.6rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  outline: none;
-
-  &:active {
-    ${invertedShadow}
-  }
-`;
-
-const Emoji = styled.img`
-  width: 80%;
-`;

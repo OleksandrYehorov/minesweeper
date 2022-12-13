@@ -1,13 +1,8 @@
 import { FC, useCallback, useEffect } from 'react';
-import styled from 'styled-components';
-import { invertedShadow, shadow } from '../styles/shadow';
+import { useGameStore } from '../store/gameStore';
 import { Difficulty, difficultyLevels } from '../utils/constants';
 import { useQueryString } from '../utils/useQueryString';
-import { useGameStore } from '../store/gameStore';
-
-interface ButtonProps {
-  active?: boolean;
-}
+import { button, select } from './DifficultySelect.css';
 
 export const DifficultySelect: FC = () => {
   const difficultyState = useGameStore((state) => state.difficulty);
@@ -30,34 +25,16 @@ export const DifficultySelect: FC = () => {
   }, [difficultyQuery, handleClick]);
 
   return (
-    <Select>
+    <div className={select}>
       {difficultyLevels.map((difficulty) => (
-        <Button
+        <button
           key={difficulty}
-          active={difficultyState === difficulty}
           onClick={() => handleClick(difficulty)}
+          className={button({ active: difficultyState === difficulty })}
         >
           {difficulty}
-        </Button>
+        </button>
       ))}
-    </Select>
+    </div>
   );
 };
-
-const Select = styled.div`
-  ${invertedShadow}
-  display: flex;
-  flex-direction: column;
-`;
-
-const Button = styled.button<ButtonProps>`
-  ${shadow}
-  opacity: ${({ active }) => (active ? 1 : 0.6)};
-  margin: 0;
-  padding: 0.2rem;
-  outline: none;
-  cursor: pointer;
-  text-transform: capitalize;
-  flex-grow: 1;
-  color: black;
-`;
