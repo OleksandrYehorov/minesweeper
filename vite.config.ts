@@ -1,6 +1,7 @@
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { ManifestOptions, VitePWA } from 'vite-plugin-pwa';
-import react from '@vitejs/plugin-react';
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 
 const manifest: Partial<ManifestOptions> = {
   short_name: 'Minesweeper',
@@ -44,13 +45,14 @@ const manifest: Partial<ManifestOptions> = {
       description: 'Play expert level',
       url: '/minesweeper/?difficulty=expert',
     },
-  ] as unknown as [],
+  ] as ManifestOptions['shortcuts'],
 };
 
 export default defineConfig({
   base: '/minesweeper/',
   plugins: [
     react(),
+    vanillaExtractPlugin(),
     VitePWA({
       devOptions: {
         enabled: true,

@@ -1,49 +1,21 @@
 import { FC } from 'react';
-import styled from 'styled-components';
-import { invertedShadow } from '../styles/shadow';
+import { center, header, left, right } from './Header.css';
 import { MinesCounter } from './MinesCounter';
 import { StartGameButton } from './StartGameButton';
 import { Timer } from './Timer';
 
 export const Header: FC = () => {
   return (
-    <Container>
-      <Left>
+    <header className={header}>
+      <div className={left}>
         <MinesCounter />
-      </Left>
-      <Center>
+      </div>
+      <div className={center}>
         <StartGameButton />
-      </Center>
-      <Right>
+      </div>
+      <div className={right}>
         <Timer />
-      </Right>
-    </Container>
+      </div>
+    </header>
   );
 };
-
-const Container = styled.header`
-  ${invertedShadow}
-  padding: 0.2rem;
-  display: flex;
-`;
-
-const Left = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex: 1;
-  overflow: hidden;
-`;
-
-const Center = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Right = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex: 1;
-  overflow: hidden;
-`;

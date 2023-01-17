@@ -1,4 +1,5 @@
 import { defineConfig } from 'cypress';
+import viteConfig from './vite.config';
 
 export default defineConfig({
   component: {
@@ -8,9 +9,11 @@ export default defineConfig({
       framework: 'react',
       bundler: 'vite',
       viteConfig: {
+        ...viteConfig,
         mode: 'test',
       },
     },
     video: false,
+    screenshotOnRunFailure: false,
   },
 });

@@ -163,8 +163,4 @@ export const minesMockData = {
       { x: 29, y: 3 },
     ],
   },
-  // ultimate: {
-  //   firstClick: { x: 4, y: 4 },
-  //   mines: [],
-  // },
 };

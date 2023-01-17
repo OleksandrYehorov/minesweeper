@@ -48,7 +48,7 @@ describe('number cell', () => {
     ];
 
     for (const coords of cellsCoords) {
-      cy.findCellByCoords(coords).should('have.attr', 'data-open', 'false');
+      cy.findCellByCoords(coords).should('not.have.attr', 'data-open');
     }
   });
 });

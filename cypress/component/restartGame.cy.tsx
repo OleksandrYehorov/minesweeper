@@ -8,9 +8,8 @@ describe('restart game', () => {
     cy.findCellByCoords(minesMockData.beginner.firstClick).click();
     cy.findByRole('button', { name: /restart/i }).click();
     cy.findCellByCoords(minesMockData.beginner.firstClick).should(
-      'have.attr',
+      'not.have.attr',
       'data-open',
-      'false',
     );
   });
 });
