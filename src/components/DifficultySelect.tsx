@@ -1,35 +1,29 @@
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { Difficulty, difficultyLevels } from '../utils/constants';
-import { useQueryString } from '../utils/useQueryString';
+import { useSearchParams } from '../utils/useSearchParams';
 import { button, select } from './DifficultySelect.css';
+
+const initialDifficulty = 'beginner' as Difficulty;
 
 export const DifficultySelect: FC = () => {
   const difficultyState = useGameStore((state) => state.difficulty);
   const initGame = useGameStore((state) => state.initGame);
-  const [difficultyQuery, setDifficultyQuery] = useQueryString<Difficulty>(
+  const [difficulty, setDifficulty] = useSearchParams(
     'difficulty',
-    'beginner',
-  );
-
-  const handleClick = useCallback(
-    (difficulty: Difficulty) => {
-      initGame(difficulty);
-      setDifficultyQuery(difficulty);
-    },
-    [initGame, setDifficultyQuery],
+    initialDifficulty,
   );
 
   useEffect(() => {
-    handleClick(difficultyQuery);
-  }, [difficultyQuery, handleClick]);
+    initGame(difficulty);
+  }, [difficulty, initGame]);
 
   return (
     <div className={select}>
       {difficultyLevels.map((difficulty) => (
         <button
           key={difficulty}
-          onClick={() => handleClick(difficulty)}
+          onClick={() => setDifficulty(difficulty)}
           className={button({ active: difficultyState === difficulty })}
         >
           {difficulty}

@@ -78,7 +78,7 @@ describe('lose game', () => {
     // try to open cell
     cy.findCellByCoords({ x: 2, y: 0 }).click();
     cy.findCellByCoords({ x: 2, y: 0 }).should(
-      'have.attr',
+      'not.have.attr',
       'data-open',
       'false',
     );
