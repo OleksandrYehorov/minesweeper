@@ -8,8 +8,9 @@ const [openCellStyle, openCellStyleRules] = styleHelper({
   borderColor: 'grey',
   borderStyle: 'solid',
   borderWidth: '0',
-  borderTopWidth: '1px',
-  borderLeftWidth: '1px',
+  // 1px in rems is 0.0625rem
+  borderTopWidth: '0.0625rem',
+  borderLeftWidth: '0.0625rem',
   selectors: {
     [`${row} &:first-child`]: {
       borderLeftWidth: 0,
@@ -21,8 +22,9 @@ export const cell = recipe({
   base: [
     {
       boxSizing: 'border-box',
-      width: '28px',
-      height: '28px',
+      // 28px in rems is 1.75rem
+      width: '1.75rem',
+      height: '1.75rem',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -66,11 +68,13 @@ export const cell = recipe({
 });
 
 export const flagIcon = style({
-  width: '18px',
-  height: '18px',
+  // 18px in rems is 1.125rem
+  width: '1.125rem',
+  height: '1.125rem',
 });
 
 export const mineIcon = style({
-  width: '21px',
-  height: '21px',
+  // 21px in rems is 1.3125rem
+  width: '1.3125rem',
+  height: '1.3125rem',
 });
