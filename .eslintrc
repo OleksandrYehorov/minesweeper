@@ -1,15 +1,15 @@
 {
-  "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "plugin:styled-components-a11y/strict"
-  ],
   "plugins": [
     "react",
     "@typescript-eslint",
     "prettier",
-    "styled-components-a11y",
-    "react-hooks"
+    "react-hooks",
+    "jsx-a11y"
+  ],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:jsx-a11y/recommended"
   ],
   "env": {
     "browser": true,
@@ -35,20 +35,12 @@
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "import/prefer-default-export": "off",
     "jsx-a11y/control-has-associated-label": "error",
-    "styled-components-a11y/control-has-associated-label": "error",
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "react/prop-types": "off",
     "no-param-reassign": "off",
     "consistent-return": "off",
     "no-plusplus": "off",
-    // "no-restricted-imports": [
-    //   "error",
-    //   {
-    //     "name": "styled-components",
-    //     "message": "Please use 'styled-components/macro' instead."
-    //   }
-    // ],
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "no-restricted-syntax": "off",
