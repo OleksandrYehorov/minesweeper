@@ -4,7 +4,6 @@ import { minesMockData } from '../../src/utils/minesMockData';
 
 describe('lose game', () => {
   beforeEach(() => {
-    cy.wait(100); // TODO: investigate
     cy.mount(<App />);
     cy.findCellByCoords(minesMockData.beginner.firstClick).click();
   });

@@ -5,7 +5,6 @@ import { LONG_TOUCH_DELAY } from '../../src/utils/useLongTouch';
 describe('flag cell feature', () => {
   beforeEach(() => {
     cy.mount(<App />);
-    cy.wait(100); // TODO: investigate
     cy.findCellByCoords(minesMockData.beginner.firstClick).click();
     cy.findCellByCoords({ x: 6, y: 2 }).as('cell');
   });
