@@ -26,7 +26,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": [".vite.config.ts", "dev-dist"],
+  "ignorePatterns": [".vite.config.ts", "dev-dist", "dist", "node_modules"],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
