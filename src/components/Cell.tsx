@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 import { match, P } from 'ts-pattern';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import crossedMineImage from '../images/crossedMine.svg';
 import flagImage from '../images/flag.svg';
 import mineImage from '../images/mine.svg';

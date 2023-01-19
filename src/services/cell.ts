@@ -22,7 +22,7 @@ export type GameCell =
 
 const closed = ['Empty', 'Mine', 'FlaggedEmpty', 'FlaggedMine'] as const;
 
-export type ClosedCell = typeof closed[number];
+export type ClosedCell = (typeof closed)[number];
 
 export const isClosed = (cell: GameCell): cell is ClosedCell =>
   match(cell)
@@ -31,7 +31,7 @@ export const isClosed = (cell: GameCell): cell is ClosedCell =>
 
 const mines = ['Mine', 'FlaggedMine'] as const;
 
-export type MineCell = typeof mines[number];
+export type MineCell = (typeof mines)[number];
 
 export const isMine = (cell: GameCell): cell is MineCell =>
   match(cell)
@@ -40,7 +40,7 @@ export const isMine = (cell: GameCell): cell is MineCell =>
 
 const flagged = ['FlaggedEmpty', 'FlaggedMine'] as const;
 
-export type FlaggedCell = typeof flagged[number];
+export type FlaggedCell = (typeof flagged)[number];
 
 export const isFlagged = (cell: GameCell): cell is FlaggedCell =>
   match(cell)

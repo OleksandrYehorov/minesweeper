@@ -1,6 +1,6 @@
 export const difficultyLevels = ['beginner', 'intermediate', 'expert'] as const;
 
-export type Difficulty = typeof difficultyLevels[number];
+export type Difficulty = (typeof difficultyLevels)[number];
 
 class BoardData {
   public readonly totalCellsCount: number;

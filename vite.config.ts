@@ -66,7 +66,4 @@ export default defineConfig({
       manifest,
     }),
   ],
-  esbuild: {
-    logOverride: { 'this-is-undefined-in-esm': 'silent' },
-  },
 });
