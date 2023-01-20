@@ -1,5 +1,8 @@
 import { createRoot } from 'react-dom/client';
+import { disableZoom } from '../src/utils/disableZoom';
 import { App } from './App';
+
+disableZoom();
 
 const container = document.getElementById('root');
 if (container == null) {
