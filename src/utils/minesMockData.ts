@@ -1,3 +1,5 @@
+import { Coords, Difficulty } from './constants';
+
 export const minesMockData = {
   beginner: {
     firstClick: { x: 4, y: 4 },
@@ -163,4 +165,4 @@ export const minesMockData = {
       { x: 29, y: 3 },
     ],
   },
-};
+} satisfies Record<Difficulty, { firstClick: Coords; mines: Coords[] }>;

@@ -1,14 +1,14 @@
 import { intervalToDuration, formatDuration } from 'date-fns';
 import { Difficulty } from '../utils/constants';
 import { now } from '../utils/now';
-import { initializeApp } from 'firebase/app';
+import { FirebaseOptions, initializeApp } from 'firebase/app';
 import {
   getAnalytics,
   setAnalyticsCollectionEnabled,
   logEvent as firebaseLogEvent,
 } from 'firebase/analytics';
 
-const firebaseConfig = {
+const firebaseConfig: FirebaseOptions = {
   apiKey: 'AIzaSyDJdOEpo7tADYFOhGZwyHJrKQ66tLUZ_Sk',
   authDomain: 'minesweeper-12668.firebaseapp.com',
   projectId: 'minesweeper-12668',
