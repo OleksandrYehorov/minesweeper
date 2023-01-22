@@ -2,7 +2,9 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { ManifestOptions, VitePWA } from 'vite-plugin-pwa';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
-import autoprefixer from 'autoprefixer';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const autoprefixer = require('autoprefixer');
 
 const manifest: Partial<ManifestOptions> = {
   short_name: 'Minesweeper',

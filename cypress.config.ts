@@ -1,4 +1,5 @@
 import { defineConfig } from 'cypress';
+import { mergeConfig, UserConfig as ViteConfig } from 'vite';
 import viteConfig from './vite.config';
 
 export default defineConfig({
@@ -8,10 +9,7 @@ export default defineConfig({
     devServer: {
       framework: 'react',
       bundler: 'vite',
-      viteConfig: {
-        ...viteConfig,
-        mode: 'test',
-      },
+      viteConfig: mergeConfig(viteConfig, { mode: 'test' } as ViteConfig),
     },
     video: false,
     screenshotOnRunFailure: false,
