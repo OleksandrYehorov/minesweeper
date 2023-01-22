@@ -1,4 +1,4 @@
-import { DOMAttributes, useCallback, useRef } from 'react';
+import { DOMAttributes, useCallback, useMemo, useRef } from 'react';
 
 type LongTouchProps = Required<
   Pick<
@@ -28,9 +28,12 @@ export const useLongTouch = (
     }
   }, []);
 
-  return {
-    onTouchStart,
-    onTouchEnd,
-    onTouchCancel: onTouchEnd,
-  };
+  return useMemo(
+    () => ({
+      onTouchStart,
+      onTouchEnd,
+      onTouchCancel: onTouchEnd,
+    }),
+    [onTouchEnd, onTouchStart],
+  );
 };

@@ -4,12 +4,14 @@
     "@typescript-eslint",
     "prettier",
     "react-hooks",
-    "jsx-a11y"
+    "jsx-a11y",
+    "cypress"
   ],
   "extends": [
     "plugin:@typescript-eslint/recommended",
     "prettier",
-    "plugin:jsx-a11y/recommended"
+    "plugin:jsx-a11y/recommended",
+    "plugin:cypress/recommended"
   ],
   "env": {
     "browser": true,
