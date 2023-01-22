@@ -1,45 +1,41 @@
 import { App } from '../../src/App';
-import { Coords } from '../../src/utils/constants';
 import { minesMockData } from '../../src/utils/minesMockData';
+
+const minesCount = 10;
 
 describe('mines counter', () => {
   beforeEach(() => {
-    cy.wait(100);
     cy.mount(<App />);
     cy.findCellByCoords(minesMockData.beginner.firstClick).click();
   });
 
   it('shows remaining mines', () => {
-    cy.findByLabelText(/mines count/i).should('have.text', 10);
+    const flagsCount = 4;
 
-    cy.findCellByCoords({ x: 0, y: 0 }).rightclick();
-    cy.findCellByCoords({ x: 1, y: 0 }).rightclick();
+    cy.findByLabelText(/mines count/i).should('have.text', minesCount);
 
-    cy.findByLabelText(/mines count/i).should('have.text', 8);
+    cy.get('[data-open=false]')
+      .filter((i) => i < flagsCount)
+      .rightclick({ multiple: true });
+
+    cy.findByLabelText(/mines count/i).should(
+      'have.text',
+      minesCount - flagsCount,
+    );
   });
 
   it('shows negative count if there are more than 10 flags', () => {
-    cy.findByLabelText(/mines count/i).should('have.text', 10);
+    const flagsCount = minesCount + 3;
 
-    const coords: Coords[] = [
-      { x: 0, y: 0 },
-      { x: 1, y: 0 },
-      { x: 2, y: 0 },
-      { x: 3, y: 0 },
-      { x: 4, y: 0 },
-      { x: 5, y: 0 },
-      { x: 6, y: 0 },
-      { x: 7, y: 0 },
-      { x: 8, y: 0 },
-      { x: 0, y: 1 },
-      { x: 0, y: 2 },
-      { x: 0, y: 3 },
-    ];
+    cy.findByLabelText(/mines count/i).should('have.text', minesCount);
 
-    for (const { x, y } of coords) {
-      cy.findCellByCoords({ x, y }).rightclick();
-    }
+    cy.get('[data-open=false]')
+      .filter((i) => i < flagsCount)
+      .rightclick({ multiple: true });
 
-    cy.findByLabelText(/mines count/i).should('have.text', -2);
+    cy.findByLabelText(/mines count/i).should(
+      'have.text',
+      minesCount - flagsCount,
+    );
   });
 });

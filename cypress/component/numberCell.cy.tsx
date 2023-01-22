@@ -9,15 +9,13 @@ describe('number cell', () => {
   });
 
   it('upon click opens remaining not flagged cells', () => {
-    cy.findCellByCoords({ x: 6, y: 3 }).rightclick();
-    cy.findCellByCoords({ x: 7, y: 3 }).rightclick();
+    cy.findCellByCoords({ x: 4, y: 3 }).rightclick();
 
-    cy.findCellByCoords({ x: 7, y: 4 }).click();
+    cy.findCellByCoords({ x: 3, y: 4 }).click();
 
     const cellsCoords: Coords[] = [
-      { x: 8, y: 3 },
-      { x: 8, y: 4 },
-      { x: 8, y: 5 },
+      { x: 4, y: 4 },
+      { x: 4, y: 5 },
     ];
 
     for (const coords of cellsCoords) {
@@ -26,29 +24,27 @@ describe('number cell', () => {
   });
 
   it('upon click opens mine cells', () => {
-    cy.findCellByCoords({ x: 3, y: 2 }).rightclick();
-    cy.findCellByCoords({ x: 3, y: 3 }).click();
+    cy.findCellByCoords({ x: 4, y: 5 }).rightclick();
+    cy.findCellByCoords({ x: 3, y: 4 }).click();
 
-    cy.findCellByCoords({ x: 4, y: 2 }).within(() => {
-      cy.findByRole('img', {
+    cy.findCellByCoords({ x: 4, y: 3 })
+      .findByRole('img', {
         name: 'mine',
-      }).should('exist');
-    });
+      })
+      .should('exist');
   });
 
   it('does not open cells if number and flags are different', () => {
-    cy.findCellByCoords({ x: 6, y: 3 }).rightclick();
-    cy.findCellByCoords({ x: 7, y: 4 }).click();
+    cy.findCellByCoords({ x: 5, y: 2 }).rightclick();
+    cy.findCellByCoords({ x: 6, y: 3 }).click();
 
     const cellsCoords: Coords[] = [
-      { x: 7, y: 3 },
-      { x: 8, y: 3 },
-      { x: 8, y: 4 },
-      { x: 8, y: 5 },
+      { x: 5, y: 3 },
+      { x: 5, y: 4 },
     ];
 
     for (const coords of cellsCoords) {
-      cy.findCellByCoords(coords).should('not.have.attr', 'data-open');
+      cy.findCellByCoords(coords).should('have.attr', 'data-open', 'false');
     }
   });
 });
