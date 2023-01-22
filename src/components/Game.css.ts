@@ -18,5 +18,9 @@ export const game = style([
         maxHeight: 'calc(100% - 1rem)',
       },
     },
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
   },
 ]);
