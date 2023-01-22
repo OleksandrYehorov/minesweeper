@@ -16,7 +16,9 @@ describe('lose game', () => {
   });
 
   it('upon lose flagged cells without mines are marked as crossed mines', () => {
-    cy.get('[data-open=false]')
+    // eslint-disable-next-line cypress/no-assigning-return-values
+    const cells = cy
+      .get('[data-open=false]')
       .filter(
         (i, el) =>
           minesMockData.beginner.mines.findIndex(
@@ -25,13 +27,13 @@ describe('lose game', () => {
               mine.y === Number(el.dataset.y),
           ) === -1,
       )
-      .filter((i) => i < 5)
-      .as('flaggedCellsWithoutMines');
+      .filter((i) => i < 5);
 
-    cy.get('@flaggedCellsWithoutMines').rightclick({ multiple: true });
+    cells.rightclick({ multiple: true });
+
     cy.findCellByCoords(minesMockData.beginner.mines[0]).click();
 
-    cy.get('@flaggedCellsWithoutMines').each(($el) => {
+    cells.each(($el) => {
       cy.wrap($el)
         .findByRole('img', {
           name: 'crossed mine',
