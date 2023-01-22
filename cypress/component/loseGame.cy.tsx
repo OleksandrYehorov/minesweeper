@@ -1,5 +1,4 @@
 import { App } from '../../src/App';
-import { Coords } from '../../src/utils/constants';
 import { minesMockData } from '../../src/utils/minesMockData';
 
 describe('lose game', () => {
@@ -17,23 +16,28 @@ describe('lose game', () => {
   });
 
   it('upon lose flagged cells without mines are marked as crossed mines', () => {
-    const flaggedCellsWithoutMines: Coords[] = [
-      { x: 0, y: 0 },
-      { x: 1, y: 0 },
-      { x: 7, y: 1 },
-    ];
-    for (const coords of flaggedCellsWithoutMines) {
-      cy.findCellByCoords(coords).rightclick();
-    }
+    const flaggedCellsWithoutMines = cy
+      .get('[data-open=false]')
+      .filter(
+        (i, el) =>
+          minesMockData.beginner.mines.findIndex(
+            (mine) =>
+              mine.x === Number(el.dataset.x) &&
+              mine.y === Number(el.dataset.y),
+          ) === -1,
+      )
+      .filter((i) => i < 5);
+
+    flaggedCellsWithoutMines.rightclick({ multiple: true });
     cy.findCellByCoords(minesMockData.beginner.mines[0]).click();
 
-    for (const coords of flaggedCellsWithoutMines) {
-      cy.findCellByCoords(coords).within(() => {
-        cy.findByRole('img', {
+    flaggedCellsWithoutMines.each(($el) => {
+      cy.wrap($el)
+        .findByRole('img', {
           name: 'crossed mine',
-        }).should('exist');
-      });
-    }
+        })
+        .should('exist');
+    });
   });
 
   it('upon lose all not flagged mines are revealed', () => {
@@ -54,32 +58,28 @@ describe('lose game', () => {
   });
 
   it('upon lose cells can not be clicked, flagged and unflagged', () => {
-    cy.findCellByCoords({ x: 0, y: 0 }).rightclick();
+    cy.findCellByCoords({ x: 4, y: 4 }).as('cell').rightclick();
 
     cy.findCellByCoords(minesMockData.beginner.mines[0]).click();
 
     // try to unflag flagged cell
-    cy.findCellByCoords({ x: 0, y: 0 }).rightclick();
-    cy.findCellByCoords({ x: 0, y: 0 }).within(() => {
-      cy.findByRole('img', {
+    cy.get('@cell').rightclick();
+    cy.get('@cell')
+      .findByRole('img', {
         name: 'crossed mine',
-      }).should('exist');
-    });
+      })
+      .should('exist');
 
     // try to flag cell
-    cy.findCellByCoords({ x: 1, y: 0 }).rightclick();
-    cy.findCellByCoords({ x: 1, y: 0 }).within(() => {
-      cy.findByRole('img', {
+    cy.findCellByCoords({ x: 4, y: 5 }).as('cell').rightclick();
+    cy.get('@cell')
+      .findByRole('img', {
         name: 'flag',
-      }).should('not.exist');
-    });
+      })
+      .should('not.exist');
 
     // try to open cell
-    cy.findCellByCoords({ x: 2, y: 0 }).click();
-    cy.findCellByCoords({ x: 2, y: 0 }).should(
-      'not.have.attr',
-      'data-open',
-      'false',
-    );
+    cy.findCellByCoords({ x: 4, y: 6 }).as('cell').click();
+    cy.get('@cell').should('have.attr', 'data-open', 'false');
   });
 });

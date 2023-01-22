@@ -1,4 +1,3 @@
-import { minesMockData } from '../utils/minesMockData';
 import { Difficulty, boardSizes, Coords } from '../utils/constants';
 import { getRandomInteger } from '../utils/getRandomInteger';
 import { GameCell, isFlagged, isMine, isNumberCell } from './cell';
@@ -6,6 +5,8 @@ import { GameState } from '../store/gameStore';
 import { now } from '../utils/now';
 import { Analytics } from './analytics';
 import { match } from 'ts-pattern';
+import seedrandom from 'seedrandom';
+import { testSeed } from '../utils/minesMockData';
 
 export type GameBoard = GameCell[][];
 
@@ -24,16 +25,13 @@ export const generateMines = (
 ): void => {
   const { width, height, mines } = boardSizes[difficulty];
 
+  const rng =
+    import.meta.env.MODE === 'test' ? seedrandom(testSeed) : seedrandom();
+
   let i = 0;
   while (i < mines) {
-    const x =
-      import.meta.env.MODE === 'test'
-        ? minesMockData[difficulty].mines[i].x
-        : getRandomInteger({ max: width - 1 });
-    const y =
-      import.meta.env.MODE === 'test'
-        ? minesMockData[difficulty].mines[i].y
-        : getRandomInteger({ max: height - 1 });
+    const x = getRandomInteger(rng, { max: width - 1 });
+    const y = getRandomInteger(rng, { max: height - 1 });
 
     const isStartCell = x === startCoords.x && y === startCoords.y;
     const skipCell = isMine(board[y][x]) || isStartCell;
