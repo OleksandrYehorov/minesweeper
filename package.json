@@ -23,11 +23,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vanilla-extract/css": "^1.9.2",
+    "@vanilla-extract/css": "^1.9.3",
     "@vanilla-extract/recipes": "^0.3.0",
     "autoprefixer": "^10.4.13",
     "date-fns": "^2.29.3",
-    "firebase": "^9.15.0",
+    "firebase": "^9.16.0",
     "immer": "^9.0.18",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -41,11 +41,11 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/seedrandom": "^3.0.4",
-    "@typescript-eslint/eslint-plugin": "^5.48.2",
-    "@typescript-eslint/parser": "^5.48.2",
-    "@vanilla-extract/vite-plugin": "^3.7.0",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
+    "@vanilla-extract/vite-plugin": "^3.7.1",
     "@vitejs/plugin-react": "^3.0.1",
-    "cypress": "^12.3.0",
+    "cypress": "^12.4.0",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-cypress": "^2.12.1",
@@ -54,16 +54,11 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "gh-pages": "^4.0.0",
+    "gh-pages": "^5.0.0",
     "prettier": "^2.8.3",
     "source-map-explorer": "^2.5.3",
     "typescript": "^4.9.4",
     "vite": "^4.0.4",
     "vite-plugin-pwa": "^0.14.1"
-  },
-  "overrides": {
-    "@vanilla-extract/vite-plugin": {
-      "vite": "^4"
-    }
   }
 }
