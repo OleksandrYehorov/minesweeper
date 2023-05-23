@@ -18,6 +18,8 @@ export const createBoard = (difficulty: Difficulty): GameBoard => {
   );
 };
 
+const seed = import.meta.env.MODE === 'test' ? testSeed : undefined;
+
 export const generateMines = (
   board: GameBoard,
   difficulty: Difficulty,
@@ -25,8 +27,7 @@ export const generateMines = (
 ): void => {
   const { width, height, mines } = boardSizes[difficulty];
 
-  const rng =
-    import.meta.env.MODE === 'test' ? seedrandom(testSeed) : seedrandom();
+  const rng = seedrandom(seed);
 
   let i = 0;
   while (i < mines) {

@@ -1,4 +1,4 @@
-import type seedrandom from 'seedrandom';
+import type { PRNG } from 'seedrandom';
 
 export type Range = {
   min?: number;
@@ -6,7 +6,7 @@ export type Range = {
 };
 
 export const getRandomInteger = (
-  rng: ReturnType<seedrandom>,
+  rng: PRNG,
   { min = 0, max = Number.MAX_SAFE_INTEGER }: Range = {},
 ): number => {
   const minInteger = Math.ceil(min);
