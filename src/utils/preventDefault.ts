@@ -1,6 +1,6 @@
-interface EventWithPreventDefault {
+type EventWithPreventDefault = {
   preventDefault(): void;
-}
+};
 
 export const preventDefault =
   <T extends EventWithPreventDefault>(fn?: (event?: T) => void) =>

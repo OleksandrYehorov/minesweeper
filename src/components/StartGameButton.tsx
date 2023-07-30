@@ -34,7 +34,9 @@ export const StartGameButton: FC = () => {
   const gameStatus = useGameStore((state) => state.status);
   const initGame = useGameStore((state) => state.initGame);
 
-  const handleClick = () => initGame();
+  const handleClick = () => {
+    initGame();
+  };
 
   return (
     <button aria-label="restart" onClick={handleClick} className={button}>

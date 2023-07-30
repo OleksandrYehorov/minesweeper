@@ -3,7 +3,7 @@ export function disableZoom() {
     'touchmove',
     (event) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error
       if (event.scale !== 1) {
         event.preventDefault();
       }

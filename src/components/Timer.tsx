@@ -16,7 +16,9 @@ export const Timer: FC = () => {
           setValue((stateValue) => stateValue + 1);
         }, 1000);
 
-        return () => window.clearInterval(interval);
+        return () => {
+          window.clearInterval(interval);
+        };
       })
       .with('lose', 'win', () => {
         window.clearInterval(interval);

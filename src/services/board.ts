@@ -54,6 +54,7 @@ const getAdjacentCoords = (board: GameBoard, { x, y }: Coords): Coords[] =>
     { x: x - 1, y: y + 1 }, // bottom left
     { x, y: y + 1 }, // bottom
     { x: x + 1, y: y + 1 }, // bottom right
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   ].filter(({ x, y }) => board[y]?.[x] != null);
 
 export const openCell = (state: GameState, { x, y }: Coords): boolean => {

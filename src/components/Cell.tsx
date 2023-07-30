@@ -14,6 +14,7 @@ import { MinesNumber } from './MinesNumber';
 
 type CellProps = Coords;
 
+// eslint-disable-next-line react/prop-types
 export const Cell: FC<CellProps> = memo(({ x, y }) => {
   const { gameStatus, cellData, clickCell, clickNumberCell, flagCell } =
     useGameStore(
@@ -27,9 +28,15 @@ export const Cell: FC<CellProps> = memo(({ x, y }) => {
       shallow,
     );
 
-  const handleClickCell = () => clickCell({ x, y });
-  const handleClickNumberCell = () => clickNumberCell({ x, y });
-  const handleFlagCell = () => flagCell({ x, y });
+  const handleClickCell = () => {
+    clickCell({ x, y });
+  };
+  const handleClickNumberCell = () => {
+    clickNumberCell({ x, y });
+  };
+  const handleFlagCell = () => {
+    flagCell({ x, y });
+  };
 
   const longTouchProps = useLongTouch(handleFlagCell);
 
@@ -39,6 +46,7 @@ export const Cell: FC<CellProps> = memo(({ x, y }) => {
         'data-open': open,
         'data-x': x,
         'data-y': y,
+        'data-cell': true,
       };
     }
 
