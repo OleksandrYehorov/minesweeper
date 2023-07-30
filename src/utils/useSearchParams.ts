@@ -6,8 +6,8 @@ export const useSearchParams = <T extends string>(
 ) => {
   const [value, setValue] = useState<T>(
     () =>
-      (new URL(window.location.href).searchParams.get(key) as T) ??
-      initialValue,
+      (new URL(window.location.href).searchParams.get(key) ??
+        initialValue) as T,
   );
 
   useEffect(() => {

@@ -167,4 +167,7 @@ export const minesMockData = {
       { x: 21, y: 15 },
     ],
   },
-} satisfies Record<Difficulty, { firstClick: Coords; mines: Coords[] }>;
+} as const satisfies Record<
+  Difficulty,
+  { firstClick: Coords; mines: readonly Coords[] }
+>;

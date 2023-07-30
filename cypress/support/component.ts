@@ -3,7 +3,9 @@ import './commands';
 import { mount } from 'cypress/react18';
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
     interface Chainable {
       mount: typeof mount;
     }

@@ -6,9 +6,11 @@ Cypress.Commands.add('findCellByCoords', ({ x, y }: Coords) =>
 );
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
     interface Chainable {
-      findCellByCoords(coords: Coords): Cypress.Chainable<JQuery<HTMLElement>>;
+      findCellByCoords(coords: Coords): Cypress.Chainable<JQuery>;
     }
   }
 }
