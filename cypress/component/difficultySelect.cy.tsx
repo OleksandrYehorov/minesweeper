@@ -7,9 +7,9 @@ describe('difficulty level select', () => {
   });
 
   difficultyLevels.forEach((difficulty) => {
-    it(`${difficulty}`, () => {
+    it(difficulty, () => {
       cy.findByRole('button', {
-        name: RegExp(`${difficulty}`, 'i'),
+        name: RegExp(difficulty, 'i'),
       }).click();
 
       cy.findAllByTestId('row').then((rows) => {
