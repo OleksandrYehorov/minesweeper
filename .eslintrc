@@ -29,6 +29,14 @@
     }
   },
   "ignorePatterns": [".vite.config.ts", "dev-dist", "dist", "node_modules"],
+  "overrides": [
+    {
+      "files": ["vite.config.ts", "cypress.config.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.node.json"
+      }
+    }
+  ],
   "rules": {
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     "import/no-unresolved": "off"
