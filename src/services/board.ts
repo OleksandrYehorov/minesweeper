@@ -7,6 +7,7 @@ import { Analytics } from './analytics';
 import { match } from 'ts-pattern';
 import seedrandom from 'seedrandom';
 import { testSeed } from '../utils/minesMockData';
+import { current } from 'immer';
 
 export type GameBoard = GameCell[][];
 
@@ -54,6 +55,7 @@ const getAdjacentCoords = (board: GameBoard, { x, y }: Coords): Coords[] =>
     { x: x - 1, y: y + 1 }, // bottom left
     { x, y: y + 1 }, // bottom
     { x: x + 1, y: y + 1 }, // bottom right
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   ].filter(({ x, y }) => board[y]?.[x] != null);
 
 export const openCell = (state: GameState, { x, y }: Coords): boolean => {
@@ -174,17 +176,42 @@ export const clickCell = (state: GameState, { x, y }: Coords) => {
   }
 
   if (state.status === 'starting') {
+    const boardCopy = structuredClone(current(state).board);
+
     generateMines(state.board, state.difficulty, { x, y });
+
+    const success = openCell(state, { x, y });
+
+    checkInitialTurnOpensMoreThanOneCell(state, boardCopy, { x, y });
 
     state.status = 'playing';
     state.startedAt = now();
 
+    checkGameEnd(state, success);
+
     Analytics.logStartGame({ difficulty: state.difficulty });
+
+    return;
   }
 
   const success = openCell(state, { x, y });
 
   checkGameEnd(state, success);
+};
+
+const checkInitialTurnOpensMoreThanOneCell = (
+  state: GameState,
+  boardCopy: GameBoard,
+  { x, y }: Coords,
+) => {
+  if (state.openCellsCount <= 1) {
+    state.board = boardCopy;
+    state.openCellsCount = 0;
+    state.status = 'starting';
+    state.startedAt = 0;
+
+    clickCell(state, { x, y });
+  }
 };
 
 export const clickNumberCell = (state: GameState, { x, y }: Coords) => {

@@ -23,7 +23,9 @@ export const DifficultySelect: FC = () => {
       {difficultyLevels.map((difficulty) => (
         <button
           key={difficulty}
-          onClick={() => setDifficulty(difficulty)}
+          onClick={() => {
+            setDifficulty(difficulty);
+          }}
           className={button({ active: difficultyState === difficulty })}
         >
           {difficulty}

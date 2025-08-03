@@ -1,3 +1,4 @@
+import { Coords } from 'utils/constants';
 import { App } from '../../src/App';
 import { minesMockData } from '../../src/utils/minesMockData';
 
@@ -16,28 +17,23 @@ describe('lose game', () => {
   });
 
   it('upon lose flagged cells without mines are marked as crossed mines', () => {
-    // eslint-disable-next-line cypress/no-assigning-return-values
-    const cells = cy
-      .get('[data-open=false]')
-      .filter(
-        (i, el) =>
-          minesMockData.beginner.mines.findIndex(
-            (mine) =>
-              mine.x === Number(el.dataset.x) &&
-              mine.y === Number(el.dataset.y),
-          ) === -1,
-      )
-      .filter((i) => i < 5);
+    const flaggedCellsWithoutMinesCoords = [
+      { x: 0, y: 0 },
+      { x: 5, y: 3 },
+      { x: 4, y: 4 },
+      { x: 4, y: 5 },
+      { x: 5, y: 5 },
+    ] as const satisfies readonly Coords[];
 
-    cells.rightclick({ multiple: true });
+    flaggedCellsWithoutMinesCoords.forEach((coords) => {
+      cy.findCellByCoords(coords).rightclick();
+    });
 
     cy.findCellByCoords(minesMockData.beginner.mines[0]).click();
 
-    cells.each(($el) => {
-      cy.wrap($el)
-        .findByRole('img', {
-          name: 'crossed mine',
-        })
+    flaggedCellsWithoutMinesCoords.forEach((coords) => {
+      cy.findCellByCoords(coords)
+        .findByRole('img', { name: 'crossed mine' })
         .should('exist');
     });
   });

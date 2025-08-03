@@ -24,6 +24,6 @@
     ],
     "baseUrl": "src"
   },
-  "include": ["src", "cypress", "vite.config.ts", "cypress.config.ts"],
+  "include": ["src", "cypress"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

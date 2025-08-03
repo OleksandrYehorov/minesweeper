@@ -17,7 +17,9 @@ export const useLongTouch = (
 
   const onTouchStart = useCallback(
     (event: React.TouchEvent<HTMLElement>) => {
-      timeout.current = setTimeout(() => onLongTouch(event), delay);
+      timeout.current = setTimeout(() => {
+        onLongTouch(event);
+      }, delay);
     },
     [delay, onLongTouch],
   );

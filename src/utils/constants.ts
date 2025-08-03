@@ -19,9 +19,9 @@ export const boardSizes = {
   intermediate: new BoardData(16, 16, 40),
   expert: new BoardData(30, 16, 99),
   // expert: new BoardData(128, 72, 720 * 2),
-} satisfies Record<Difficulty, BoardData>;
+} as const satisfies Record<Difficulty, BoardData>;
 
-export interface Coords {
+export type Coords = {
   x: number;
   y: number;
-}
+};

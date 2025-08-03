@@ -1,52 +1,44 @@
 {
-  "plugins": [
-    "react",
-    "@typescript-eslint",
-    "prettier",
-    "react-hooks",
-    "jsx-a11y",
-    "cypress"
-  ],
+  "root": true,
+  "plugins": ["react", "@typescript-eslint", "react-hooks", "cypress"],
   "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "plugin:jsx-a11y/recommended",
-    "plugin:cypress/recommended"
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/strict-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "plugin:jsx-a11y/strict",
+    "plugin:cypress/recommended",
+    "prettier"
   ],
-  "env": {
-    "browser": true,
-    "es6": true
-  },
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaFeatures": { "jsx": true },
-    "ecmaVersion": 2018,
-    "sourceType": "module",
-    "project": "./tsconfig.json"
+    "project": true,
+    "tsconfigRootDir": "."
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "typescript": true,
+      "node": true
+    }
   },
   "ignorePatterns": [".vite.config.ts", "dev-dist", "dist", "node_modules"],
+  "overrides": [
+    {
+      "files": ["vite.config.ts", "cypress.config.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.node.json"
+      }
+    }
+  ],
   "rules": {
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "@typescript-eslint/camelcase": "off",
-    "linebreak-style": "off",
-    "prettier/prettier": ["error", { "endOfLine": "auto" }],
-    "import/prefer-default-export": "off",
-    "jsx-a11y/control-has-associated-label": "error",
-    "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": "off",
-    "react/prop-types": "off",
-    "no-param-reassign": "off",
-    "consistent-return": "off",
-    "no-plusplus": "off",
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-props-no-spreading": "off",
-    "no-restricted-syntax": "off",
-    "@typescript-eslint/no-this-alias": "off",
-    "@typescript-eslint/no-namespace": "off"
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+    "import/no-unresolved": "off"
   }
 }

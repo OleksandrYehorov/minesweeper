@@ -3,7 +3,7 @@ import { defineConfig } from 'vite';
 import { ManifestOptions, VitePWA } from 'vite-plugin-pwa';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
 const autoprefixer = require('autoprefixer');
 
 const manifest: Partial<ManifestOptions> = {
@@ -74,6 +74,7 @@ export default defineConfig({
   },
   css: {
     postcss: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       plugins: [autoprefixer()],
     },
   },

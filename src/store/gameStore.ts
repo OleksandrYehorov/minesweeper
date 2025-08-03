@@ -25,10 +25,10 @@ export type GameState = {
   flaggedMinesCount: number;
   flaggedEmptyCount: number;
   startedAt: number;
-  initGame(difficulty?: Difficulty): void;
-  clickCell({ x, y }: Coords): void;
-  clickNumberCell({ x, y }: Coords): void;
-  flagCell({ x, y }: Coords): void;
+  initGame: (difficulty?: Difficulty) => void;
+  clickCell: ({ x, y }: Coords) => void;
+  clickNumberCell: ({ x, y }: Coords) => void;
+  flagCell: ({ x, y }: Coords) => void;
 };
 
 export const useGameStore = pipe(
