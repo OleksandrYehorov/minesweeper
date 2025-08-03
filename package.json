@@ -18,7 +18,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
-    "npm-check-updates": "npx --yes npm-check-updates",
+    "npm-check-updates": "npx --yes npm-check-updates -i",
     "prepreview": "npm run build",
     "preview": "vite preview"
   },
