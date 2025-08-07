@@ -18,6 +18,8 @@ export type GameCell =
   | 'ExplodedMine' // mine that exploded
   | 'FlaggedMine'
   | 'FlaggedEmpty'
+  | 'QuestionMine'
+  | 'QuestionEmpty'
   | NumberCell; // revealed square with 0-9 adjacent mines
 
 const closed = [
@@ -25,6 +27,8 @@ const closed = [
   'Mine',
   'FlaggedEmpty',
   'FlaggedMine',
+  'QuestionEmpty',
+  'QuestionMine',
 ] as const satisfies readonly GameCell[];
 
 export type ClosedCell = (typeof closed)[number];
@@ -34,7 +38,7 @@ export const isClosed = (cell: GameCell): cell is ClosedCell =>
     .with(...closed, () => true)
     .otherwise(() => false);
 
-const mines = ['Mine', 'FlaggedMine'] as const satisfies readonly GameCell[];
+const mines = ['Mine', 'FlaggedMine', 'QuestionMine'] as const satisfies readonly GameCell[];
 
 export type MineCell = (typeof mines)[number];
 
@@ -57,3 +61,15 @@ export const isFlagged = (cell: GameCell): cell is FlaggedCell =>
 
 export const isNumberCell = (cell: GameCell): cell is NumberCell =>
   typeof cell === 'number';
+
+const questioned = [
+  'QuestionEmpty',
+  'QuestionMine',
+] as const satisfies readonly GameCell[];
+
+export type QuestionCell = (typeof questioned)[number];
+
+export const isQuestion = (cell: GameCell): cell is QuestionCell =>
+  match(cell)
+    .with(...questioned, () => true)
+    .otherwise(() => false);

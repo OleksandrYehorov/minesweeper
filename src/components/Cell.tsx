@@ -4,7 +4,8 @@ import { shallow } from 'zustand/shallow';
 import crossedMineImage from '../images/crossedMine.svg';
 import flagImage from '../images/flag.svg';
 import mineImage from '../images/mine.svg';
-import { isFlagged, isNumberCell } from '../services/cell';
+import questionImage from '../images/question.svg';
+import { isFlagged, isNumberCell, isQuestion } from '../services/cell';
 import { useGameStore } from '../store/gameStore';
 import { Coords } from '../utils/constants';
 import { preventDefault } from '../utils/preventDefault';
@@ -115,10 +116,21 @@ export const Cell: FC<CellProps> = memo(({ x, y }) => {
         <img src={flagImage} alt="flag" className={flagIcon} />
       </button>
     ))
+    .with([P.when(isQuestion), P._], () => (
+      <button
+        aria-label={`Question cell`}
+        onContextMenu={preventDefault(handleFlagCell)}
+        className={cell({ type: 'unrevealed' })}
+        {...longTouchProps}
+        {...injectTestData({ open: false })}
+      >
+        <img src={questionImage} alt="question" className={flagIcon} />
+      </button>
+    ))
     .otherwise(() => (
       <button
         aria-label={`Unrevealed cell`}
-        disabled={isFlagged(cellData)}
+        disabled={isFlagged(cellData) || isQuestion(cellData)}
         className={cell({ type: 'unrevealed' })}
         onContextMenu={preventDefault(handleFlagCell)}
         onClick={handleClickCell}

@@ -233,10 +233,16 @@ export const flagCell = (state: GameState, { x, y }: Coords) => {
       })
       .with('FlaggedEmpty', () => {
         state.flaggedEmptyCount--;
-        return 'Empty';
+        return 'QuestionEmpty';
       })
       .with('FlaggedMine', () => {
         state.flaggedMinesCount--;
+        return 'QuestionMine';
+      })
+      .with('QuestionEmpty', () => {
+        return 'Empty';
+      })
+      .with('QuestionMine', () => {
         return 'Mine';
       })
       .run();
