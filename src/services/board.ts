@@ -1,6 +1,6 @@
 import { Difficulty, boardSizes, Coords } from '../utils/constants';
 import { getRandomInteger } from '../utils/getRandomInteger';
-import { GameCell, isFlagged, isMine, isNumberCell, isQuestion } from './cell';
+import { GameCell, isFlagged, isMine, isNumberCell } from './cell';
 import { GameState } from '../store/gameStore';
 import { now } from '../utils/now';
 import { Analytics } from './analytics';
